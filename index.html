@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Forma">
-<meta name="theme-color" content="#0F1E1C">
+<meta name="theme-color" content="#F6F4EE">
 <title>Forma — Training Log</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,11 +15,11 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <style>
   :root{
-    --bg:#0F1E1C;--bg-2:#17282A;--card:#1D3234;--card-2:#243B3D;
-    --border:#2B4144;--border-hi:#3A5457;
-    --text:#E8E4D9;--text-dim:#A9B3B1;--text-mute:#6C7E7B;
-    --accent:#F0A868;--accent-hi:#F5B885;
-    --go:#A8D67C;--hold:#F0C868;--deload:#E88068;--info:#8AC5D6;
+    --bg:#F6F4EE;--bg-2:#EEEAE0;--card:#FFFFFF;--card-2:#FAF9F4;
+    --border:#E5E0D0;--border-hi:#CCC5B0;
+    --text:#0F1A2E;--text-dim:#4A5470;--text-mute:#8892A6;
+    --accent:#1D3EDC;--accent-hi:#2E4FED;--accent-soft:#E4E9FF;--accent-text:#FFFFFF;
+    --go:#059669;--hold:#D97706;--deload:#DC2626;--info:#0891B2;
     --font-display:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
     --font-body:'Inter',ui-sans-serif,system-ui,sans-serif;
     --font-mono:'JetBrains Mono',ui-monospace,monospace;
@@ -41,7 +41,7 @@
   .brand-dot{color:var(--accent);}
   .top-sub{font-size:12px;color:var(--text-mute);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em;}
 
-  .nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg-2);border-top:1px solid var(--border);padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);z-index:20;}
+  .nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:8px 0;padding-bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);z-index:20;box-shadow:0 -1px 0 rgba(15,26,46,0.02);}
   .nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;color:var(--text-mute);font-size:11px;font-family:var(--font-mono);letter-spacing:0.05em;text-transform:uppercase;transition:color .15s;}
   .nav-btn.active{color:var(--accent);}
   .nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;}
@@ -53,40 +53,40 @@
   .card-title{font-size:11px;color:var(--text-mute);font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
   .card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 
-  .hero{background:linear-gradient(135deg,var(--card) 0%,var(--card-2) 100%);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,var(--accent) 0%,transparent 65%);opacity:0.12;}
-  .hero-label{font-size:11px;color:var(--accent);font-family:var(--font-mono);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;position:relative;}
-  .hero-title{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1.05;letter-spacing:-0.03em;margin-bottom:12px;position:relative;}
+  .hero{background:linear-gradient(135deg,var(--card) 0%,var(--accent-soft) 100%);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:radial-gradient(circle,var(--accent) 0%,transparent 65%);opacity:0.10;}
+  .hero-label{font-size:11px;color:var(--accent);font-family:var(--font-mono);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;position:relative;font-weight:600;}
+  .hero-title{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1.05;letter-spacing:-0.03em;margin-bottom:12px;position:relative;color:var(--text);}
   .hero-sub{font-size:14px;color:var(--text-dim);position:relative;}
 
   .day-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px;}
   .day-btn{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:border-color .15s,transform .1s;}
   .day-btn:active{transform:scale(0.99);}
-  .day-btn.next{border-color:var(--accent);}
-  .day-name{font-family:var(--font-display);font-weight:600;font-size:17px;}
+  .day-btn.next{border-color:var(--accent);background:var(--accent-soft);}
+  .day-name{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text);}
   .day-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;}
   .day-arrow{color:var(--text-mute);font-size:20px;}
   .day-btn.next .day-arrow{color:var(--accent);}
 
   .section-h{display:flex;align-items:center;gap:10px;margin:22px 0 12px;padding:0 4px;}
-  .section-h-num{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;}
-  .section-h-title{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;}
+  .section-h-num{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;font-weight:600;}
+  .section-h-title{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.02em;color:var(--text);}
   .section-h-line{flex:1;height:1px;background:var(--border);}
 
   .ex{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;}
   .ex-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;cursor:pointer;}
   .ex-head-l{flex:1;min-width:0;}
   .ex-name-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
-  .ex-name{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.2;}
-  .ex-video-link{background:var(--bg-2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--info);display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);letter-spacing:0.04em;}
+  .ex-name{font-family:var(--font-display);font-weight:600;font-size:16px;line-height:1.2;color:var(--text);}
+  .ex-video-link{background:var(--accent-soft);border:1px solid var(--accent-soft);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--accent);display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);letter-spacing:0.04em;font-weight:600;}
   .ex-video-link svg{width:10px;height:10px;fill:currentColor;}
   .ex-spec{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);letter-spacing:0.02em;}
   .ex-spec .sep{color:var(--text-mute);margin:0 4px;}
-  .ex-signal{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600;line-height:1.1;text-align:center;}
-  .ex-signal.go{background:rgba(168,214,124,0.14);color:var(--go);}
-  .ex-signal.hold{background:rgba(240,200,104,0.14);color:var(--hold);}
-  .ex-signal.deload{background:rgba(232,128,104,0.14);color:var(--deload);}
-  .ex-signal.new{background:rgba(138,197,214,0.14);color:var(--info);}
+  .ex-signal{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:6px 10px;border-radius:8px;font-family:var(--font-mono);font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:700;line-height:1.1;text-align:center;}
+  .ex-signal.go{background:rgba(5,150,105,0.12);color:var(--go);}
+  .ex-signal.hold{background:rgba(217,119,6,0.12);color:var(--hold);}
+  .ex-signal.deload{background:rgba(220,38,38,0.12);color:var(--deload);}
+  .ex-signal.new{background:rgba(8,145,178,0.12);color:var(--info);}
   .ex-signal-arrow{font-size:14px;margin-bottom:2px;}
 
   .ex-body{border-top:1px solid var(--border);padding:14px 16px;display:none;}
@@ -96,29 +96,29 @@
 
   .ex-block{margin-bottom:14px;}
   .ex-block:last-child{margin-bottom:0;}
-  .ex-block-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
+  .ex-block-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
   .ex-tips{font-size:14px;color:var(--text-dim);line-height:1.5;}
-  .ex-reco{background:var(--bg-2);border-left:3px solid var(--accent);padding:10px 12px;border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.5;}
-  .ex-reco.go{border-color:var(--go);}
-  .ex-reco.hold{border-color:var(--hold);}
-  .ex-reco.deload{border-color:var(--deload);}
-  .ex-reco.new{border-color:var(--info);}
+  .ex-reco{background:var(--card-2);border-left:3px solid var(--accent);padding:10px 12px;border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.5;}
+  .ex-reco.go{border-color:var(--go);background:rgba(5,150,105,0.05);}
+  .ex-reco.hold{border-color:var(--hold);background:rgba(217,119,6,0.05);}
+  .ex-reco.deload{border-color:var(--deload);background:rgba(220,38,38,0.05);}
+  .ex-reco.new{border-color:var(--info);background:rgba(8,145,178,0.05);}
   .ex-reco strong{color:var(--text);font-weight:600;}
 
   .sets{display:flex;flex-direction:column;gap:8px;}
   .set-row{display:grid;grid-template-columns:32px 1fr 1fr;gap:8px;align-items:center;}
-  .set-num{font-family:var(--font-mono);font-size:12px;color:var(--text-mute);text-align:center;}
-  .set-input{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:15px;font-weight:600;text-align:center;color:var(--text);width:100%;}
-  .set-input:focus{border-color:var(--accent);}
+  .set-num{font-family:var(--font-mono);font-size:12px;color:var(--text-mute);text-align:center;font-weight:600;}
+  .set-input{background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:15px;font-weight:600;text-align:center;color:var(--text);width:100%;}
+  .set-input:focus{border-color:var(--accent);background:var(--card);}
   .set-input::placeholder{color:var(--text-mute);font-weight:400;}
   .set-label-row{display:grid;grid-template-columns:32px 1fr 1fr;gap:8px;margin-bottom:4px;}
   .set-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);text-align:center;letter-spacing:0.12em;text-transform:uppercase;}
 
-  .notes-input{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;width:100%;color:var(--text);font-size:14px;resize:vertical;min-height:60px;font-family:var(--font-body);}
-  .notes-input:focus{border-color:var(--accent);}
+  .notes-input{background:var(--card-2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;width:100%;color:var(--text);font-size:14px;resize:vertical;min-height:60px;font-family:var(--font-body);}
+  .notes-input:focus{border-color:var(--accent);background:var(--card);}
 
-  .rest-btn{background:var(--accent);color:#1A1410;border-radius:10px;padding:12px 16px;font-family:var(--font-display);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;width:100%;justify-content:center;letter-spacing:-0.01em;transition:transform .1s;}
-  .rest-btn:active{transform:scale(0.98);}
+  .rest-btn{background:var(--accent);color:var(--accent-text);border-radius:10px;padding:12px 16px;font-family:var(--font-display);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:8px;width:100%;justify-content:center;letter-spacing:-0.01em;transition:transform .1s,background .15s;}
+  .rest-btn:active{transform:scale(0.98);background:var(--accent-hi);}
   .rest-btn svg{width:16px;height:16px;fill:currentColor;}
 
   .history{margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--text-mute);}
@@ -127,38 +127,39 @@
   .history-date{color:var(--text-mute);}
   .history-sets{color:var(--text-dim);}
 
-  .btn-primary{background:var(--accent);color:#1A1410;border-radius:12px;padding:14px 20px;font-weight:600;font-family:var(--font-display);letter-spacing:-0.01em;font-size:15px;width:100%;transition:transform .1s,background .15s;}
+  .btn-primary{background:var(--accent);color:var(--accent-text);border-radius:12px;padding:14px 20px;font-weight:600;font-family:var(--font-display);letter-spacing:-0.01em;font-size:15px;width:100%;transition:transform .1s,background .15s;box-shadow:0 1px 2px rgba(29,62,220,0.15);}
   .btn-primary:active{transform:scale(0.98);background:var(--accent-hi);}
-  .btn-secondary{background:var(--bg-2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 14px;font-size:13px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;}
+  .btn-secondary{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 14px;font-size:13px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+  .btn-secondary:active{background:var(--card-2);}
 
   .run-mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:16px;padding:4px;background:var(--card);border-radius:12px;border:1px solid var(--border);}
-  .run-mode-tab{padding:10px;text-align:center;border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mute);font-weight:500;transition:all .15s;}
-  .run-mode-tab.active{background:var(--accent);color:#1A1410;}
+  .run-mode-tab{padding:10px;text-align:center;border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mute);font-weight:600;transition:all .15s;}
+  .run-mode-tab.active{background:var(--accent);color:var(--accent-text);}
 
   .run-picker{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px;}
   .run-type{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:left;transition:border-color .15s;}
-  .run-type.active{border-color:var(--accent);background:var(--card-2);}
-  .run-type-name{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:3px;}
-  .run-type-target{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.02em;margin-bottom:3px;}
+  .run-type.active{border-color:var(--accent);background:var(--accent-soft);}
+  .run-type-name{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:3px;color:var(--text);}
+  .run-type-target{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.02em;margin-bottom:3px;font-weight:600;}
   .run-type-desc{font-size:13px;color:var(--text-dim);line-height:1.4;}
 
   .run-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-  .run-input-group label{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
-  .run-input-big{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:14px;font-family:var(--font-mono);font-size:22px;font-weight:600;text-align:center;color:var(--text);width:100%;}
-  .run-input-big:focus{border-color:var(--accent);}
+  .run-input-group label{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+  .run-input-big{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:14px;font-family:var(--font-mono);font-size:22px;font-weight:600;text-align:center;color:var(--text);width:100%;}
+  .run-input-big:focus{border-color:var(--accent);background:var(--card);}
 
-  .feedback-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;font-weight:600;display:inline-block;}
-  .feedback-pill.go{background:rgba(168,214,124,0.14);color:var(--go);}
-  .feedback-pill.hold{background:rgba(240,200,104,0.14);color:var(--hold);}
-  .feedback-pill.deload{background:rgba(232,128,104,0.14);color:var(--deload);}
-  .feedback-pill.info{background:rgba(138,197,214,0.14);color:var(--info);}
+  .feedback-pill{font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:20px;font-weight:700;display:inline-block;}
+  .feedback-pill.go{background:rgba(5,150,105,0.14);color:var(--go);}
+  .feedback-pill.hold{background:rgba(217,119,6,0.14);color:var(--hold);}
+  .feedback-pill.deload{background:rgba(220,38,38,0.14);color:var(--deload);}
+  .feedback-pill.info{background:rgba(8,145,178,0.14);color:var(--info);}
 
   .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
   .kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
-  .kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;}
-  .kpi-value{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1;letter-spacing:-0.03em;margin-bottom:4px;}
+  .kpi-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;font-weight:600;}
+  .kpi-value{font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1;letter-spacing:-0.03em;margin-bottom:4px;color:var(--text);}
   .kpi-unit{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);}
-  .kpi-delta{font-family:var(--font-mono);font-size:11px;margin-top:6px;}
+  .kpi-delta{font-family:var(--font-mono);font-size:11px;margin-top:6px;font-weight:600;}
   .kpi-delta.up{color:var(--go);}
   .kpi-delta.down{color:var(--deload);}
   .kpi-delta.flat{color:var(--text-mute);}
@@ -167,7 +168,7 @@
   .prog-item:last-child{border:none;}
   .prog-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px;}
   .prog-name{font-size:14px;font-weight:500;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .prog-weight{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);}
+  .prog-weight{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);font-weight:600;}
   .prog-bar{height:4px;background:var(--bg-2);border-radius:2px;overflow:hidden;}
   .prog-fill{height:100%;background:var(--accent);border-radius:2px;}
   .prog-fill.go{background:var(--go);}
@@ -179,17 +180,17 @@
   .spark path{fill:none;stroke:var(--accent);stroke-width:1.5;}
   .spark circle{fill:var(--accent);}
 
-  .toast{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--card-2);border:1px solid var(--border-hi);color:var(--text);padding:12px 18px;border-radius:10px;font-size:14px;z-index:100;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+  .toast{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--text);border:1px solid var(--text);color:var(--card);padding:12px 18px;border-radius:10px;font-size:14px;z-index:100;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;box-shadow:0 4px 20px rgba(15,26,46,0.15);font-weight:500;}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
 
   .data-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .import-input{display:none;}
   .divider{height:1px;background:var(--border);margin:16px 0;}
 
-  .timer-overlay{position:fixed;inset:0;background:rgba(15,30,28,0.96);backdrop-filter:blur(12px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom));}
+  .timer-overlay{position:fixed;inset:0;background:rgba(246,244,238,0.96);backdrop-filter:blur(12px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;padding-top:calc(20px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom));}
   .timer-overlay.show{display:flex;}
-  .timer-card{background:var(--card);border:1px solid var(--border-hi);border-radius:20px;padding:30px 24px;max-width:340px;width:100%;text-align:center;}
-  .timer-label{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;}
+  .timer-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:30px 24px;max-width:340px;width:100%;text-align:center;box-shadow:0 10px 40px rgba(29,62,220,0.10);}
+  .timer-label{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;font-weight:600;}
   .timer-exname{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--text);margin-bottom:22px;line-height:1.2;}
   .timer-ring{position:relative;width:220px;height:220px;margin:0 auto 24px;}
   .timer-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
@@ -200,31 +201,51 @@
   @keyframes pulse{50%{opacity:0.6;}}
   .timer-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
   .timer-controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;}
-  .timer-btn{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:12px 8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);font-weight:600;}
-  .timer-btn.primary{background:var(--accent);color:#1A1410;border-color:var(--accent);}
+  .timer-btn{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:12px 8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text);font-weight:600;}
+  .timer-btn.primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent);}
   .timer-btn.danger{color:var(--deload);}
 
   .gps-config-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
   .gps-config-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
   .gps-config-row.three{grid-template-columns:1fr 1fr 1fr;}
-  .gps-config-group label{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
-  .gps-config-input{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:var(--font-mono);font-size:18px;font-weight:600;text-align:center;width:100%;color:var(--text);}
-  .gps-warn{background:rgba(232,128,104,0.10);border-left:3px solid var(--deload);padding:10px 12px;border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:14px;}
+  .gps-config-group label{display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+  .gps-config-input{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:var(--font-mono);font-size:18px;font-weight:600;text-align:center;width:100%;color:var(--text);}
+  .gps-config-input:focus{border-color:var(--accent);background:var(--card);}
+  .gps-warn{background:rgba(220,38,38,0.06);border-left:3px solid var(--deload);padding:10px 12px;border-radius:6px;font-size:13px;color:var(--text-dim);line-height:1.5;margin-bottom:14px;}
 
-  .gps-live{padding-bottom:20px;}
-  .gps-stat-hero{background:linear-gradient(135deg,var(--card),var(--card-2));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:10px;text-align:center;}
-  .gps-stat-hero-label{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;}
+  .interval-type-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;background:var(--bg-2);border-radius:10px;margin-bottom:12px;}
+  .interval-type-tab{padding:10px;text-align:center;border-radius:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mute);font-weight:600;transition:all .15s;}
+  .interval-type-tab.active{background:var(--accent);color:var(--accent-text);}
+
+  .gps-stat-hero{background:linear-gradient(135deg,var(--card),var(--accent-soft));border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:10px;text-align:center;}
+  .gps-stat-hero-label{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
   .gps-stat-hero-value{font-family:var(--font-mono);font-size:56px;font-weight:700;line-height:1;color:var(--text);letter-spacing:-0.02em;}
   .gps-stat-hero-unit{font-family:var(--font-mono);font-size:12px;color:var(--text-mute);letter-spacing:0.1em;margin-top:6px;}
   .gps-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
   .gps-stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
-  .gps-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;}
+  .gps-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
   .gps-stat-value{font-family:var(--font-mono);font-size:24px;font-weight:700;line-height:1;color:var(--text);}
   .gps-stat-sub{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);margin-top:4px;}
 
-  .gps-map-wrap{height:260px;background:var(--bg-2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;position:relative;}
-  #gpsMap{height:100%;width:100%;background:var(--bg-2);}
-  .leaflet-container{background:var(--bg-2);}
+  /* Interval panel */
+  .interval-panel{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;text-align:center;transition:all .3s;}
+  .interval-panel.work{border-color:var(--accent);background:linear-gradient(135deg,var(--card),var(--accent-soft));}
+  .interval-panel.rest{border-color:var(--hold);background:linear-gradient(135deg,var(--card),rgba(217,119,6,0.08));}
+  .interval-panel.done{border-color:var(--go);background:linear-gradient(135deg,var(--card),rgba(5,150,105,0.08));}
+  .interval-phase-label{font-family:var(--font-mono);font-size:12px;color:var(--text-mute);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:8px;font-weight:700;}
+  .interval-panel.work .interval-phase-label{color:var(--accent);}
+  .interval-panel.rest .interval-phase-label{color:var(--hold);}
+  .interval-panel.done .interval-phase-label{color:var(--go);}
+  .interval-rep{font-family:var(--font-display);font-weight:700;font-size:44px;line-height:1;letter-spacing:-0.03em;color:var(--text);margin-bottom:8px;}
+  .interval-rep-total{color:var(--text-mute);font-size:24px;}
+  .interval-detail{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
+  .interval-detail-sub{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);margin-top:4px;letter-spacing:0.08em;text-transform:uppercase;}
+  .interval-start-btn{background:var(--accent);color:var(--accent-text);border-radius:12px;padding:14px 24px;font-family:var(--font-display);font-weight:700;font-size:16px;margin-top:14px;box-shadow:0 2px 8px rgba(29,62,220,0.2);}
+  .interval-start-btn:active{transform:scale(0.98);background:var(--accent-hi);}
+
+  .gps-map-wrap{height:260px;background:var(--card-2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;position:relative;}
+  #gpsMap{height:100%;width:100%;background:var(--card-2);}
+  .leaflet-container{background:var(--card-2);}
   .gps-map-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;}
   .gps-map-fallback svg{width:100%;height:100%;max-height:220px;}
   .gps-map-fallback path{fill:none;stroke:var(--accent);stroke-width:2;}
@@ -234,20 +255,20 @@
   .gps-controls.three{grid-template-columns:1fr 1fr 1fr;}
   .gps-btn{padding:16px 12px;border-radius:12px;font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:-0.01em;transition:transform .1s;}
   .gps-btn:active{transform:scale(0.98);}
-  .gps-btn.start{background:var(--accent);color:#1A1410;}
-  .gps-btn.pause{background:var(--bg-2);border:1px solid var(--border);color:var(--text);}
-  .gps-btn.resume{background:var(--go);color:#1A1410;}
-  .gps-btn.stop{background:var(--deload);color:#1A1410;}
-  .gps-btn.lap{background:var(--info);color:#0F1E1C;}
+  .gps-btn.start{background:var(--accent);color:var(--accent-text);box-shadow:0 1px 2px rgba(29,62,220,0.15);}
+  .gps-btn.pause{background:var(--card);border:1px solid var(--border);color:var(--text);}
+  .gps-btn.resume{background:var(--go);color:#FFFFFF;}
+  .gps-btn.stop{background:var(--deload);color:#FFFFFF;}
+  .gps-btn.lap{background:var(--info);color:#FFFFFF;}
 
   .gps-splits{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;}
   .gps-split-row{display:grid;grid-template-columns:32px 1fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:12px;align-items:center;}
-  .gps-split-row.head{color:var(--text-mute);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding-bottom:6px;}
+  .gps-split-row.head{color:var(--text-mute);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding-bottom:6px;font-weight:600;}
   .gps-split-row:last-child{border:none;}
-  .gps-split-num{color:var(--text-mute);text-align:center;}
+  .gps-split-num{color:var(--text-mute);text-align:center;font-weight:600;}
   .gps-split-pace{color:var(--accent);font-weight:600;}
 
-  .gps-status{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.06em;text-align:center;margin-bottom:10px;text-transform:uppercase;}
+  .gps-status{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.06em;text-align:center;margin-bottom:10px;text-transform:uppercase;font-weight:600;}
   .gps-status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--go);margin-right:6px;vertical-align:middle;animation:blink 1.5s ease-in-out infinite;}
   @keyframes blink{50%{opacity:0.3;}}
   .gps-status.paused .dot{background:var(--hold);animation:none;}
@@ -349,16 +370,16 @@ const DAYS = {
     warmup:[
       {name:'Walking pad',spec:'5 min ritmo blando',tips:'Alza gradualmente la temperatura corporea. Respiro tranquillo.'},
       {name:'Cat-cow',spec:'10 rip lente',tips:'A carponi, alterna gobba (espira) e schiena inarcata (inspira). Sveglia la lombare senza stress.'},
-      {name:'Bird dog',spec:'2×8 per lato',tips:'A carponi, estendi braccio destro e gamba sinistra mantenendo la lombare neutra. Tieni 2 sec.'},
+      {name:'Bird dog',spec:'2×8 per lato',tips:'A carponi, estendi braccio destro e gamba sinistra mantenendo la lombare neutra.'},
       {name:'Hip circles',spec:'10 per lato',tips:'In piedi, mani sui fianchi, disegna cerchi con il bacino.'},
       {name:'Pass-through con elastico',spec:'2×10',tips:'Elastico teso tra le mani, portalo da davanti a dietro la schiena a braccia tese.'},
       {name:'Face pull con elastico',spec:'2×15',tips:'Elastico ancorato all\'altezza del viso, tira verso la fronte allargando le braccia.'}
     ],
     exercises:[
-      {name:'Panca piana manubri',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Manubri all\'altezza del petto medio. Scendi in controllo (2s), spingi con forza. A fine serie porta i manubri sulle ginocchia uno alla volta prima di sederti — mai lasciarli cadere lateralmente.'},
+      {name:'Panca piana manubri',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Manubri all\'altezza del petto medio. Scendi in controllo (2s), spingi con forza. A fine serie porta i manubri sulle ginocchia uno alla volta prima di sederti.'},
       {name:'Panca inclinata manubri',sets:3,repsMin:8,repsMax:10,rest:120,tips:'Panca a 30-45°. Manubri verso il petto alto (fascio clavicolare).'},
-      {name:'Croci inclinate manubri',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Panca a 30°. Braccia leggermente flesse, apri come se abbracciassi un albero. Focus sul petto alto.'},
-      {name:'Curl bilanciere',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Gomiti incollati ai fianchi, non usare slancio. Bilanciere da 120cm meglio del 210 per un curl pulito.'},
+      {name:'Croci inclinate manubri',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Panca a 30°. Braccia leggermente flesse, apri come se abbracciassi un albero.'},
+      {name:'Curl bilanciere',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Gomiti incollati ai fianchi, non usare slancio. Bilanciere da 120cm meglio del 210.'},
       {name:'Curl manubri alternato',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Ruota il polso durante la salita (supinazione). Un braccio alla volta, senza dondolare.'},
       {name:'Curl a martello manubri',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Presa neutra (pollici in alto). Lavora brachiale e brachioradiale.'}
     ],
@@ -381,7 +402,7 @@ const DAYS = {
       {name:'Band pull-apart',spec:'2×15',tips:'Elastico teso davanti al petto, apri le braccia mantenendole tese.'}
     ],
     exercises:[
-      {name:'Lat machine presa larga',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Presa più larga delle spalle. Tira verso il petto alto (non dietro il collo). Scapole in basso e indietro prima di tirare.'},
+      {name:'Lat machine presa larga',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Presa più larga delle spalle. Tira verso il petto alto (non dietro il collo). Scapole in basso e indietro.'},
       {name:'Rematore al pulley basso',sets:4,repsMin:10,repsMax:12,rest:100,tips:'Seduto con schiena appoggiata. Tira verso l\'addome, gomiti vicini al corpo. Zero flessione lombare.'},
       {name:'Rematore panca inclinata manubri',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Petto appoggiato sulla panca inclinata a 30°. Manubri sotto le spalle, tira verso i fianchi.'},
       {name:'French press manubri sdraiato',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Sdraiato su panca piana, manubri sopra la testa. Fletti solo i gomiti verso le tempie.'},
@@ -437,19 +458,19 @@ const RUN_TYPES = {
       const pace=km>0?dur/km:0;
       let level='hold',pill='Mantieni',text='';
       if(dur<20)return{level:'info',pill:'Sessione breve',text:'Meno di 20 min: ok se stai rientrando. Punta a 30+ min per un vero stimolo aerobico.'};
-      if(rpe>=7){level='deload';pill='Rallenta';text=`RPE ${rpe}/10 è troppo alto per una easy — il senso è restare in <strong>Z2 conversazionale</strong>. Rallenta del 10-15%.`;}
-      else if(rpe<=4&&dur>=30){level='go';pill='Progredisci';text=`Durata solida, RPE basso. Prossima volta puoi <strong>allungare di 5 min</strong> stesso ritmo.`;}
+      if(rpe>=7){level='deload';pill='Rallenta';text=`RPE ${rpe}/10 è troppo alto per una easy. Rallenta del 10-15%.`;}
+      else if(rpe<=4&&dur>=30){level='go';pill='Progredisci';text=`Durata solida, RPE basso. Prossima volta puoi <strong>allungare di 5 min</strong>.`;}
       else text=`Buona sessione (${dur} min, RPE ${rpe}). <strong>Mantieni</strong> per 1-2 settimane.`;
       if(pace>0)text+=` Pace medio: <strong>${fmtPace(pace)}/km</strong>.`;
       return{level,pill,text};
     }},
-  intervals:{key:'intervals',name:'Intervalli',target:'6-8×400m o 20 min tempo',desc:'Ripetute veloci con recupero. Migliora soglia e VO2.',
-    defaultConfig:{reps:6, repDistance:400, restSec:90},
+  intervals:{key:'intervals',name:'Intervalli',target:'6-8×400m o tempo cronometrato',desc:'Ripetute veloci con recupero. Migliora soglia e VO2.',
+    defaultConfig:{intervalType:'distance', reps:6, repDistance:400, repDuration:60, restSec:90},
     getFeedback:(s)=>{
       const rpe=s.rpe||5,nInt=s.intervals||0;
       let level='hold',pill='Mantieni',text='';
-      if(rpe<=6&&nInt>=6){level='go';pill='Progredisci';text=`RPE ${rpe} con ${nInt} ripetute: hai margine. <strong>Prossima volta +1-2 ripetute</strong> o aumenta il ritmo target.`;}
-      else if(rpe>=9){level='deload';pill='Scarica';text=`RPE ${rpe}/10: al limite. <strong>Riduci le ripetute</strong> o rallenta di 5-10s/400m.`;}
+      if(rpe<=6&&nInt>=6){level='go';pill='Progredisci';text=`RPE ${rpe} con ${nInt} ripetute: hai margine. <strong>Prossima volta +1-2 ripetute</strong>.`;}
+      else if(rpe>=9){level='deload';pill='Scarica';text=`RPE ${rpe}/10: al limite. <strong>Riduci le ripetute</strong> o rallenta.`;}
       else text=`Buona intensità (RPE ${rpe}, ${nInt} rip). Mantieni per 1-2 settimane.`;
       return{level,pill,text};
     }},
@@ -459,7 +480,7 @@ const RUN_TYPES = {
       const dur=s.duration||0,km=s.distance||0,rpe=s.rpe||5;
       const pace=km>0?dur/km:0;
       let level='hold',pill='Mantieni',text='';
-      if(dur<40){level='info';pill='Troppo breve';text='Sotto i 40 min non è una vera long run. Puntala tra 45-60 min.';}
+      if(dur<40){level='info';pill='Troppo breve';text='Sotto i 40 min non è una vera long run.';}
       else if(rpe>=7){level='deload';pill='Rallenta';text=`RPE ${rpe} alto per una long — deve essere <strong>più lenta della easy</strong>.`;}
       else if(rpe<=5&&dur>=50){level='go';pill='Progredisci';text=`Ben gestita. Prossima volta <strong>+5-10 min</strong> stesso ritmo.`;}
       else text=`Sessione solida. Mantieni per 1-2 settimane.`;
@@ -482,8 +503,11 @@ function ytLink(exName){return`https://www.youtube.com/results?search_query=${en
 let audioCtx=null;
 function unlockAudio(){if(audioCtx)return;try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}catch(e){}}
 function beep(freq=880,dur=0.15,vol=0.3){if(!audioCtx)return;try{const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.frequency.value=freq;osc.type='sine';osc.connect(gain);gain.connect(audioCtx.destination);const t=audioCtx.currentTime;gain.gain.setValueAtTime(vol,t);gain.gain.exponentialRampToValueAtTime(0.001,t+dur);osc.start(t);osc.stop(t+dur);}catch(e){}}
+function beepStart(){beep(1100,0.2,0.35);setTimeout(()=>beep(1400,0.18,0.35),230);}
+function beepStop(){beep(660,0.15,0.3);setTimeout(()=>beep(660,0.15,0.3),200);}
 function beepEnd(){beep(660,0.15);setTimeout(()=>beep(660,0.15),200);setTimeout(()=>beep(880,0.4,0.4),450);}
 function beepCount(){beep(660,0.1,0.25);}
+function beepDone(){beep(1100,0.15,0.35);setTimeout(()=>beep(1300,0.15,0.35),180);setTimeout(()=>beep(1500,0.15,0.35),360);setTimeout(()=>beep(1800,0.35,0.4),540);}
 document.addEventListener('click',unlockAudio,true);
 document.addEventListener('touchstart',unlockAudio,true);
 
@@ -546,14 +570,19 @@ const gps={
   tracking:false,paused:false,watchId:null,
   route:[],lastPos:null,distance:0,elapsed:0,pausedElapsed:0,
   startTs:null,pauseTs:null,splits:[],lastSplitDist:0,
-  lastIntervalMark:0,lastIntervalTime:0,
   tick:null,map:null,mapLine:null,mapMarker:null,mapReady:false,
   runType:'easy',config:null,
-  init(runType,config){this.reset();this.runType=runType;this.config=config;},
+  intervalPhase:'idle',intervalRep:0,intervalPhaseStart:0,intervalPhaseEnd:0,
+  intervalWorkStartDist:0,intervalWorkStartTs:0,lastCountBeep:-1,
+  init(runType,config){this.reset();this.runType=runType;this.config=config;
+    if(runType==='intervals')this.intervalPhase='ready';
+  },
   reset(){
     this.tracking=false;this.paused=false;this.route=[];this.lastPos=null;
     this.distance=0;this.elapsed=0;this.pausedElapsed=0;this.startTs=null;this.pauseTs=null;
-    this.splits=[];this.lastSplitDist=0;this.lastIntervalMark=0;this.lastIntervalTime=0;
+    this.splits=[];this.lastSplitDist=0;
+    this.intervalPhase='idle';this.intervalRep=0;this.intervalPhaseStart=0;this.intervalPhaseEnd=0;
+    this.intervalWorkStartDist=0;this.intervalWorkStartTs=0;this.lastCountBeep=-1;
     if(this.tick)clearInterval(this.tick);this.tick=null;
     if(this.watchId!==null&&navigator.geolocation){navigator.geolocation.clearWatch(this.watchId);this.watchId=null;}
     this.map=null;this.mapLine=null;this.mapMarker=null;this.mapReady=false;
@@ -579,9 +608,63 @@ const gps={
     if(this.watchId!==null){navigator.geolocation.clearWatch(this.watchId);this.watchId=null;}
     this.tracking=false;
     releaseWakeLock();
-    beep(660,0.15);setTimeout(()=>beep(660,0.15),200);setTimeout(()=>beep(880,0.35,0.4),450);
+    beepStop();setTimeout(()=>beep(880,0.35,0.4),450);
     renderCorsaGpsSummary();
   },
+  // === INTERVAL STATE MACHINE ===
+  startIntervalWork(){
+    this.intervalRep++;
+    this.intervalPhase='work';
+    this.intervalPhaseStart=Date.now();
+    this.intervalWorkStartTs=this.elapsed;
+    this.intervalWorkStartDist=this.distance;
+    if(this.config.intervalType==='time'){
+      this.intervalPhaseEnd=Date.now()+this.config.repDuration*1000;
+    }
+    this.lastCountBeep=-1;
+    beepStart();
+    toast(`▶ Rip ${this.intervalRep}/${this.config.reps} — VIA!`);
+  },
+  finishIntervalWork(){
+    beepStop();
+    const workDist=this.distance-this.intervalWorkStartDist;
+    const workTime=this.elapsed-this.intervalWorkStartTs;
+    this.splits.push({type:'interval',rep:this.intervalRep,time:workTime,cumTime:this.elapsed,dist:Math.round(workDist)});
+    this.intervalPhase='rest';
+    this.intervalPhaseStart=Date.now();
+    this.intervalPhaseEnd=Date.now()+this.config.restSec*1000;
+    this.lastCountBeep=-1;
+    toast(`Rip ${this.intervalRep} fatta · recupero ${this.config.restSec}s`);
+  },
+  finishIntervalRest(){
+    if(this.intervalRep>=this.config.reps){
+      this.intervalPhase='done';
+      beepDone();
+      toast('🎉 Ripetute completate!');
+    } else {
+      this.startIntervalWork();
+    }
+  },
+  checkIntervalTransitions(){
+    if(this.runType!=='intervals'||!this.config)return;
+    if(this.intervalPhase==='work'&&this.config.intervalType==='time'){
+      const secLeft=Math.ceil((this.intervalPhaseEnd-Date.now())/1000);
+      if(secLeft>0&&secLeft<=3&&this.lastCountBeep!==secLeft){beepCount();this.lastCountBeep=secLeft;}
+      if(Date.now()>=this.intervalPhaseEnd)this.finishIntervalWork();
+    } else if(this.intervalPhase==='rest'){
+      const secLeft=Math.ceil((this.intervalPhaseEnd-Date.now())/1000);
+      if(secLeft>0&&secLeft<=3&&this.lastCountBeep!==secLeft){beepCount();this.lastCountBeep=secLeft;}
+      if(Date.now()>=this.intervalPhaseEnd)this.finishIntervalRest();
+    }
+  },
+  checkIntervalDistance(){
+    if(this.runType!=='intervals'||!this.config)return;
+    if(this.config.intervalType!=='distance')return;
+    if(this.intervalPhase!=='work')return;
+    const currDist=this.distance-this.intervalWorkStartDist;
+    if(currDist>=this.config.repDistance)this.finishIntervalWork();
+  },
+  // === POSITION HANDLING ===
   onPos(p){
     if(this.paused)return;
     const {latitude:lat,longitude:lng,accuracy:acc}=p.coords;
@@ -592,7 +675,8 @@ const gps={
       const d=haversine(this.lastPos.lat,this.lastPos.lng,lat,lng);
       if(d<3)return;
       this.distance+=d;
-      if(this.distance-this.lastSplitDist>=1000){
+      // Km auto-splits (only when not doing intervals, to avoid clutter)
+      if(this.runType!=='intervals'&&this.distance-this.lastSplitDist>=1000){
         const totalKmTime=this.splits.filter(s=>s.type==='km').reduce((a,s)=>a+s.time,0);
         const splitTime=this.elapsed-totalKmTime;
         this.splits.push({type:'km',km:this.splits.filter(s=>s.type==='km').length+1,time:splitTime,cumTime:this.elapsed});
@@ -600,20 +684,7 @@ const gps={
         beep(1100,0.15,0.3);setTimeout(()=>beep(1300,0.2,0.3),180);
         toast(`Km ${this.splits.filter(s=>s.type==='km').length} · ${fmtTime(splitTime)}`);
       }
-      if(this.runType==='intervals'&&this.config){
-        const targetD=this.config.repDistance||400;
-        const doneReps=this.splits.filter(s=>s.type==='interval').length;
-        if(doneReps<this.config.reps){
-          const currDist=this.distance-this.lastIntervalMark;
-          if(currDist>=targetD){
-            this.splits.push({type:'interval',rep:doneReps+1,time:this.elapsed-this.lastIntervalTime,cumTime:this.elapsed});
-            this.lastIntervalMark=this.distance;
-            this.lastIntervalTime=this.elapsed;
-            beepEnd();
-            toast(`Ripetuta ${doneReps+1}/${this.config.reps} completata`);
-          }
-        }
-      }
+      this.checkIntervalDistance();
     }
     this.lastPos={lat,lng};
     this.route.push(pt);
@@ -627,7 +698,12 @@ const gps={
     const status=document.getElementById('gpsStatus');
     if(status){status.className='gps-status searching';status.innerHTML='<span class="dot"></span>Ricerca segnale...';}
   },
-  update(){if(this.paused||!this.tracking)return;this.elapsed=Math.floor((Date.now()-this.startTs-this.pausedElapsed)/1000);this.render();},
+  update(){
+    if(this.paused||!this.tracking)return;
+    this.elapsed=Math.floor((Date.now()-this.startTs-this.pausedElapsed)/1000);
+    this.checkIntervalTransitions();
+    this.render();
+  },
   currentPace(){if(this.distance<100||this.elapsed<10)return 0;return(this.elapsed/60)/(this.distance/1000);},
   recentPace(){
     const recent=this.route.filter(p=>((Date.now()-p.ts)/1000)<=30);
@@ -648,6 +724,7 @@ const gps={
       if(this.paused){status.className='gps-status paused';status.innerHTML='<span class="dot"></span>In pausa';}
       else{status.className='gps-status';status.innerHTML='<span class="dot"></span>Tracking attivo';}
     }
+    this.renderIntervalPanel();
     const controls=document.getElementById('gpsControls');
     if(controls){
       if(!this.tracking){
@@ -663,6 +740,56 @@ const gps={
       this.attachControlHandlers();
     }
     this.renderSplits();
+  },
+  renderIntervalPanel(){
+    const el=document.getElementById('intervalPanel');
+    if(!el)return;
+    if(this.runType!=='intervals'||!this.config){el.style.display='none';return;}
+    el.style.display='block';
+    if(this.intervalPhase==='ready'){
+      el.className='interval-panel';
+      el.innerHTML=`
+        <div class="interval-phase-label">Riscaldamento</div>
+        <div class="interval-detail">Pronto a partire</div>
+        <div class="interval-detail-sub">${this.config.reps} rip · ${this.config.intervalType==='distance'?this.config.repDistance+'m':this.config.repDuration+'s'} · rec ${this.config.restSec}s</div>
+        <button class="interval-start-btn" id="btnStartIntervals">🏃 Inizia ripetute</button>`;
+      const btn=document.getElementById('btnStartIntervals');
+      if(btn)btn.onclick=()=>this.startIntervalWork();
+    } else if(this.intervalPhase==='work'){
+      el.className='interval-panel work';
+      let detail='',sub='';
+      if(this.config.intervalType==='distance'){
+        const currDist=Math.round(this.distance-this.intervalWorkStartDist);
+        detail=`${currDist}<span style="color:var(--text-mute);"> / ${this.config.repDistance}m</span>`;
+        sub='Continua fino al target';
+      } else {
+        const secLeft=Math.max(0,Math.ceil((this.intervalPhaseEnd-Date.now())/1000));
+        detail=fmtTime(secLeft);
+        sub='Tempo rimanente';
+      }
+      el.innerHTML=`
+        <div class="interval-phase-label">▶ Lavoro</div>
+        <div class="interval-rep">${this.intervalRep}<span class="interval-rep-total"> / ${this.config.reps}</span></div>
+        <div class="interval-detail">${detail}</div>
+        <div class="interval-detail-sub">${sub}</div>`;
+    } else if(this.intervalPhase==='rest'){
+      const secLeft=Math.max(0,Math.ceil((this.intervalPhaseEnd-Date.now())/1000));
+      el.className='interval-panel rest';
+      el.innerHTML=`
+        <div class="interval-phase-label">⏸ Recupero</div>
+        <div class="interval-rep">${this.intervalRep}<span class="interval-rep-total"> / ${this.config.reps}</span> <span style="font-size:16px;color:var(--text-mute);font-family:var(--font-mono);">fatta</span></div>
+        <div class="interval-detail" style="color:var(--hold);">${fmtTime(secLeft)}</div>
+        <div class="interval-detail-sub">Prossima rip: ${this.intervalRep+1}/${this.config.reps}</div>`;
+    } else if(this.intervalPhase==='done'){
+      el.className='interval-panel done';
+      const times=this.splits.filter(s=>s.type==='interval');
+      const avgTime=times.length?times.reduce((a,s)=>a+s.time,0)/times.length:0;
+      el.innerHTML=`
+        <div class="interval-phase-label">✓ Completate</div>
+        <div class="interval-rep">${this.config.reps}<span class="interval-rep-total"> / ${this.config.reps}</span></div>
+        <div class="interval-detail">Media ${fmtTime(avgTime)}</div>
+        <div class="interval-detail-sub">Ora defatica e termina</div>`;
+    }
   },
   attachControlHandlers(){
     const s=document.getElementById('btnGpsStart');if(s)s.onclick=()=>this.start();
@@ -680,10 +807,10 @@ const gps={
   },
   renderSplits(){
     const el=document.getElementById('gpsSplitsList');if(!el)return;
-    if(this.splits.length===0){el.innerHTML='<div style="font-size:12px;color:var(--text-mute);padding:4px 0;font-family:var(--font-body);">Nessuno split ancora. Ogni km viene registrato automaticamente.</div>';return;}
+    if(this.splits.length===0){el.innerHTML='<div style="font-size:12px;color:var(--text-mute);padding:4px 0;font-family:var(--font-body);">Nessuno split ancora.</div>';return;}
     el.innerHTML=`<div class="gps-split-row head"><div>#</div><div>Tipo</div><div>Split</div><div>Totale</div></div>`+
       this.splits.map((s,i)=>{
-        const type=s.type==='interval'?`Rip ${s.rep}`:s.type==='manual'?'Manuale':`Km ${s.km||i+1}`;
+        const type=s.type==='interval'?`Rip ${s.rep}${s.dist?' ('+s.dist+'m)':''}`:s.type==='manual'?'Manuale':`Km ${s.km||i+1}`;
         return`<div class="gps-split-row"><div class="gps-split-num">${i+1}</div><div>${type}</div><div class="gps-split-pace">${fmtTime(s.time)}</div><div>${fmtTime(s.cumTime)}</div></div>`;
       }).join('');
   },
@@ -693,7 +820,7 @@ const gps={
       this.map=L.map('gpsMap',{zoomControl:false,attributionControl:false}).setView([41.9,12.5],13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(this.map);
       L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(this.map);
-      this.mapLine=L.polyline([],{color:'#F0A868',weight:4}).addTo(this.map);
+      this.mapLine=L.polyline([],{color:'#1D3EDC',weight:4}).addTo(this.map);
       this.mapReady=true;
       setTimeout(()=>this.map&&this.map.invalidateSize(),200);
     }catch(e){console.warn('Leaflet init failed',e);}
@@ -703,7 +830,7 @@ const gps={
     try{
       this.mapLine.addLatLng([pt.lat,pt.lng]);
       if(this.mapMarker){this.mapMarker.setLatLng([pt.lat,pt.lng]);}
-      else{this.mapMarker=L.circleMarker([pt.lat,pt.lng],{radius:6,color:'#F0A868',fillColor:'#F0A868',fillOpacity:1}).addTo(this.map);}
+      else{this.mapMarker=L.circleMarker([pt.lat,pt.lng],{radius:6,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:1}).addTo(this.map);}
       this.map.setView([pt.lat,pt.lng],16,{animate:true,duration:0.5});
     }catch(e){}
   },
@@ -788,8 +915,8 @@ function getRecommendation(dayKey,exDef){
   const suggestDown=Math.round((lastWeight*0.9)*2)/2;
   if(allAtMax&&(hist.length===1||prevAllAtMax||allInRange))return{level:'go',title:'Progredisci — aumenta il carico',text:`Hai chiuso tutte le serie al top (${exDef.repsMax}+ reps a ${lastWeight}kg). <strong>Prova ${suggestUp}kg</strong> (o ${suggestUp5}kg se sembrava facile).`};
   if(belowCount>=2&&(prevAnyBelow||hist.length>=2))return{level:'deload',title:'Scarica — riduci il peso',text:`Due o più serie sotto minimo a ${lastWeight}kg. <strong>Scendi a ${suggestDown}kg</strong> per 2 settimane.`};
-  if(anyBelow&&belowCount===1)return{level:'hold',title:'Mantieni — consolida',text:`Una serie sotto range a ${lastWeight}kg. <strong>Ripeti a ${lastWeight}kg</strong> puntando a chiudere tutte nel range.`};
-  if(allInRange&&!allAtMax)return{level:'hold',title:'Mantieni — consolida',text:`Nel range a ${lastWeight}kg. <strong>Ripeti</strong> puntando a chiudere tutte a ${exDef.repsMax} reps.`};
+  if(anyBelow&&belowCount===1)return{level:'hold',title:'Mantieni — consolida',text:`Una serie sotto range a ${lastWeight}kg. <strong>Ripeti a ${lastWeight}kg</strong>.`};
+  if(allInRange&&!allAtMax)return{level:'hold',title:'Mantieni — consolida',text:`Nel range a ${lastWeight}kg. <strong>Ripeti</strong> puntando a ${exDef.repsMax} reps.`};
   return{level:'hold',title:'Mantieni',text:`Ultimo peso: ${lastWeight}kg.`};
 }
 
@@ -816,7 +943,7 @@ function renderHome(){
   const next=nextSuggestedDay();
   document.getElementById('homeTitle').textContent=DAYS[next].name;
   const totalSess=state.workouts.filter(w=>w.day===next).length;
-  document.getElementById('homeSub').innerHTML=totalSess>0?`Suggerito come prossima sessione. <span class="mono" style="color:var(--accent);">${totalSess}</span> completate.`:`Suggerito come prossima sessione. Prima volta.`;
+  document.getElementById('homeSub').innerHTML=totalSess>0?`Suggerito come prossima sessione. <span class="mono" style="color:var(--accent);font-weight:600;">${totalSess}</span> completate.`:`Suggerito come prossima sessione. Prima volta.`;
   document.getElementById('homeSessWeek').textContent=daysInLastWeek(state.workouts)+daysInLastWeek(state.runs);
   document.getElementById('homeStreak').textContent=computeStreak();
   const recent=[...state.workouts.map(w=>({...w,kind:'palestra'})),...state.runs.map(r=>({...r,kind:'corsa'}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
@@ -977,7 +1104,7 @@ function renderCorsa(){
   const isInsecure=location.protocol==='file:'||(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1');
   if(corsaMode==='gps'){
     c.innerHTML=`
-      ${isInsecure?`<div class="gps-warn"><strong>GPS non disponibile in locale.</strong> Servi il file via HTTPS (es. Netlify Drop: netlify.com/drop) e apri quell'URL su Safari per usare il tracking. Il log manuale funziona ovunque.</div>`:''}
+      ${isInsecure?`<div class="gps-warn"><strong>GPS non disponibile in locale.</strong> Servi il file via HTTPS per usare il tracking.</div>`:''}
       <div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div>
       <div class="run-picker" id="runPicker"></div>
       <div class="card" style="margin-top:20px;">
@@ -1000,9 +1127,11 @@ function renderCorsa(){
   renderRunHistory();
 }
 
+let intervalTypeSelected='distance';
 function renderCorsaGpsConfig(type){
   const t=RUN_TYPES[type];
   const cfg=t.defaultConfig;
+  intervalTypeSelected=cfg.intervalType||'distance';
   const c=document.getElementById('corsaContent');
   let configFields='';
   if(type==='easy'){
@@ -1013,9 +1142,15 @@ function renderCorsaGpsConfig(type){
       </div>`;
   } else if(type==='intervals'){
     configFields=`
+      <div class="gps-config-group" style="margin-bottom:12px;"><label>Tipo ripetute</label>
+        <div class="interval-type-tabs">
+          <button class="interval-type-tab ${intervalTypeSelected==='distance'?'active':''}" data-itype="distance">📏 Distanza</button>
+          <button class="interval-type-tab ${intervalTypeSelected==='time'?'active':''}" data-itype="time">⏱ Tempo</button>
+        </div>
+      </div>
       <div class="gps-config-row three">
         <div class="gps-config-group"><label>N° rip</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgReps" value="${cfg.reps}"></div>
-        <div class="gps-config-group"><label>Distanza (m)</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgDist" value="${cfg.repDistance}"></div>
+        <div class="gps-config-group" id="cfgWorkGroup"><label>${intervalTypeSelected==='distance'?'Distanza (m)':'Lavoro (s)'}</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgWork" value="${intervalTypeSelected==='distance'?cfg.repDistance:cfg.repDuration}"></div>
         <div class="gps-config-group"><label>Recupero (s)</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgRest" value="${cfg.restSec}"></div>
       </div>`;
   } else {
@@ -1037,12 +1172,25 @@ function renderCorsaGpsConfig(type){
       ${configFields}
     </div>
     <button class="btn-primary" id="btnGoLive">🛰 Avvia tracking GPS</button>
-    <div style="margin-top:12px;font-size:12px;color:var(--text-mute);text-align:center;">Al primo avvio iOS chiederà il permesso per la posizione.</div>`;
+    <div style="margin-top:12px;font-size:12px;color:var(--text-mute);text-align:center;">Al primo avvio iOS chiederà il permesso posizione.</div>`;
   document.getElementById('btnBackRun').onclick=()=>renderCorsa();
+  if(type==='intervals'){
+    document.querySelectorAll('.interval-type-tab').forEach(b=>{
+      b.addEventListener('click',()=>{
+        intervalTypeSelected=b.dataset.itype;
+        renderCorsaGpsConfig(type);
+      });
+    });
+  }
   document.getElementById('btnGoLive').onclick=()=>{
     let config={};
     if(type==='easy')config={targetDuration:+document.getElementById('cfgDur').value||35,targetPaceMax:+document.getElementById('cfgPace').value||6.5};
-    else if(type==='intervals')config={reps:+document.getElementById('cfgReps').value||6,repDistance:+document.getElementById('cfgDist').value||400,restSec:+document.getElementById('cfgRest').value||90};
+    else if(type==='intervals'){
+      const workVal=+document.getElementById('cfgWork').value||(intervalTypeSelected==='distance'?400:60);
+      config={intervalType:intervalTypeSelected,reps:+document.getElementById('cfgReps').value||6,restSec:+document.getElementById('cfgRest').value||90};
+      if(intervalTypeSelected==='distance')config.repDistance=workVal;
+      else config.repDuration=workVal;
+    }
     else config={targetDuration:+document.getElementById('cfgDur').value||50,targetDistance:+document.getElementById('cfgDist').value||8};
     gps.init(type,config);
     renderCorsaGpsLive();
@@ -1056,7 +1204,10 @@ function renderCorsaGpsLive(){
   let targetLine='';
   if(gps.config){
     if(gps.runType==='easy')targetLine=`Target: ${gps.config.targetDuration} min · pace max ${fmtPace(gps.config.targetPaceMax)}/km`;
-    else if(gps.runType==='intervals')targetLine=`Target: ${gps.config.reps}×${gps.config.repDistance}m · rec ${gps.config.restSec}s`;
+    else if(gps.runType==='intervals'){
+      const workDesc=gps.config.intervalType==='distance'?gps.config.repDistance+'m':gps.config.repDuration+'s';
+      targetLine=`Target: ${gps.config.reps}×${workDesc} · rec ${gps.config.restSec}s`;
+    }
     else targetLine=`Target: ${gps.config.targetDuration} min · ${gps.config.targetDistance} km`;
   }
   c.innerHTML=`
@@ -1065,6 +1216,7 @@ function renderCorsaGpsLive(){
       <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);">${targetLine}</div>
     </div>
     <div class="gps-status" id="gpsStatus"><span class="dot"></span>Pronto</div>
+    ${gps.runType==='intervals'?'<div id="intervalPanel" class="interval-panel"></div>':''}
     <div class="gps-stat-hero">
       <div class="gps-stat-hero-label">Distanza</div>
       <div class="gps-stat-hero-value"><span id="gpsDistance">0.00</span></div>
@@ -1125,7 +1277,7 @@ function renderCorsaGpsSummary(){
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(map);
       L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(map);
       const coords=gps.route.map(p=>[p.lat,p.lng]);
-      const line=L.polyline(coords,{color:'#F0A868',weight:4}).addTo(map);
+      const line=L.polyline(coords,{color:'#1D3EDC',weight:4}).addTo(map);
       map.fitBounds(line.getBounds(),{padding:[20,20]});
       setTimeout(()=>map.invalidateSize(),200);
     }catch(e){gps.renderFallbackRoute();}
@@ -1153,7 +1305,7 @@ function openRunLogger(type){
   logger.innerHTML=`
     <div class="card">
       <div class="card-h">
-        <div><div class="card-title" style="margin:0;">${t.name}</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--accent);margin-top:4px;">${t.target}</div></div>
+        <div><div class="card-title" style="margin:0;">${t.name}</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--accent);margin-top:4px;font-weight:600;">${t.target}</div></div>
         <button class="btn-secondary" id="btnCancelRun">Annulla</button>
       </div>
       <div class="run-inputs">

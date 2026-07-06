@@ -294,6 +294,10 @@ a{color:var(--accent);text-decoration:none;}
 @keyframes blink{50%{opacity:0.3;}}
 .gps-status.paused .dot{background:var(--hold);animation:none;}
 .gps-status.searching .dot{background:var(--deload);}
+.gps-preview-wrap{height:220px;background:var(--card-2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;position:relative;}
+#previewMap{height:100%;width:100%;background:var(--card-2);}
+.gps-preview-status{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.06em;text-align:center;margin-bottom:14px;text-transform:uppercase;font-weight:600;padding:4px;}
+.gps-preview-status .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--go);margin-right:6px;vertical-align:middle;}
 
 /* BODY VIEW */
 .body-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
@@ -927,10 +931,47 @@ const gps={
   }
 };
 
+/* ===================== PREVIEW MAP (Corsa tab) ===================== */
+let previewMap=null;
+function cleanupPreviewMap(){if(previewMap){try{previewMap.remove();}catch(e){}previewMap=null;}}
+function initPreviewMap(){
+  if(typeof L==='undefined')return;
+  const el=document.getElementById('previewMap');if(!el)return;
+  cleanupPreviewMap();
+  try{
+    previewMap=L.map('previewMap',{zoomControl:true,attributionControl:false}).setView([41.9,12.5],5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(previewMap);
+    L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(previewMap);
+    setTimeout(()=>previewMap&&previewMap.invalidateSize(),200);
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        p=>{
+          const{latitude,longitude,accuracy}=p.coords;
+          if(!previewMap)return;
+          previewMap.setView([latitude,longitude],16);
+          L.circleMarker([latitude,longitude],{radius:8,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:0.9,weight:2}).addTo(previewMap);
+          L.circle([latitude,longitude],{radius:accuracy,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:0.08,weight:1}).addTo(previewMap);
+          const st=document.getElementById('previewStatus');
+          if(st)st.innerHTML='<span class="dot"></span>Posizione rilevata · ±'+Math.round(accuracy)+'m';
+        },
+        e=>{
+          const st=document.getElementById('previewStatus');
+          if(!st)return;
+          if(e.code===1)st.innerHTML='<span class="dot" style="background:var(--deload);"></span>Permesso posizione negato';
+          else if(e.code===3)st.innerHTML='<span class="dot" style="background:var(--deload);"></span>GPS timeout — segnale debole';
+          else st.innerHTML='<span class="dot" style="background:var(--deload);"></span>Posizione non disponibile';
+        },
+        {enableHighAccuracy:true,timeout:10000,maximumAge:30000}
+      );
+    }
+  }catch(e){}
+}
+
 /* ===================== NAV ===================== */
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     if(gps.tracking){if(!confirm('Corsa in corso — vuoi uscire?'))return;gps.reset();releaseWakeLock();}
+    cleanupPreviewMap();
     const v=btn.dataset.view;
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b===btn));
     document.querySelectorAll('.view').forEach(view=>view.classList.remove('active'));
@@ -1158,14 +1199,16 @@ document.querySelectorAll('.run-mode-tab').forEach(b=>{
   });
 });
 function renderCorsa(){
-  if(gps.tracking){renderCorsaGpsLive();return;}
+  if(gps.tracking){cleanupPreviewMap();renderCorsaGpsLive();return;}
+  cleanupPreviewMap();
   const c=document.getElementById('corsaContent');
   const isInsecure=location.protocol==='file:'||(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1');
   if(corsaMode==='gps'){
-    c.innerHTML=`${isInsecure?`<div class="gps-warn"><strong>GPS non disponibile in locale.</strong> Servi via HTTPS per il tracking.</div>`:''}<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div><div class="run-picker" id="runPicker"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
+    c.innerHTML=`${isInsecure?`<div class="gps-warn"><strong>GPS non disponibile in locale.</strong> Servi via HTTPS per il tracking.</div>`:'<div class="gps-preview-wrap"><div id="previewMap"></div></div><div class="gps-preview-status" id="previewStatus"><span class="dot" style="background:var(--hold);"></span>Rilevamento posizione...</div>'}<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div><div class="run-picker" id="runPicker"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
     const p=document.getElementById('runPicker');
     p.innerHTML=Object.values(RUN_TYPES).map(r=>`<button class="run-type" data-type="${r.key}"><div class="run-type-target mono">${r.target}</div><div class="run-type-name">${r.name}</div><div class="run-type-desc">${r.desc}</div></button>`).join('');
     p.querySelectorAll('.run-type').forEach(b=>b.addEventListener('click',()=>renderCorsaGpsConfig(b.dataset.type)));
+    if(!isInsecure)setTimeout(initPreviewMap,50);
   } else {
     c.innerHTML=`<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div><div class="run-picker" id="runPicker"></div><div id="runLogger" style="display:none;"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
     const p=document.getElementById('runPicker');
@@ -1176,6 +1219,7 @@ function renderCorsa(){
 }
 let intervalTypeSelected='distance';
 function renderCorsaGpsConfig(type){
+  cleanupPreviewMap();
   const t=RUN_TYPES[type],cfg=t.defaultConfig;
   intervalTypeSelected=cfg.intervalType||'distance';
   const c=document.getElementById('corsaContent');

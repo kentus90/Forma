@@ -410,6 +410,7 @@ a{color:var(--accent);text-decoration:none;}
     <div class="data-actions">
       <button class="btn-secondary" id="btnExport">Esporta JSON</button>
       <button class="btn-secondary" id="btnExportXlsx">Esporta Excel</button>
+      <button class="btn-secondary" id="btnExportSchede" style="grid-column:1/-1;">Esporta scheda template (schede.json)</button>
       <label class="btn-secondary" style="text-align:center;display:block;cursor:pointer;grid-column:1/-1;" for="importFile">Importa JSON</label>
       <input type="file" id="importFile" class="import-input" accept="application/json">
     </div>
@@ -472,7 +473,7 @@ a{color:var(--accent);text-decoration:none;}
 
 <script>
 /* ===================== DATA ===================== */
-const DAYS = {
+let DAYS = {
   petto_bic:{key:'petto_bic',name:'Petto / Bicipiti',short:'Petto+Bic',
     warmup:[
       {name:'Walking pad',spec:'5 min ritmo blando',tips:'Alza gradualmente la temperatura corporea. Respiro tranquillo.'},
@@ -557,7 +558,7 @@ const DAYS = {
   }
 };
 
-const ALTERNATIVES = {
+let ALTERNATIVES = {
   'Panca piana manubri':[
     {name:'Floor press manubri',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Sdraiato a terra con manubri, ROM ridotto — sicuro senza spotter. I gomiti toccano terra e da lì spingi.'},
     {name:'Croci piane manubri',sets:4,repsMin:10,repsMax:12,rest:90,tips:'Isolamento del petto. Braccia leggermente flesse, apri sentendo l\'allungamento.'},
@@ -725,6 +726,13 @@ function fmtTime(sec){sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/360
 function fmtPace(minPerKm){if(!minPerKm||!isFinite(minPerKm))return'—';const m=Math.floor(minPerKm),s=Math.round((minPerKm-m)*60);return`${m}:${String(s).padStart(2,'0')}`;}
 function haversine(lat1,lon1,lat2,lon2){const R=6371000;const t1=lat1*Math.PI/180,t2=lat2*Math.PI/180;const dt=(lat2-lat1)*Math.PI/180,dl=(lon2-lon1)*Math.PI/180;const a=Math.sin(dt/2)**2+Math.cos(t1)*Math.cos(t2)*Math.sin(dl/2)**2;return 2*R*Math.asin(Math.sqrt(a));}
 function ytLink(exName){return`https://www.youtube.com/results?search_query=${encodeURIComponent(exName+' esecuzione tecnica')}`;}
+function getVideoLink(ex,suffix=' esecuzione tecnica'){
+  if(ex&&ex.video){
+    if(/^https?:\/\//.test(ex.video))return ex.video;
+    return`https://www.youtube.com/results?search_query=${encodeURIComponent(ex.video)}`;
+  }
+  return`https://www.youtube.com/results?search_query=${encodeURIComponent((ex?.name||'')+suffix)}`;
+}
 function todayStr(){return new Date().toISOString().slice(0,10);}
 function e1RM(weight,reps){if(!weight||!reps||reps<1)return 0;if(reps===1)return weight;return Math.round(weight*(1+reps/30)*10)/10;}
 function parseDuration(spec){
@@ -1293,7 +1301,7 @@ function renderWorkout(){
   const warmupHTML=day.warmup.map(w=>{
     const dur=parseDuration(w.spec);
     const timerBtn=dur?`<button class="ex-timer-mini" data-rest="${dur}" data-exname="${w.name.replace(/"/g,'&quot;')}" onclick="event.stopPropagation();restTimer.start(${dur},'${w.name.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>${dur}s</button>`:'';
-    return`<div class="ex"><div class="ex-head" onclick="this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${w.name}</div><a class="ex-video-link" href="${ytLink(w.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${timerBtn}</div><div class="ex-spec mono">${w.spec}</div></div><div class="ex-head-caret">▾</div></div><div class="ex-body"><div class="ex-block"><div class="ex-block-label">Come farlo</div><div class="ex-tips">${w.tips}</div></div></div></div>`;
+    return`<div class="ex"><div class="ex-head" onclick="this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${w.name}</div><a class="ex-video-link" href="${getVideoLink(w)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${timerBtn}</div><div class="ex-spec mono">${w.spec}</div></div><div class="ex-head-caret">▾</div></div><div class="ex-body"><div class="ex-block"><div class="ex-block-label">Come farlo</div><div class="ex-tips">${w.tips}</div></div></div></div>`;
   }).join('');
   const mainHTML=day.exercises.map((origEx,idx)=>{
     const workoutEx=currentWorkout.exercises[idx];
@@ -1312,12 +1320,12 @@ function renderWorkout(){
     const compareHTML=lastSummary?`<div class="compare-box">Ultima volta: <strong>${lastSummary}</strong>${bestE?` · e1RM record: <strong>${bestE.e1rm}kg</strong> (${bestE.weight}×${bestE.reps})`:''}</div>`:'';
     const altBtn=`<button class="ex-alt-btn" data-alt-idx="${idx}"><svg viewBox="0 0 24 24"><path d="M7 4l-4 4 4 4M3 8h13a4 4 0 0 1 4 4M17 20l4-4-4-4M21 16H8a4 4 0 0 1-4-4"/></svg>Alt</button>`;
     const substBadge=isSubstituted?`<span class="ex-substituted-badge">SOSTITUITO</span>`:'';
-    return`<div class="ex open"><div class="ex-head" onclick="if(!event.target.closest('input,textarea,a,button'))this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${ex.name}</div>${substBadge}<a class="ex-video-link" href="${ytLink(ex.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${altBtn}</div><div class="ex-spec mono">${ex.sets}×${ex.repsMin===ex.repsMax?ex.repsMax:ex.repsMin+'-'+ex.repsMax}<span class="sep">·</span>rec ${ex.rest}s</div></div><div class="ex-signal ${reco.level}"><div class="ex-signal-arrow">${reco.level==='go'?'↑':reco.level==='deload'?'↓':reco.level==='hold'?'—':'●'}</div><div>${reco.level==='go'?'UP':reco.level==='deload'?'DOWN':reco.level==='hold'?'HOLD':'NEW'}</div></div></div><div class="ex-body"><div class="ex-block"><div class="ex-reco ${reco.level}"><strong>${reco.title}.</strong> ${reco.text}</div></div>${compareHTML}<div class="ex-block"><div class="ex-block-label">Esecuzione</div><div class="ex-tips">${ex.tips}</div></div><div class="ex-block"><div class="ex-block-label">Serie</div><div class="set-label-row"><div></div><div class="set-label">kg</div><div class="set-label">reps</div></div><div class="sets">${setsInputs}</div></div><div class="ex-block"><button class="rest-btn" data-rest="${ex.rest}" data-exname="${ex.name.replace(/"/g,'&quot;')}"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>Avvia recupero (${ex.rest}s)</button></div><div class="ex-block"><div class="ex-block-label">Note</div><textarea class="notes-input" data-ex="${idx}" placeholder="Note personali (RPE, sensazioni...)">${currentWorkout.exercises[idx].notes}</textarea></div><div class="ex-block"><div class="ex-block-label">Storia recente</div><div class="history">${histHTML}</div></div></div></div>`;
+    return`<div class="ex open"><div class="ex-head" onclick="if(!event.target.closest('input,textarea,a,button'))this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${ex.name}</div>${substBadge}<a class="ex-video-link" href="${getVideoLink(ex)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${altBtn}</div><div class="ex-spec mono">${ex.sets}×${ex.repsMin===ex.repsMax?ex.repsMax:ex.repsMin+'-'+ex.repsMax}<span class="sep">·</span>rec ${ex.rest}s</div></div><div class="ex-signal ${reco.level}"><div class="ex-signal-arrow">${reco.level==='go'?'↑':reco.level==='deload'?'↓':reco.level==='hold'?'—':'●'}</div><div>${reco.level==='go'?'UP':reco.level==='deload'?'DOWN':reco.level==='hold'?'HOLD':'NEW'}</div></div></div><div class="ex-body"><div class="ex-block"><div class="ex-reco ${reco.level}"><strong>${reco.title}.</strong> ${reco.text}</div></div>${compareHTML}<div class="ex-block"><div class="ex-block-label">Esecuzione</div><div class="ex-tips">${ex.tips}</div></div><div class="ex-block"><div class="ex-block-label">Serie</div><div class="set-label-row"><div></div><div class="set-label">kg</div><div class="set-label">reps</div></div><div class="sets">${setsInputs}</div></div><div class="ex-block"><button class="rest-btn" data-rest="${ex.rest}" data-exname="${ex.name.replace(/"/g,'&quot;')}"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>Avvia recupero (${ex.rest}s)</button></div><div class="ex-block"><div class="ex-block-label">Note</div><textarea class="notes-input" data-ex="${idx}" placeholder="Note personali (RPE, sensazioni...)">${currentWorkout.exercises[idx].notes}</textarea></div><div class="ex-block"><div class="ex-block-label">Storia recente</div><div class="history">${histHTML}</div></div></div></div>`;
   }).join('');
   const stretchHTML=day.stretching.map(s=>{
     const dur=parseDuration(s.spec);
     const timerBtn=dur?`<button class="ex-timer-mini" onclick="event.stopPropagation();restTimer.start(${dur},'${s.name.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>${dur}s</button>`:'';
-    return`<div class="ex"><div class="ex-head" onclick="this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${s.name}</div><a class="ex-video-link" href="${ytLink(s.name+' stretching')}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${timerBtn}</div><div class="ex-spec mono">${s.spec}</div></div><div class="ex-head-caret">▾</div></div><div class="ex-body"><div class="ex-block"><div class="ex-block-label">Come farlo</div><div class="ex-tips">${s.tips}</div></div></div></div>`;
+    return`<div class="ex"><div class="ex-head" onclick="this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${s.name}</div><a class="ex-video-link" href="${getVideoLink(s,' stretching')}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${timerBtn}</div><div class="ex-spec mono">${s.spec}</div></div><div class="ex-head-caret">▾</div></div><div class="ex-body"><div class="ex-block"><div class="ex-block-label">Come farlo</div><div class="ex-tips">${s.tips}</div></div></div></div>`;
   }).join('');
   container.innerHTML=`<button class="btn-secondary" id="btnBackDay" style="margin-bottom:14px;">← Cambia giorno</button><div class="hero" style="margin-bottom:20px;"><div class="hero-label">Sessione</div><div class="hero-title">${day.name}</div><div class="hero-sub">${day.exercises.length} esercizi · ${day.warmup.length} riscaldamento · ${day.stretching.length} stretching</div></div><div class="section-h"><div class="section-h-num mono">01</div><div class="section-h-title">Riscaldamento</div><div class="section-h-line"></div></div>${warmupHTML}<div class="section-h"><div class="section-h-num mono">02</div><div class="section-h-title">Sessione principale</div><div class="section-h-line"></div></div>${mainHTML}<div class="section-h"><div class="section-h-num mono">03</div><div class="section-h-title">Stretching</div><div class="section-h-line"></div></div>${stretchHTML}<div style="margin-top:20px;"><button class="btn-primary" id="btnSaveSession">Salva sessione</button></div>`;
   document.getElementById('btnBackDay').onclick=()=>{if(confirm('Tornare indietro senza salvare?'))renderPalestraList();};
@@ -1748,6 +1756,24 @@ document.getElementById('btnReset').onclick=()=>{
   state={workouts:[],runs:[],weights:[],nutrition:[],prs:[],settings:defaultSettings()};save();toast('Dati cancellati');renderStats();
 };
 
+/* ===================== SCHEDE (external JSON) ===================== */
+async function loadSchede(){
+  try{
+    const resp=await fetch('./schede.json',{cache:'default'});
+    if(!resp.ok)return false;
+    const data=await resp.json();
+    if(data&&data.days&&typeof data.days==='object'){DAYS=data.days;}
+    if(data&&data.alternatives&&typeof data.alternatives==='object'){ALTERNATIVES=data.alternatives;}
+    return true;
+  }catch(e){return false;}
+}
+document.getElementById('btnExportSchede').onclick=()=>{
+  const data={version:1,generated:new Date().toISOString(),days:DAYS,alternatives:ALTERNATIVES};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='schede.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  toast('schede.json esportato');
+};
+
 /* ===================== SERVICE WORKER + UPDATE MANAGEMENT ===================== */
 let pendingSW = null;
 function showUpdateBanner(sw, versionLabel){
@@ -1827,7 +1853,7 @@ if('serviceWorker' in navigator){
 }
 
 /* ===================== INIT ===================== */
-renderHome();
+loadSchede().finally(()=>renderHome());
 </script>
 </body>
 </html>

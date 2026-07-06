@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.mini.min.js" defer></script>
 <style>
 :root{
   --bg:#F6F4EE;--bg-2:#EEEAE0;--card:#FFFFFF;--card-2:#FAF9F4;
@@ -294,6 +295,37 @@ a{color:var(--accent);text-decoration:none;}
 @keyframes blink{50%{opacity:0.3;}}
 .gps-status.paused .dot{background:var(--hold);animation:none;}
 .gps-status.searching .dot{background:var(--deload);}
+
+/* ALT SHEET (esercizi alternativi) */
+.alt-sheet-overlay{position:fixed;inset:0;background:rgba(15,26,46,0.45);z-index:250;display:none;}
+.alt-sheet-overlay.show{display:block;}
+.alt-sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-radius:20px 20px 0 0;padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));max-height:82vh;overflow-y:auto;transform:translateY(100%);transition:transform .25s ease;z-index:251;box-shadow:0 -8px 30px rgba(15,26,46,0.15);}
+.alt-sheet.show{transform:translateY(0);}
+.alt-sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;position:sticky;top:-20px;background:var(--card);margin:-20px -20px 14px;padding:20px;border-bottom:1px solid var(--border);}
+.alt-sheet-title{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--text);line-height:1.2;}
+.alt-sheet-close{background:var(--card-2);border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-family:var(--font-mono);font-size:11px;color:var(--text);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;}
+.alt-item{background:var(--card-2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,transform .1s,background .15s;}
+.alt-item:active{transform:scale(0.99);}
+.alt-item.current{border-color:var(--go);background:rgba(5,150,105,0.05);}
+.alt-item-name{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--text);margin-bottom:4px;line-height:1.2;}
+.alt-item-spec{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.02em;font-weight:600;margin-bottom:6px;}
+.alt-item-tips{font-size:13px;color:var(--text-dim);line-height:1.4;}
+.alt-item-badge{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-left:6px;padding:2px 6px;border-radius:4px;vertical-align:middle;}
+.alt-item-badge.original{color:var(--info);background:rgba(8,145,178,0.12);}
+.alt-item-badge.inuse{color:var(--go);background:rgba(5,150,105,0.12);}
+.ex-alt-btn{background:var(--card-2);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;color:var(--text-dim);display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);letter-spacing:0.04em;font-weight:600;cursor:pointer;}
+.ex-alt-btn:active{background:var(--border);}
+.ex-alt-btn svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;}
+.ex-substituted-badge{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(217,119,6,0.12);color:var(--hold);margin-left:4px;vertical-align:middle;}
+
+/* UPDATE BANNER */
+.update-banner{position:fixed;top:calc(env(safe-area-inset-top) + 10px);left:20px;right:20px;background:var(--accent);color:var(--accent-text);border-radius:12px;padding:12px 16px;display:none;align-items:center;justify-content:space-between;gap:12px;z-index:150;box-shadow:0 4px 20px rgba(29,62,220,0.3);animation:slideDown .3s ease;}
+.update-banner.show{display:flex;}
+@keyframes slideDown{from{transform:translateY(-120%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.update-banner-text{font-family:var(--font-display);font-weight:600;font-size:14px;line-height:1.2;flex:1;}
+.update-banner-text small{display:block;font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;opacity:0.85;margin-top:2px;}
+.update-banner-btn{background:#FFFFFF;color:var(--accent);border-radius:8px;padding:9px 14px;font-family:var(--font-mono);font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;flex-shrink:0;}
+.update-banner-close{background:transparent;color:var(--accent-text);opacity:0.75;padding:8px;font-size:18px;line-height:1;}
 .gps-preview-wrap{height:220px;background:var(--card-2);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;position:relative;}
 #previewMap{height:100%;width:100%;background:var(--card-2);}
 .gps-preview-status{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);letter-spacing:0.06em;text-align:center;margin-bottom:14px;text-transform:uppercase;font-weight:600;padding:4px;}
@@ -377,10 +409,12 @@ a{color:var(--accent);text-decoration:none;}
     <div class="card-title">Dati</div>
     <div class="data-actions">
       <button class="btn-secondary" id="btnExport">Esporta JSON</button>
-      <label class="btn-secondary" style="text-align:center;display:block;cursor:pointer;" for="importFile">Importa JSON</label>
+      <button class="btn-secondary" id="btnExportXlsx">Esporta Excel</button>
+      <label class="btn-secondary" style="text-align:center;display:block;cursor:pointer;grid-column:1/-1;" for="importFile">Importa JSON</label>
       <input type="file" id="importFile" class="import-input" accept="application/json">
     </div>
     <div class="divider"></div>
+    <button class="btn-secondary" id="btnCheckUpdates" style="width:100%;margin-bottom:10px;">Cerca aggiornamenti</button>
     <button class="btn-secondary" id="btnReset" style="width:100%;color:var(--deload);">Cancella tutti i dati</button>
   </div>
 </div>
@@ -417,6 +451,21 @@ a{color:var(--accent);text-decoration:none;}
   <div class="alert-title" id="alertTitle">VIA!</div>
   <div class="alert-message" id="alertMessage">—</div>
   <button class="alert-stop-btn" id="alertStopBtn">STOP</button>
+</div>
+
+<div class="alt-sheet-overlay" id="altSheetOverlay"></div>
+<div class="alt-sheet" id="altSheet">
+  <div class="alt-sheet-h">
+    <div class="alt-sheet-title" id="altSheetTitle">Alternative</div>
+    <button class="alt-sheet-close" id="altSheetClose">Chiudi</button>
+  </div>
+  <div id="altSheetList"></div>
+</div>
+
+<div class="update-banner" id="updateBanner">
+  <div class="update-banner-text">Nuova versione disponibile<small id="updateBannerVersion">Aggiorna per applicare</small></div>
+  <button class="update-banner-btn" id="updateBannerBtn">Aggiorna</button>
+  <button class="update-banner-close" id="updateBannerClose" aria-label="Chiudi">×</button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -506,6 +555,109 @@ const DAYS = {
       {name:'Stretch adduttori (farfalla)',spec:'30-45s',tips:'Piante dei piedi unite, ginocchia larghe.'}
     ]
   }
+};
+
+const ALTERNATIVES = {
+  'Panca piana manubri':[
+    {name:'Floor press manubri',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Sdraiato a terra con manubri, ROM ridotto — sicuro senza spotter. I gomiti toccano terra e da lì spingi.'},
+    {name:'Croci piane manubri',sets:4,repsMin:10,repsMax:12,rest:90,tips:'Isolamento del petto. Braccia leggermente flesse, apri sentendo l\'allungamento.'},
+    {name:'Push-up con carico',sets:4,repsMin:10,repsMax:15,rest:90,tips:'Push-up con disco sulla schiena. Corpo dritto, addominali contratti — protegge la lombare.'}
+  ],
+  'Panca inclinata manubri':[
+    {name:'Panca piana manubri',sets:3,repsMin:8,repsMax:10,rest:120,tips:'Focus sul petto medio. Movimento identico su panca piana.'},
+    {name:'Push-up piedi rialzati',sets:3,repsMin:12,repsMax:15,rest:90,tips:'Piedi su panca, mani a terra. Enfasi petto alto senza carico assiale.'},
+    {name:'Squeeze press manubri inclinato',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Panca inclinata, manubri incollati insieme. Spingi mantenendo la pressione tra i manubri.'}
+  ],
+  'Croci inclinate manubri':[
+    {name:'Croci piane manubri',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Isolamento petto medio. Braccia leggermente flesse.'},
+    {name:'Croci al pulley basso (verso l\'alto)',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Cavo basso, tira verso l\'alto e verso il centro. Tensione continua per il petto alto.'},
+    {name:'Push-up con squeeze',sets:3,repsMin:12,repsMax:20,rest:60,tips:'Push-up mantenendo mani ravvicinate e attivamente stringendo verso il centro.'}
+  ],
+  'Curl bilanciere':[
+    {name:'Curl manubri seduto inclinato',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Panca a 60-70°, braccia rilassate lungo i fianchi. Massimo stretch iniziale del bicipite.'},
+    {name:'Curl al pulley basso',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Al cavo basso con maniglia o corda. Tensione continua per tutto il ROM.'},
+    {name:'Curl bilanciere presa stretta',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Con bilanciere 120cm, mani più strette delle spalle. Enfasi sul capo esterno.'}
+  ],
+  'Curl manubri alternato':[
+    {name:'Curl manubri simultaneo',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Entrambe le braccia insieme. Volume totale maggiore.'},
+    {name:'Curl concentrato',sets:3,repsMin:10,repsMax:12,rest:60,tips:'Seduto, gomito appoggiato all\'interno coscia. Isolamento massimo.'},
+    {name:'Curl inclinato manubri',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Panca a 60°, braccia rilassate lungo il corpo.'}
+  ],
+  'Curl a martello manubri':[
+    {name:'Curl inverso manubri',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Presa prona (palmi verso il basso). Focus brachioradiale e avambraccio.'},
+    {name:'Zottman curl',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Salita supinato (curl normale), discesa prono (curl inverso). Colpisce brachiale + avambraccio.'},
+    {name:'Curl a martello ai cavi',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Al pulley basso con corda. Tensione continua.'}
+  ],
+  'Lat machine presa larga':[
+    {name:'Lat machine presa neutra (V-bar)',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Impugnatura neutra a V. Coinvolge di più grande rotondo e dorso medio.'},
+    {name:'Lat machine presa stretta supinata',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Presa supinata (palmi verso di te), stretta. Enfasi bicipiti e lat inferiore.'},
+    {name:'Lat pulldown a un braccio',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Un braccio alla volta. Migliora simmetria, riconosci sbilanciamenti.'}
+  ],
+  'Rematore al pulley basso':[
+    {name:'Rematore con un manubrio (su panca)',sets:4,repsMin:10,repsMax:12,rest:100,tips:'Ginocchio e mano sulla panca. Tira verso il fianco. Zero stress lombare.'},
+    {name:'Rematore panca inclinata manubri',sets:4,repsMin:10,repsMax:12,rest:100,tips:'Petto appoggiato su panca inclinata a 30°.'},
+    {name:'Face pull al pulley alto',sets:4,repsMin:12,repsMax:15,rest:75,tips:'Al pulley alto con corda. Tira verso il viso allargando i gomiti. Ottimo per salute spalle.'}
+  ],
+  'Rematore panca inclinata manubri':[
+    {name:'Rematore al pulley basso',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Seduto con schiena appoggiata. Focus schiena media.'},
+    {name:'Rematore con un manubrio',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Ginocchio su panca, mano di supporto. Un braccio alla volta.'},
+    {name:'Reverse fly su panca inclinata',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Petto sulla panca a 30°, apri le braccia. Focus deltoide posteriore + trapezio.'}
+  ],
+  'French press manubri sdraiato':[
+    {name:'Skull crushers bilanciere',sets:3,repsMin:10,repsMax:12,rest:90,tips:'Sdraiato con bilanciere 120cm. Fletti i gomiti portando il bilanciere alla fronte.'},
+    {name:'Pushdown al pulley alto',sets:3,repsMin:12,repsMax:15,rest:75,tips:'Alla lat con pulley alto. Gomiti fermi ai fianchi, spingi verso il basso.'},
+    {name:'JM press manubri',sets:3,repsMin:8,repsMax:10,rest:90,tips:'Ibrido panca stretta + french press. Manubri sopra la testa, scendi verso la clavicola.'}
+  ],
+  'French press manubri overhead':[
+    {name:'French press sdraiato manubri',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Focus sui capi inferiori del tricipite.'},
+    {name:'Pushdown al pulley',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Col pulley alto. Isolamento tricipiti.'},
+    {name:'Tricep extension overhead ai cavi',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Al pulley basso con corda, portala dietro la testa. Estensione sopra la testa.'}
+  ],
+  'Dip su panca':[
+    {name:'Diamond push-up',sets:3,repsMin:10,repsMax:15,rest:75,tips:'Push-up con mani a rombo sotto il petto. Focus tricipiti.'},
+    {name:'Close-grip push-up',sets:3,repsMin:10,repsMax:15,rest:75,tips:'Push-up mani larghezza spalle. Gomiti stretti al corpo.'},
+    {name:'Pushdown al pulley con corda',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Separa le estremità della corda in fondo per attivare tutti i capi.'}
+  ],
+  'Military press manubri seduto':[
+    {name:'Arnold press seduto',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Parti con palmi verso di te, ruota mentre spingi. Colpisce tutti i deltoidi + rotatori.'},
+    {name:'Military press bilanciere seduto',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Bilanciere 120cm sul davanti. Schiena appoggiata verticale. Non a cedimento.'},
+    {name:'Landmine press',sets:4,repsMin:10,repsMax:12,rest:90,tips:'Bilanciere in un angolo del muro (o con landmine), spingi obliquamente verso l\'alto. Traiettoria naturale, meno stress spalle.'}
+  ],
+  'Alzate laterali manubri':[
+    {name:'Alzate laterali al pulley (un braccio)',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Al pulley basso, un braccio alla volta, cavo davanti al corpo. Tensione continua.'},
+    {name:'Y-raise su panca inclinata',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Petto sulla panca a 30°, apri le braccia a Y. Focus deltoide posteriore + laterale.'},
+    {name:'Alzate laterali con pausa (3s in alto)',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Manubri più leggeri ma con pausa isometrica di 3 secondi al punto più alto.'}
+  ],
+  'Alzate posteriori manubri':[
+    {name:'Reverse fly ai cavi (crossover basso)',sets:3,repsMin:12,repsMax:15,rest:60,tips:'In piedi, cavi bassi incrociati. Apri all\'indietro. Tensione continua.'},
+    {name:'Face pull al pulley',sets:3,repsMin:12,repsMax:15,rest:60,tips:'Al pulley alto con corda. Tira verso il viso allargando i gomiti.'},
+    {name:'Rear delt row al pulley basso',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Al pulley basso, tira con gomiti alti verso l\'esterno.'}
+  ],
+  'Squat bilanciere':[
+    {name:'Goblet squat con manubrio',sets:4,repsMin:10,repsMax:12,rest:120,tips:'Manubrio pesante tenuto al petto. Busto naturalmente più eretto — molto sicuro per la lombare.'},
+    {name:'Front squat bilanciere',sets:4,repsMin:6,repsMax:8,rest:180,tips:'Bilanciere sul davanti, appoggio sui deltoidi anteriori. Busto ancora più eretto.'},
+    {name:'Squat con manubri (uno per mano)',sets:4,repsMin:8,repsMax:10,rest:120,tips:'Manubri lungo i fianchi. Zero carico assiale sulla colonna.'}
+  ],
+  'Affondi bulgari manubri':[
+    {name:'Affondi in avanti manubri',sets:3,repsMin:10,repsMax:10,rest:90,tips:'Passo in avanti, scendi in verticale. 10 per gamba alternato.'},
+    {name:'Step-up su panca',sets:3,repsMin:10,repsMax:10,rest:90,tips:'Sali sulla panca con un piede, torna giù. 10 per gamba. Focus glutei.'},
+    {name:'Split squat statico',sets:3,repsMin:10,repsMax:12,rest:75,tips:'Piede avanti, piede dietro a terra (non su panca). Più facile per l\'equilibrio.'}
+  ],
+  'Affondi camminati manubri':[
+    {name:'Reverse lunges manubri',sets:3,repsMin:12,repsMax:12,rest:90,tips:'Passo indietro invece che avanti. Meno stress sul ginocchio davanti. 6 per gamba.'},
+    {name:'Affondi statici alternati',sets:3,repsMin:12,repsMax:12,rest:75,tips:'Torna in piedi centrale ogni ripetizione. Meno spazio richiesto.'},
+    {name:'Step-up alternato su panca',sets:3,repsMin:12,repsMax:12,rest:75,tips:'6 salite per gamba alternate. Ottimo per glutei.'}
+  ],
+  'Stacco rumeno manubri':[
+    {name:'Ponte glutei con manubrio',sets:3,repsMin:12,repsMax:15,rest:90,tips:'Schiena appoggiata a panca, manubrio sul bacino. Spingi in alto attivando i glutei. Zero stress lombare.'},
+    {name:'Good morning con manubrio leggero',sets:3,repsMin:12,repsMax:15,rest:90,tips:'ATTENZIONE: solo se tolleri bene. Manubrio al petto, hip hinge in avanti. Peso molto leggero.'},
+    {name:'Kettlebell/Dumbbell swing',sets:3,repsMin:15,repsMax:20,rest:60,tips:'Manubrio pesante, swing tra le gambe con hip hinge esplosivo. Non superare altezza spalla.'}
+  ],
+  'Calf raise in piedi':[
+    {name:'Calf raise seduto con manubri',sets:4,repsMin:15,repsMax:20,rest:45,tips:'Seduto con manubri sulle cosce. Focus sul soleo (parte profonda del polpaccio).'},
+    {name:'Calf raise unilaterale',sets:4,repsMin:12,repsMax:15,rest:45,tips:'Su una gamba alla volta, manubrio nella mano opposta per equilibrio. Focus intenso.'},
+    {name:'Calf raise su gradino (ROM completo)',sets:3,repsMin:20,repsMax:30,rest:45,tips:'Punte su un rialzo, tallone che scende sotto il livello. ROM massimo, focus resistenza.'}
+  ]
 };
 
 const RUN_TYPES = {
@@ -1143,7 +1295,10 @@ function renderWorkout(){
     const timerBtn=dur?`<button class="ex-timer-mini" data-rest="${dur}" data-exname="${w.name.replace(/"/g,'&quot;')}" onclick="event.stopPropagation();restTimer.start(${dur},'${w.name.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>${dur}s</button>`:'';
     return`<div class="ex"><div class="ex-head" onclick="this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${w.name}</div><a class="ex-video-link" href="${ytLink(w.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${timerBtn}</div><div class="ex-spec mono">${w.spec}</div></div><div class="ex-head-caret">▾</div></div><div class="ex-body"><div class="ex-block"><div class="ex-block-label">Come farlo</div><div class="ex-tips">${w.tips}</div></div></div></div>`;
   }).join('');
-  const mainHTML=day.exercises.map((ex,idx)=>{
+  const mainHTML=day.exercises.map((origEx,idx)=>{
+    const workoutEx=currentWorkout.exercises[idx];
+    const ex=workoutEx.spec?{name:workoutEx.name,sets:workoutEx.spec.sets,repsMin:workoutEx.spec.repsMin,repsMax:workoutEx.spec.repsMax,rest:workoutEx.spec.rest,tips:workoutEx.spec.tips}:origEx;
+    const isSubstituted=!!workoutEx.spec;
     const reco=getRecommendation(currentWorkout.day,ex);
     const lastSummary=getLastSessionSummary(currentWorkout.day,ex.name);
     const bestE=getBestE1RM(ex.name);
@@ -1155,7 +1310,9 @@ function renderWorkout(){
     }).join(''):'<div style="color:var(--text-mute);font-size:12px;padding:4px 0;">Nessuna storia ancora.</div>';
     const setsInputs=currentWorkout.exercises[idx].sets.map((s,si)=>`<div class="set-row"><div class="set-num">S${si+1}</div><input class="set-input" type="number" inputmode="decimal" step="0.5" placeholder="kg" value="${s.weight??''}" data-ex="${idx}" data-set="${si}" data-field="weight"><input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${s.reps??''}" data-ex="${idx}" data-set="${si}" data-field="reps"></div>`).join('');
     const compareHTML=lastSummary?`<div class="compare-box">Ultima volta: <strong>${lastSummary}</strong>${bestE?` · e1RM record: <strong>${bestE.e1rm}kg</strong> (${bestE.weight}×${bestE.reps})`:''}</div>`:'';
-    return`<div class="ex open"><div class="ex-head" onclick="if(!event.target.closest('input,textarea,a,button'))this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${ex.name}</div><a class="ex-video-link" href="${ytLink(ex.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a></div><div class="ex-spec mono">${ex.sets}×${ex.repsMin===ex.repsMax?ex.repsMax:ex.repsMin+'-'+ex.repsMax}<span class="sep">·</span>rec ${ex.rest}s</div></div><div class="ex-signal ${reco.level}"><div class="ex-signal-arrow">${reco.level==='go'?'↑':reco.level==='deload'?'↓':reco.level==='hold'?'—':'●'}</div><div>${reco.level==='go'?'UP':reco.level==='deload'?'DOWN':reco.level==='hold'?'HOLD':'NEW'}</div></div></div><div class="ex-body"><div class="ex-block"><div class="ex-reco ${reco.level}"><strong>${reco.title}.</strong> ${reco.text}</div></div>${compareHTML}<div class="ex-block"><div class="ex-block-label">Esecuzione</div><div class="ex-tips">${ex.tips}</div></div><div class="ex-block"><div class="ex-block-label">Serie</div><div class="set-label-row"><div></div><div class="set-label">kg</div><div class="set-label">reps</div></div><div class="sets">${setsInputs}</div></div><div class="ex-block"><button class="rest-btn" data-rest="${ex.rest}" data-exname="${ex.name.replace(/"/g,'&quot;')}"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>Avvia recupero (${ex.rest}s)</button></div><div class="ex-block"><div class="ex-block-label">Note</div><textarea class="notes-input" data-ex="${idx}" placeholder="Note personali (RPE, sensazioni...)">${currentWorkout.exercises[idx].notes}</textarea></div><div class="ex-block"><div class="ex-block-label">Storia recente</div><div class="history">${histHTML}</div></div></div></div>`;
+    const altBtn=`<button class="ex-alt-btn" data-alt-idx="${idx}"><svg viewBox="0 0 24 24"><path d="M7 4l-4 4 4 4M3 8h13a4 4 0 0 1 4 4M17 20l4-4-4-4M21 16H8a4 4 0 0 1-4-4"/></svg>Alt</button>`;
+    const substBadge=isSubstituted?`<span class="ex-substituted-badge">SOSTITUITO</span>`:'';
+    return`<div class="ex open"><div class="ex-head" onclick="if(!event.target.closest('input,textarea,a,button'))this.parentElement.classList.toggle('open')"><div class="ex-head-l"><div class="ex-name-row"><div class="ex-name">${ex.name}</div>${substBadge}<a class="ex-video-link" href="${ytLink(ex.name)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Video</a>${altBtn}</div><div class="ex-spec mono">${ex.sets}×${ex.repsMin===ex.repsMax?ex.repsMax:ex.repsMin+'-'+ex.repsMax}<span class="sep">·</span>rec ${ex.rest}s</div></div><div class="ex-signal ${reco.level}"><div class="ex-signal-arrow">${reco.level==='go'?'↑':reco.level==='deload'?'↓':reco.level==='hold'?'—':'●'}</div><div>${reco.level==='go'?'UP':reco.level==='deload'?'DOWN':reco.level==='hold'?'HOLD':'NEW'}</div></div></div><div class="ex-body"><div class="ex-block"><div class="ex-reco ${reco.level}"><strong>${reco.title}.</strong> ${reco.text}</div></div>${compareHTML}<div class="ex-block"><div class="ex-block-label">Esecuzione</div><div class="ex-tips">${ex.tips}</div></div><div class="ex-block"><div class="ex-block-label">Serie</div><div class="set-label-row"><div></div><div class="set-label">kg</div><div class="set-label">reps</div></div><div class="sets">${setsInputs}</div></div><div class="ex-block"><button class="rest-btn" data-rest="${ex.rest}" data-exname="${ex.name.replace(/"/g,'&quot;')}"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-4a1 1 0 0 1 0-2h3V7a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1z"/></svg>Avvia recupero (${ex.rest}s)</button></div><div class="ex-block"><div class="ex-block-label">Note</div><textarea class="notes-input" data-ex="${idx}" placeholder="Note personali (RPE, sensazioni...)">${currentWorkout.exercises[idx].notes}</textarea></div><div class="ex-block"><div class="ex-block-label">Storia recente</div><div class="history">${histHTML}</div></div></div></div>`;
   }).join('');
   const stretchHTML=day.stretching.map(s=>{
     const dur=parseDuration(s.spec);
@@ -1177,6 +1334,9 @@ function renderWorkout(){
   container.querySelectorAll('.rest-btn').forEach(b=>{
     b.addEventListener('click',()=>{restTimer.start(+b.dataset.rest,b.dataset.exname);});
   });
+  container.querySelectorAll('.ex-alt-btn').forEach(b=>{
+    b.addEventListener('click',(e)=>{e.stopPropagation();openAltSheet(+b.dataset.altIdx);});
+  });
 }
 function saveWorkout(){
   const hasData=currentWorkout.exercises.some(ex=>ex.sets.some(s=>s.weight!=null||s.reps!=null)||ex.notes);
@@ -1187,6 +1347,60 @@ function saveWorkout(){
   else toast('Sessione salvata');
   save();currentWorkout=null;renderPalestraList();
 }
+
+/* ===================== ALTERNATIVES SHEET ===================== */
+let altSheetIdx=null;
+function openAltSheet(idx){
+  altSheetIdx=idx;
+  const workoutEx=currentWorkout.exercises[idx];
+  const origEx=DAYS[currentWorkout.day].exercises[idx];
+  const originalName=origEx.name;
+  const currentName=workoutEx.name;
+  const alternatives=ALTERNATIVES[originalName]||[];
+  const items=[{...origEx,isOriginal:true,isCurrent:currentName===originalName},...alternatives.map(a=>({...a,isCurrent:currentName===a.name}))];
+  document.getElementById('altSheetTitle').textContent=`Alternative: ${originalName}`;
+  const list=document.getElementById('altSheetList');
+  list.innerHTML=items.map((it,i)=>{
+    const orig=it.isOriginal?'<span class="alt-item-badge original">Originale</span>':'';
+    const inuse=it.isCurrent?'<span class="alt-item-badge inuse">In uso</span>':'';
+    return`<div class="alt-item ${it.isCurrent?'current':''}" data-idx="${i}"><div class="alt-item-name">${it.name}${orig}${inuse}</div><div class="alt-item-spec">${it.sets}×${it.repsMin===it.repsMax?it.repsMax:it.repsMin+'-'+it.repsMax} · rec ${it.rest}s</div><div class="alt-item-tips">${it.tips}</div></div>`;
+  }).join('');
+  if(alternatives.length===0){
+    list.innerHTML+='<div style="font-size:12px;color:var(--text-mute);padding:12px 0;text-align:center;">Nessuna alternativa definita per questo esercizio.</div>';
+  }
+  list.querySelectorAll('.alt-item').forEach((el)=>{
+    el.addEventListener('click',()=>selectAlternative(items[+el.dataset.idx]));
+  });
+  document.getElementById('altSheetOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('altSheet').classList.add('show'),10);
+}
+function closeAltSheet(){
+  document.getElementById('altSheet').classList.remove('show');
+  setTimeout(()=>document.getElementById('altSheetOverlay').classList.remove('show'),250);
+  altSheetIdx=null;
+}
+function selectAlternative(item){
+  if(altSheetIdx==null)return;
+  const workoutEx=currentWorkout.exercises[altSheetIdx];
+  const origEx=DAYS[currentWorkout.day].exercises[altSheetIdx];
+  if(item.isOriginal){
+    workoutEx.name=origEx.name;
+    delete workoutEx.spec;
+    while(workoutEx.sets.length<origEx.sets)workoutEx.sets.push({weight:null,reps:null});
+    while(workoutEx.sets.length>origEx.sets)workoutEx.sets.pop();
+    toast('Ripristinato originale');
+  } else {
+    workoutEx.name=item.name;
+    workoutEx.spec={sets:item.sets,repsMin:item.repsMin,repsMax:item.repsMax,rest:item.rest,tips:item.tips};
+    while(workoutEx.sets.length<item.sets)workoutEx.sets.push({weight:null,reps:null});
+    while(workoutEx.sets.length>item.sets)workoutEx.sets.pop();
+    toast(`Sostituito: ${item.name}`);
+  }
+  closeAltSheet();
+  renderWorkout();
+}
+document.getElementById('altSheetClose').onclick=()=>closeAltSheet();
+document.getElementById('altSheetOverlay').onclick=()=>closeAltSheet();
 
 /* ===================== CORSA (unchanged flow, uses gps + alertLoop) ===================== */
 let corsaMode='gps';
@@ -1483,6 +1697,45 @@ document.getElementById('btnExport').onclick=()=>{
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`forma-backup-${todayStr()}.json`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
   toast('Backup esportato');
 };
+document.getElementById('btnExportXlsx').onclick=()=>{
+  if(typeof XLSX==='undefined'){toast('Libreria Excel non caricata — riprova tra qualche secondo');return;}
+  const wb=XLSX.utils.book_new();
+  // Palestra: una riga per set
+  const pRows=[['Data','Giorno','Esercizio','Set','Peso (kg)','Reps','e1RM','Note']];
+  state.workouts.forEach(w=>{
+    const dn=DAYS[w.day]?.name||w.day;
+    w.exercises.forEach(ex=>{
+      ex.sets.forEach((s,i)=>{
+        if(s.weight!=null||s.reps!=null){
+          pRows.push([w.date.slice(0,10),dn,ex.name,i+1,s.weight||'',s.reps||'',(s.weight&&s.reps)?e1RM(s.weight,s.reps):'',ex.notes||'']);
+        }
+      });
+    });
+  });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(pRows),'Palestra');
+  // Corsa
+  const cRows=[['Data','Tipo','Modalità','Durata (min)','Distanza (km)','Pace (min/km)','RPE','Ripetute','Note']];
+  state.runs.forEach(r=>{
+    cRows.push([r.date.slice(0,10),RUN_TYPES[r.type]?.name||r.type,r.mode||'manual',r.duration||'',r.distance||'',r.distance>0?+(r.duration/r.distance).toFixed(2):'',r.rpe||'',r.intervals||'',r.notes||'']);
+  });
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(cRows),'Corsa');
+  // Peso
+  const wRows=[['Data','Peso (kg)']];
+  state.weights.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(w=>wRows.push([w.date,w.weight]));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(wRows),'Peso');
+  // Nutrizione
+  const nRows=[['Data','Kcal','Proteine (g)']];
+  state.nutrition.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(n=>nRows.push([n.date,n.kcal||'',n.protein||'']));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(nRows),'Nutrizione');
+  // PRs
+  const prRows=[['Esercizio','Peso (kg)','Reps','e1RM (kg)','Data']];
+  const allEx=new Set();
+  Object.values(DAYS).forEach(d=>d.exercises.forEach(e=>allEx.add(e.name)));
+  [...allEx].forEach(name=>{const b=getBestE1RM(name);if(b)prRows.push([name,b.weight,b.reps,b.e1rm,b.date.slice(0,10)]);});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(prRows),'PRs');
+  XLSX.writeFile(wb,`forma-export-${todayStr()}.xlsx`);
+  toast('Excel esportato');
+};
 document.getElementById('importFile').onchange=(e)=>{
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
@@ -1495,10 +1748,81 @@ document.getElementById('btnReset').onclick=()=>{
   state={workouts:[],runs:[],weights:[],nutrition:[],prs:[],settings:defaultSettings()};save();toast('Dati cancellati');renderStats();
 };
 
-/* ===================== SERVICE WORKER ===================== */
-if('serviceWorker'in navigator){
+/* ===================== SERVICE WORKER + UPDATE MANAGEMENT ===================== */
+let pendingSW = null;
+function showUpdateBanner(sw, versionLabel){
+  pendingSW = sw;
+  const b = document.getElementById('updateBanner');
+  if(!b) return;
+  if(versionLabel){document.getElementById('updateBannerVersion').textContent = versionLabel;}
+  b.classList.add('show');
+}
+function hideUpdateBanner(){
+  document.getElementById('updateBanner').classList.remove('show');
+}
+document.getElementById('updateBannerBtn').onclick = ()=>{
+  if(!pendingSW){
+    // Fallback: force reload
+    hideUpdateBanner();
+    window.location.reload();
+    return;
+  }
+  hideUpdateBanner();
+  toast('Aggiornamento in corso...');
+  pendingSW.postMessage({type:'SKIP_WAITING'});
+  // controllerchange listener below will trigger reload
+};
+document.getElementById('updateBannerClose').onclick = ()=>hideUpdateBanner();
+
+document.getElementById('btnCheckUpdates').onclick = async ()=>{
+  if(!('serviceWorker' in navigator)){toast('Service worker non supportato');return;}
+  toast('Controllo aggiornamenti...');
+  try{
+    const reg = await navigator.serviceWorker.getRegistration();
+    if(!reg){toast('Service worker non registrato');return;}
+    await reg.update();
+    // Give the SW time to check
+    setTimeout(()=>{
+      if(reg.waiting){
+        showUpdateBanner(reg.waiting, 'Trovata nuova versione');
+      } else {
+        toast('Sei alla versione più recente');
+      }
+    }, 1500);
+  }catch(e){toast('Errore controllo update');}
+};
+
+if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    navigator.serviceWorker.register('./sw.js').then(reg=>{
+      // If there's already a waiting SW when we load (installed previously but user didn't apply)
+      if(reg.waiting && navigator.serviceWorker.controller){
+        showUpdateBanner(reg.waiting);
+      }
+      // Listen for new updates
+      reg.addEventListener('updatefound',()=>{
+        const newSW = reg.installing;
+        if(!newSW) return;
+        newSW.addEventListener('statechange',()=>{
+          if(newSW.state === 'installed' && navigator.serviceWorker.controller){
+            showUpdateBanner(newSW);
+          }
+        });
+      });
+      // Periodic check every 10 min while app is open
+      setInterval(()=>{try{reg.update();}catch(e){}}, 10*60*1000);
+      // Also check when app becomes visible again (user comes back to app)
+      document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='visible'){try{reg.update();}catch(e){}}
+      });
+    }).catch(()=>{});
+    // Reload page when new SW takes control
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(reloading) return;
+      reloading = true;
+      window.location.reload();
+    });
   });
 }
 

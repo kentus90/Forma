@@ -1169,7 +1169,7 @@ const gps={
   reset(){
     this.tracking=false;this.paused=false;this.route=[];this.lastPos=null;
     this.distance=0;this.elapsed=0;this.pausedElapsed=0;this.startTs=null;this.pauseTs=null;
-    this.splits=[];this.lastSplitDist=0;
+    this.splits=[];this.lastSplitDist=0;this.lastAcc=null;
     this.intervalPhase='idle';this.intervalRep=0;this.intervalPhaseStart=0;this.intervalPhaseEnd=0;
     this.intervalWorkStartDist=0;this.intervalWorkStartTs=0;this.lastCountBeep=-1;
     if(this.tick)clearInterval(this.tick);this.tick=null;
@@ -1181,7 +1181,7 @@ const gps={
     this.tracking=true;this.paused=false;this.startTs=Date.now();
     requestWakeLock();
     this.tick=setInterval(()=>this.update(),1000);
-    this.watchId=navigator.geolocation.watchPosition(p=>this.onPos(p),e=>this.onErr(e),{enableHighAccuracy:true,maximumAge:1000,timeout:15000});
+    this.watchId=navigator.geolocation.watchPosition(p=>this.onPos(p),e=>this.onErr(e),{enableHighAccuracy:true,maximumAge:0,timeout:20000});
     this.render();
     beep(880,0.15,0.3);setTimeout(()=>beep(1100,0.2,0.3),200);
   },
@@ -1251,11 +1251,18 @@ const gps={
   onPos(p){
     if(this.paused)return;
     const{latitude:lat,longitude:lng,accuracy:acc}=p.coords;
-    if(acc>50)return;
-    const pt={lat,lng,ts:Date.now(),acc};
+    this.lastAcc=acc;
+    // Accept more points: lenient accuracy threshold
+    if(acc>80)return;
+    const now=Date.now();
+    const pt={lat,lng,ts:now,acc};
     if(this.lastPos){
       const d=haversine(this.lastPos.lat,this.lastPos.lng,lat,lng);
-      if(d<3)return;
+      const dt=(now-this.lastPos.ts)/1000;
+      // Reject impossible speeds (>43 km/h = GPS glitch)
+      if(dt>0.5&&d/dt>12)return;
+      // Filter only true noise (< 2m when stationary)
+      if(d<2&&dt<3)return;
       this.distance+=d;
       if(this.runType!=='intervals'&&this.distance-this.lastSplitDist>=1000){
         const totalKm=this.splits.filter(s=>s.type==='km').reduce((a,s)=>a+s.time,0);
@@ -1267,7 +1274,7 @@ const gps={
       }
       this.checkIntervalDistance();
     }
-    this.lastPos={lat,lng};
+    this.lastPos={lat,lng,ts:now};
     this.route.push(pt);
     this.updateMap(pt);
   },
@@ -1297,8 +1304,11 @@ const gps={
     setEl('gpsAvgPace',fmtPace(this.currentPace()));
     const st=document.getElementById('gpsStatus');
     if(st){
-      if(this.paused){st.className='gps-status paused';st.innerHTML='<span class="dot"></span>In pausa';}
-      else{st.className='gps-status';st.innerHTML='<span class="dot"></span>Tracking attivo';}
+      const accStr=this.lastAcc!=null?` · ±${Math.round(this.lastAcc)}m`:'';
+      const nStr=this.route.length?` · ${this.route.length} pt`:'';
+      const accCls=this.lastAcc!=null&&this.lastAcc>30?' searching':'';
+      if(this.paused){st.className='gps-status paused';st.innerHTML=`<span class="dot"></span>In pausa${accStr}${nStr}`;}
+      else{st.className='gps-status'+accCls;st.innerHTML=`<span class="dot"></span>Tracking attivo${accStr}${nStr}`;}
     }
     this.renderIntervalPanel();
     const controls=document.getElementById('gpsControls');
@@ -1374,11 +1384,18 @@ const gps={
   updateMap(pt){
     if(!this.mapReady){this.renderFallbackRoute();return;}
     try{
-      this.mapLine.addLatLng([pt.lat,pt.lng]);
-      if(this.mapMarker)this.mapMarker.setLatLng([pt.lat,pt.lng]);
-      else this.mapMarker=L.circleMarker([pt.lat,pt.lng],{radius:6,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:1}).addTo(this.map);
-      this.map.setView([pt.lat,pt.lng],16,{animate:true,duration:0.5});
-    }catch(e){}
+      // Full polyline redraw ensures every captured point is rendered
+      this.mapLine.setLatLngs(this.route.map(p=>[p.lat,p.lng]));
+      if(this.mapMarker){
+        this.mapMarker.setLatLng([pt.lat,pt.lng]);
+      } else {
+        this.mapMarker=L.circleMarker([pt.lat,pt.lng],{radius:8,color:'#FFFFFF',fillColor:'#1D3EDC',fillOpacity:1,weight:3}).addTo(this.map);
+        // Set initial zoom+center only on first point
+        this.map.setView([pt.lat,pt.lng],17);
+      }
+      // Gentle follow: pan only, keep user's zoom level
+      this.map.panTo([pt.lat,pt.lng],{animate:true,duration:0.6,easeLinearity:0.5});
+    }catch(e){console.warn('map',e);}
   },
   renderFallbackRoute(){
     const wrap=document.getElementById('gpsMap');if(!wrap||this.route.length<2)return;

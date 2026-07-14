@@ -618,8 +618,8 @@ a{color:var(--accent);text-decoration:none;}
 <div class="view active" id="view-home">
   <div id="homeDeloadWarn"></div>
   <div id="homeDeloadActive"></div>
-  <div class="hero">
-    <div class="hero-label">Oggi</div>
+  <div class="hero" id="homeHero" role="button" style="cursor:pointer;">
+    <div class="hero-label">Oggi <span style="opacity:0.7;font-size:10px;margin-left:6px;">▸ tap per iniziare</span></div>
     <div class="hero-title" id="homeTitle">Che si fa?</div>
     <div class="hero-sub" id="homeSub"></div>
   </div>
@@ -640,10 +640,6 @@ a{color:var(--accent);text-decoration:none;}
 </div>
 
 <div class="view" id="view-corsa">
-  <div class="run-mode-tabs">
-    <button class="run-mode-tab active" data-mode="gps">🛰 Traccia GPS</button>
-    <button class="run-mode-tab" data-mode="manual">✎ Log manuale</button>
-  </div>
   <div id="corsaContent"></div>
 </div>
 
@@ -1115,7 +1111,7 @@ document.addEventListener('touchstart',unlockAudio,true);
 let wakeLock=null;
 async function requestWakeLock(){try{if('wakeLock'in navigator){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>wakeLock=null);}}catch(e){}}
 function releaseWakeLock(){if(wakeLock){try{wakeLock.release();}catch(e){}wakeLock=null;}}
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(restTimer.running||gps.tracking||alertLoop.active))requestWakeLock();});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&(restTimer.running||alertLoop.active))requestWakeLock();});
 
 /* ===================== ALERT LOOP ===================== */
 const alertLoop={
@@ -1139,7 +1135,7 @@ const alertLoop={
     document.getElementById('alertLoop').classList.remove('show');
     const cb=this._onStop;this._onStop=null;this._beepFn=null;
     if(cb&&!silent)cb();
-    if(!gps.tracking&&!restTimer.running)releaseWakeLock();
+    if(!restTimer.running)releaseWakeLock();
   }
 };
 document.getElementById('alertStopBtn').onclick=()=>alertLoop.stop();
@@ -1189,7 +1185,7 @@ const restTimer={
   close(){
     clearInterval(this.tick);this.tick=null;this.running=false;this.paused=false;
     document.getElementById('timerOverlay').classList.remove('show');
-    if(!gps.tracking&&!alertLoop.active)releaseWakeLock();
+    if(!alertLoop.active)releaseWakeLock();
   }
 };
 document.getElementById('timerMinus').onclick=()=>restTimer.addTime(-15);
@@ -1197,315 +1193,9 @@ document.getElementById('timerPlus').onclick=()=>restTimer.addTime(15);
 document.getElementById('timerToggle').onclick=()=>restTimer.toggle();
 document.getElementById('timerCancel').onclick=()=>restTimer.close();
 
-/* ===================== GPS ===================== */
-const gps={
-  tracking:false,paused:false,watchId:null,
-  route:[],lastPos:null,distance:0,elapsed:0,pausedElapsed:0,
-  startTs:null,pauseTs:null,splits:[],lastSplitDist:0,
-  tick:null,map:null,mapLine:null,mapMarker:null,mapReady:false,
-  runType:'easy',config:null,
-  intervalPhase:'idle',intervalRep:0,intervalPhaseStart:0,intervalPhaseEnd:0,
-  intervalWorkStartDist:0,intervalWorkStartTs:0,lastCountBeep:-1,
-  init(runType,config){this.reset();this.runType=runType;this.config=config;if(runType==='intervals')this.intervalPhase='ready';},
-  reset(){
-    this.tracking=false;this.paused=false;this.route=[];this.lastPos=null;
-    this.distance=0;this.elapsed=0;this.pausedElapsed=0;this.startTs=null;this.pauseTs=null;
-    this.splits=[];this.lastSplitDist=0;this.lastAcc=null;
-    this.intervalPhase='idle';this.intervalRep=0;this.intervalPhaseStart=0;this.intervalPhaseEnd=0;
-    this.intervalWorkStartDist=0;this.intervalWorkStartTs=0;this.lastCountBeep=-1;
-    if(this.tick)clearInterval(this.tick);this.tick=null;
-    if(this.watchId!==null&&navigator.geolocation){navigator.geolocation.clearWatch(this.watchId);this.watchId=null;}
-    this.map=null;this.mapLine=null;this.mapMarker=null;this.mapReady=false;
-  },
-  start(){
-    if(!navigator.geolocation){toast('GPS non disponibile');return;}
-    this.tracking=true;this.paused=false;this.startTs=Date.now();
-    requestWakeLock();
-    this.tick=setInterval(()=>this.update(),1000);
-    this.watchId=navigator.geolocation.watchPosition(p=>this.onPos(p),e=>this.onErr(e),{enableHighAccuracy:true,maximumAge:0,timeout:20000});
-    this.render();
-    beep(880,0.15,0.3);setTimeout(()=>beep(1100,0.2,0.3),200);
-  },
-  pause(){this.paused=true;this.pauseTs=Date.now();this.render();beep(660,0.15,0.25);},
-  resume(){if(this.pauseTs){this.pausedElapsed+=(Date.now()-this.pauseTs);this.pauseTs=null;}this.paused=false;this.render();beep(880,0.15,0.25);},
-  stop(){
-    if(!this.tracking)return;
-    if(this.paused&&this.pauseTs){this.pausedElapsed+=(Date.now()-this.pauseTs);this.pauseTs=null;}
-    if(this.tick)clearInterval(this.tick);
-    if(this.watchId!==null){navigator.geolocation.clearWatch(this.watchId);this.watchId=null;}
-    this.tracking=false;releaseWakeLock();
-    beepStop();setTimeout(()=>beep(880,0.35,0.4),450);
-    renderCorsaGpsSummary();
-  },
-  startIntervalWork(){
-    this.intervalRep++;
-    this.intervalPhase='work';
-    this.intervalPhaseStart=Date.now();
-    this.intervalWorkStartTs=this.elapsed;
-    this.intervalWorkStartDist=this.distance;
-    if(this.config.intervalType==='time')this.intervalPhaseEnd=Date.now()+this.config.repDuration*1000;
-    this.lastCountBeep=-1;
-    alertLoop.play({
-      icon:'🏃',title:`▶ VIA!`,message:`Ripetuta ${this.intervalRep} di ${this.config.reps}`,
-      style:'work',beep:()=>beepStart()
-    });
-  },
-  finishIntervalWork(){
-    const workDist=this.distance-this.intervalWorkStartDist;
-    const workTime=this.elapsed-this.intervalWorkStartTs;
-    this.splits.push({type:'interval',rep:this.intervalRep,time:workTime,cumTime:this.elapsed,dist:Math.round(workDist)});
-    this.intervalPhase='rest';
-    this.intervalPhaseStart=Date.now();
-    this.intervalPhaseEnd=Date.now()+this.config.restSec*1000;
-    this.lastCountBeep=-1;
-    alertLoop.play({
-      icon:'⏸',title:`RIP ${this.intervalRep} FATTA`,message:`Recupero ${this.config.restSec}s`,
-      style:'rest',beep:()=>beepStop()
-    });
-  },
-  finishIntervalRest(){
-    if(this.intervalRep>=this.config.reps){
-      this.intervalPhase='done';
-      alertLoop.play({icon:'🎉',title:'COMPLETATE!',message:`${this.config.reps} ripetute fatte`,style:'done',beep:()=>beepDone()});
-    } else {
-      this.startIntervalWork();
-    }
-  },
-  checkIntervalTransitions(){
-    if(this.runType!=='intervals'||!this.config)return;
-    if(this.intervalPhase==='work'&&this.config.intervalType==='time'){
-      const secLeft=Math.ceil((this.intervalPhaseEnd-Date.now())/1000);
-      if(secLeft>0&&secLeft<=3&&this.lastCountBeep!==secLeft){beepCount();this.lastCountBeep=secLeft;}
-      if(Date.now()>=this.intervalPhaseEnd)this.finishIntervalWork();
-    } else if(this.intervalPhase==='rest'){
-      const secLeft=Math.ceil((this.intervalPhaseEnd-Date.now())/1000);
-      if(secLeft>0&&secLeft<=3&&this.lastCountBeep!==secLeft){beepCount();this.lastCountBeep=secLeft;}
-      if(Date.now()>=this.intervalPhaseEnd)this.finishIntervalRest();
-    }
-  },
-  checkIntervalDistance(){
-    if(this.runType!=='intervals'||!this.config)return;
-    if(this.config.intervalType!=='distance')return;
-    if(this.intervalPhase!=='work')return;
-    if(this.distance-this.intervalWorkStartDist>=this.config.repDistance)this.finishIntervalWork();
-  },
-  onPos(p){
-    if(this.paused)return;
-    const{latitude:lat,longitude:lng,accuracy:acc}=p.coords;
-    this.lastAcc=acc;
-    // Accept more points: lenient accuracy threshold
-    if(acc>80)return;
-    const now=Date.now();
-    const pt={lat,lng,ts:now,acc};
-    if(this.lastPos){
-      const d=haversine(this.lastPos.lat,this.lastPos.lng,lat,lng);
-      const dt=(now-this.lastPos.ts)/1000;
-      // Reject impossible speeds (>43 km/h = GPS glitch)
-      if(dt>0.5&&d/dt>12)return;
-      // Filter only true noise (< 2m when stationary)
-      if(d<2&&dt<3)return;
-      this.distance+=d;
-      if(this.runType!=='intervals'&&this.distance-this.lastSplitDist>=1000){
-        const totalKm=this.splits.filter(s=>s.type==='km').reduce((a,s)=>a+s.time,0);
-        const splitTime=this.elapsed-totalKm;
-        this.splits.push({type:'km',km:this.splits.filter(s=>s.type==='km').length+1,time:splitTime,cumTime:this.elapsed});
-        this.lastSplitDist=this.distance;
-        beep(1100,0.15,0.3);setTimeout(()=>beep(1300,0.2,0.3),180);
-        toast(`Km ${this.splits.filter(s=>s.type==='km').length} · ${fmtTime(splitTime)}`);
-      }
-      this.checkIntervalDistance();
-    }
-    this.lastPos={lat,lng,ts:now};
-    this.route.push(pt);
-    this.updateMap(pt);
-  },
-  onErr(e){
-    if(e.code===1)toast('Permesso GPS negato');
-    else if(e.code===2)toast('GPS non disponibile');
-    else if(e.code===3)toast('GPS timeout — segnale debole');
-    const st=document.getElementById('gpsStatus');
-    if(st){st.className='gps-status searching';st.innerHTML='<span class="dot"></span>Ricerca segnale...';}
-  },
-  update(){if(this.paused||!this.tracking)return;this.elapsed=Math.floor((Date.now()-this.startTs-this.pausedElapsed)/1000);this.checkIntervalTransitions();this.render();},
-  currentPace(){if(this.distance<100||this.elapsed<10)return 0;return(this.elapsed/60)/(this.distance/1000);},
-  recentPace(){
-    const recent=this.route.filter(p=>((Date.now()-p.ts)/1000)<=30);
-    if(recent.length<2)return this.currentPace();
-    let d=0;for(let i=1;i<recent.length;i++)d+=haversine(recent[i-1].lat,recent[i-1].lng,recent[i].lat,recent[i].lng);
-    if(d<50)return this.currentPace();
-    const t=(recent[recent.length-1].ts-recent[0].ts)/1000;
-    if(t<5)return this.currentPace();
-    return(t/60)/(d/1000);
-  },
-  render(){
-    const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-    setEl('gpsDistance',(this.distance/1000).toFixed(2));
-    setEl('gpsTime',fmtTime(this.elapsed));
-    setEl('gpsPace',fmtPace(this.recentPace()));
-    setEl('gpsAvgPace',fmtPace(this.currentPace()));
-    const st=document.getElementById('gpsStatus');
-    if(st){
-      const accStr=this.lastAcc!=null?` · ±${Math.round(this.lastAcc)}m`:'';
-      const nStr=this.route.length?` · ${this.route.length} pt`:'';
-      const accCls=this.lastAcc!=null&&this.lastAcc>30?' searching':'';
-      if(this.paused){st.className='gps-status paused';st.innerHTML=`<span class="dot"></span>In pausa${accStr}${nStr}`;}
-      else{st.className='gps-status'+accCls;st.innerHTML=`<span class="dot"></span>Tracking attivo${accStr}${nStr}`;}
-    }
-    this.renderIntervalPanel();
-    const controls=document.getElementById('gpsControls');
-    if(controls){
-      if(!this.tracking){controls.className='gps-controls';controls.innerHTML=`<button class="gps-btn start" id="btnGpsStart">▶ Avvia</button><button class="gps-btn stop" id="btnGpsCancel">Annulla</button>`;}
-      else if(this.paused){controls.className='gps-controls three';controls.innerHTML=`<button class="gps-btn resume" id="btnGpsResume">▶ Riprendi</button><button class="gps-btn lap" id="btnGpsLap">Split</button><button class="gps-btn stop" id="btnGpsStop">■ Termina</button>`;}
-      else{controls.className='gps-controls three';controls.innerHTML=`<button class="gps-btn pause" id="btnGpsPause">⏸ Pausa</button><button class="gps-btn lap" id="btnGpsLap">Split</button><button class="gps-btn stop" id="btnGpsStop">■ Termina</button>`;}
-      this.attachControlHandlers();
-    }
-    this.renderSplits();
-  },
-  renderIntervalPanel(){
-    const el=document.getElementById('intervalPanel');if(!el)return;
-    if(this.runType!=='intervals'||!this.config){el.style.display='none';return;}
-    el.style.display='block';
-    if(this.intervalPhase==='ready'){
-      el.className='interval-panel';
-      el.innerHTML=`<div class="interval-phase-label">Riscaldamento</div><div class="interval-detail">Pronto</div><div class="interval-detail-sub">${this.config.reps} rip · ${this.config.intervalType==='distance'?this.config.repDistance+'m':this.config.repDuration+'s'} · rec ${this.config.restSec}s</div><button class="interval-start-btn" id="btnStartIntervals">🏃 Inizia ripetute</button>`;
-      const b=document.getElementById('btnStartIntervals');if(b)b.onclick=()=>this.startIntervalWork();
-    } else if(this.intervalPhase==='work'){
-      el.className='interval-panel work';
-      let detail='',sub='';
-      if(this.config.intervalType==='distance'){
-        const curr=Math.round(this.distance-this.intervalWorkStartDist);
-        detail=`${curr}<span style="color:var(--text-mute);"> / ${this.config.repDistance}m</span>`;sub='Continua fino al target';
-      } else {
-        const secLeft=Math.max(0,Math.ceil((this.intervalPhaseEnd-Date.now())/1000));
-        detail=fmtTime(secLeft);sub='Tempo rimanente';
-      }
-      el.innerHTML=`<div class="interval-phase-label">▶ Lavoro</div><div class="interval-rep">${this.intervalRep}<span class="interval-rep-total"> / ${this.config.reps}</span></div><div class="interval-detail">${detail}</div><div class="interval-detail-sub">${sub}</div>`;
-    } else if(this.intervalPhase==='rest'){
-      const secLeft=Math.max(0,Math.ceil((this.intervalPhaseEnd-Date.now())/1000));
-      el.className='interval-panel rest';
-      el.innerHTML=`<div class="interval-phase-label">⏸ Recupero</div><div class="interval-rep">${this.intervalRep}<span class="interval-rep-total"> / ${this.config.reps}</span></div><div class="interval-detail" style="color:var(--hold);">${fmtTime(secLeft)}</div><div class="interval-detail-sub">Prossima: rip ${this.intervalRep+1}</div>`;
-    } else if(this.intervalPhase==='done'){
-      el.className='interval-panel done';
-      const times=this.splits.filter(s=>s.type==='interval');
-      const avg=times.length?times.reduce((a,s)=>a+s.time,0)/times.length:0;
-      el.innerHTML=`<div class="interval-phase-label">✓ Completate</div><div class="interval-rep">${this.config.reps}<span class="interval-rep-total"> / ${this.config.reps}</span></div><div class="interval-detail">Media ${fmtTime(avg)}</div><div class="interval-detail-sub">Ora defatica</div>`;
-    }
-  },
-  attachControlHandlers(){
-    const q=(id,fn)=>{const e=document.getElementById(id);if(e)e.onclick=fn;};
-    q('btnGpsStart',()=>this.start());q('btnGpsPause',()=>this.pause());q('btnGpsResume',()=>this.resume());
-    q('btnGpsStop',()=>{if(confirm('Terminare la corsa?'))this.stop();});
-    q('btnGpsCancel',()=>renderCorsa());q('btnGpsLap',()=>this.manualSplit());
-  },
-  manualSplit(){
-    if(!this.tracking)return;
-    const lastTime=this.splits.reduce((a,s)=>a+(s.time||0),0);
-    this.splits.push({type:'manual',rep:this.splits.length+1,time:this.elapsed-lastTime,cumTime:this.elapsed,km:(this.distance/1000).toFixed(2)});
-    beep(880,0.15,0.3);toast(`Split ${this.splits.length}`);this.renderSplits();
-  },
-  renderSplits(){
-    const el=document.getElementById('gpsSplitsList');if(!el)return;
-    if(this.splits.length===0){el.innerHTML='<div style="font-size:12px;color:var(--text-mute);padding:4px 0;font-family:var(--font-body);">Nessuno split ancora.</div>';return;}
-    el.innerHTML=`<div class="gps-split-row head"><div>#</div><div>Tipo</div><div>Split</div><div>Totale</div></div>`+
-      this.splits.map((s,i)=>{
-        const type=s.type==='interval'?`Rip ${s.rep}${s.dist?' ('+s.dist+'m)':''}`:s.type==='manual'?'Manuale':`Km ${s.km||i+1}`;
-        return`<div class="gps-split-row"><div class="gps-split-num">${i+1}</div><div>${type}</div><div class="gps-split-pace">${fmtTime(s.time)}</div><div>${fmtTime(s.cumTime)}</div></div>`;
-      }).join('');
-  },
-  initMap(){
-    if(this.mapReady||typeof L==='undefined')return;
-    try{
-      this.map=L.map('gpsMap',{zoomControl:false,attributionControl:false}).setView([41.9,12.5],13);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(this.map);
-      L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(this.map);
-      this.mapLine=L.polyline([],{color:'#1D3EDC',weight:4}).addTo(this.map);
-      this.mapReady=true;setTimeout(()=>this.map&&this.map.invalidateSize(),200);
-    }catch(e){}
-  },
-  updateMap(pt){
-    if(!this.mapReady){this.renderFallbackRoute();return;}
-    try{
-      // Full polyline redraw ensures every captured point is rendered
-      this.mapLine.setLatLngs(this.route.map(p=>[p.lat,p.lng]));
-      if(this.mapMarker){
-        this.mapMarker.setLatLng([pt.lat,pt.lng]);
-      } else {
-        this.mapMarker=L.circleMarker([pt.lat,pt.lng],{radius:8,color:'#FFFFFF',fillColor:'#1D3EDC',fillOpacity:1,weight:3}).addTo(this.map);
-        // Set initial zoom+center only on first point
-        this.map.setView([pt.lat,pt.lng],17);
-      }
-      // Gentle follow: pan only, keep user's zoom level
-      this.map.panTo([pt.lat,pt.lng],{animate:true,duration:0.6,easeLinearity:0.5});
-    }catch(e){console.warn('map',e);}
-  },
-  renderFallbackRoute(){
-    const wrap=document.getElementById('gpsMap');if(!wrap||this.route.length<2)return;
-    const pts=this.route,lats=pts.map(p=>p.lat),lngs=pts.map(p=>p.lng);
-    const minLat=Math.min(...lats),maxLat=Math.max(...lats),minLng=Math.min(...lngs),maxLng=Math.max(...lngs);
-    const rLat=Math.max(maxLat-minLat,0.0005),rLng=Math.max(maxLng-minLng,0.0005);
-    const w=300,h=200,pad=20;
-    const path=pts.map((p,i)=>{const x=pad+((p.lng-minLng)/rLng)*(w-2*pad),y=pad+(1-(p.lat-minLat)/rLat)*(h-2*pad);return`${i===0?'M':'L'}${x.toFixed(1)},${y.toFixed(1)}`;}).join('');
-    const last=pts[pts.length-1];
-    const lx=pad+((last.lng-minLng)/rLng)*(w-2*pad),ly=pad+(1-(last.lat-minLat)/rLat)*(h-2*pad);
-    wrap.innerHTML=`<div class="gps-map-fallback"><svg viewBox="0 0 ${w} ${h}"><path d="${path}"/><circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="5"/></svg></div>`;
-  },
-  saveRun(rpe,notes){
-    const run={date:new Date().toISOString(),type:this.runType,mode:'gps',
-      duration:Math.round(this.elapsed/60*10)/10,distance:Math.round(this.distance/10)/100,rpe:rpe,
-      intervals:this.runType==='intervals'?this.splits.filter(s=>s.type==='interval').length:null,
-      activity:this.runType==='libera'?(this.config?.activity||'corsa'):null,
-      notes:notes||'',route:this.downsampleRoute(),splits:this.splits,config:this.config};
-    state.runs.push(run);save();toast(this.runType==='libera'?'Attività salvata':'Corsa salvata');this.reset();
-  },
-  downsampleRoute(){
-    if(this.route.length<=200)return this.route.map(p=>({lat:p.lat,lng:p.lng,ts:p.ts}));
-    const step=Math.ceil(this.route.length/200),out=[];
-    for(let i=0;i<this.route.length;i+=step)out.push({lat:this.route[i].lat,lng:this.route[i].lng,ts:this.route[i].ts});
-    return out;
-  }
-};
-
-/* ===================== PREVIEW MAP (Corsa tab) ===================== */
-let previewMap=null;
-function cleanupPreviewMap(){if(previewMap){try{previewMap.remove();}catch(e){}previewMap=null;}}
-function initPreviewMap(){
-  if(typeof L==='undefined')return;
-  const el=document.getElementById('previewMap');if(!el)return;
-  cleanupPreviewMap();
-  try{
-    previewMap=L.map('previewMap',{zoomControl:true,attributionControl:false}).setView([41.9,12.5],5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(previewMap);
-    L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(previewMap);
-    setTimeout(()=>previewMap&&previewMap.invalidateSize(),200);
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(
-        p=>{
-          const{latitude,longitude,accuracy}=p.coords;
-          if(!previewMap)return;
-          previewMap.setView([latitude,longitude],16);
-          L.circleMarker([latitude,longitude],{radius:8,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:0.9,weight:2}).addTo(previewMap);
-          L.circle([latitude,longitude],{radius:accuracy,color:'#1D3EDC',fillColor:'#1D3EDC',fillOpacity:0.08,weight:1}).addTo(previewMap);
-          const st=document.getElementById('previewStatus');
-          if(st)st.innerHTML='<span class="dot"></span>Posizione rilevata · ±'+Math.round(accuracy)+'m';
-        },
-        e=>{
-          const st=document.getElementById('previewStatus');
-          if(!st)return;
-          if(e.code===1)st.innerHTML='<span class="dot" style="background:var(--deload);"></span>Permesso posizione negato';
-          else if(e.code===3)st.innerHTML='<span class="dot" style="background:var(--deload);"></span>GPS timeout — segnale debole';
-          else st.innerHTML='<span class="dot" style="background:var(--deload);"></span>Posizione non disponibile';
-        },
-        {enableHighAccuracy:true,timeout:10000,maximumAge:30000}
-      );
-    }
-  }catch(e){}
-}
-
 /* ===================== NAV ===================== */
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    if(gps.tracking){if(!confirm('Corsa in corso — vuoi uscire?'))return;gps.reset();releaseWakeLock();}
-    cleanupPreviewMap();
     const v=btn.dataset.view;
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b===btn));
     document.querySelectorAll('.view').forEach(view=>view.classList.remove('active'));
@@ -1856,134 +1546,53 @@ document.getElementById('altSheetClose').onclick=()=>closeAltSheet();
 document.getElementById('altSheetOverlay').onclick=()=>closeAltSheet();
 
 /* ===================== CORSA (unchanged flow, uses gps + alertLoop) ===================== */
-let corsaMode='gps';
-document.querySelectorAll('.run-mode-tab').forEach(b=>{
-  b.addEventListener('click',()=>{
-    if(gps.tracking){toast('Termina prima la corsa in corso');return;}
-    corsaMode=b.dataset.mode;
-    document.querySelectorAll('.run-mode-tab').forEach(x=>x.classList.toggle('active',x===b));
-    renderCorsa();
-  });
-});
 function renderCorsa(){
-  if(gps.tracking){cleanupPreviewMap();renderCorsaGpsLive();return;}
-  cleanupPreviewMap();
   const c=document.getElementById('corsaContent');
-  const isInsecure=location.protocol==='file:'||(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1');
-  if(corsaMode==='gps'){
-    c.innerHTML=`${isInsecure?`<div class="gps-warn"><strong>GPS non disponibile in locale.</strong> Servi via HTTPS per il tracking.</div>`:'<div class="gps-preview-wrap"><div id="previewMap"></div></div><div class="gps-preview-status" id="previewStatus"><span class="dot" style="background:var(--hold);"></span>Rilevamento posizione...</div>'}<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div><div class="run-picker" id="runPicker"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
-    const p=document.getElementById('runPicker');
-    p.innerHTML=Object.values(RUN_TYPES).map(r=>`<button class="run-type" data-type="${r.key}"><div class="run-type-target mono">${r.target}</div><div class="run-type-name">${r.name}</div><div class="run-type-desc">${r.desc}</div></button>`).join('');
-    p.querySelectorAll('.run-type').forEach(b=>b.addEventListener('click',()=>renderCorsaGpsConfig(b.dataset.type)));
-    if(!isInsecure)setTimeout(initPreviewMap,50);
-  } else {
-    c.innerHTML=`<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa fai oggi?</div><div class="run-picker" id="runPicker"></div><div id="runLogger" style="display:none;"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
-    const p=document.getElementById('runPicker');
-    p.innerHTML=Object.values(RUN_TYPES).map(r=>`<button class="run-type" data-type="${r.key}"><div class="run-type-target mono">${r.target}</div><div class="run-type-name">${r.name}</div><div class="run-type-desc">${r.desc}</div></button>`).join('');
-    p.querySelectorAll('.run-type').forEach(b=>b.addEventListener('click',()=>openRunLogger(b.dataset.type)));
-  }
+  c.innerHTML=`<div class="card-title" style="margin-bottom:14px;padding:0 4px;">Che corsa hai fatto?</div><div class="run-picker" id="runPicker"></div><div id="runLogger" style="display:none;"></div><div class="card" style="margin-top:20px;"><div class="card-title">Storico corsa</div><div id="runHistory"></div></div>`;
+  const p=document.getElementById('runPicker');
+  p.innerHTML=Object.values(RUN_TYPES).map(r=>`<button class="run-type" data-type="${r.key}"><div class="run-type-target mono">${r.target}</div><div class="run-type-name">${r.name}</div><div class="run-type-desc">${r.desc}</div></button>`).join('');
+  p.querySelectorAll('.run-type').forEach(b=>b.addEventListener('click',()=>openRunLogger(b.dataset.type)));
   renderRunHistory();
-}
-let intervalTypeSelected='distance';
-function renderCorsaGpsConfig(type){
-  cleanupPreviewMap();
-  const t=RUN_TYPES[type],cfg=t.defaultConfig;
-  intervalTypeSelected=cfg.intervalType||'distance';
-  const c=document.getElementById('corsaContent');
-  let fields='';
-  if(type==='libera')fields=`<div class="gps-config-group" style="margin-bottom:8px;"><label>Tipo di attività</label><div class="activity-picker" id="activityPicker">${Object.entries(ACTIVITIES).map(([k,a])=>`<button class="activity-btn ${k===activitySelected?'active':''}" data-act="${k}"><span class="activity-btn-icon">${a.icon}</span>${a.name}</button>`).join('')}</div></div><div style="font-size:12px;color:var(--text-mute);text-align:center;padding:6px;">Nessun target da impostare — parti e vai.</div>`;
-  else if(type==='easy')fields=`<div class="gps-config-row"><div class="gps-config-group"><label>Durata target (min)</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgDur" value="${cfg.targetDuration}"></div><div class="gps-config-group"><label>Pace max (min/km)</label><input class="gps-config-input" type="number" inputmode="decimal" step="0.1" id="cfgPace" value="${cfg.targetPaceMax}"></div></div>`;
-  else if(type==='intervals')fields=`<div class="gps-config-group" style="margin-bottom:12px;"><label>Tipo ripetute</label><div class="interval-type-tabs"><button class="interval-type-tab ${intervalTypeSelected==='distance'?'active':''}" data-itype="distance">📏 Distanza</button><button class="interval-type-tab ${intervalTypeSelected==='time'?'active':''}" data-itype="time">⏱ Tempo</button></div></div><div class="gps-config-row three"><div class="gps-config-group"><label>N° rip</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgReps" value="${cfg.reps}"></div><div class="gps-config-group"><label>${intervalTypeSelected==='distance'?'Distanza (m)':'Lavoro (s)'}</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgWork" value="${intervalTypeSelected==='distance'?cfg.repDistance:cfg.repDuration}"></div><div class="gps-config-group"><label>Recupero (s)</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgRest" value="${cfg.restSec}"></div></div>`;
-  else fields=`<div class="gps-config-row"><div class="gps-config-group"><label>Durata (min)</label><input class="gps-config-input" type="number" inputmode="numeric" id="cfgDur" value="${cfg.targetDuration}"></div><div class="gps-config-group"><label>Distanza (km)</label><input class="gps-config-input" type="number" inputmode="decimal" step="0.1" id="cfgDist" value="${cfg.targetDistance}"></div></div>`;
-  c.innerHTML=`<button class="btn-secondary" id="btnBackRun" style="margin-bottom:14px;">← Cambia tipo</button><div class="hero"><div class="hero-label">${t.target}</div><div class="hero-title">${t.name}</div><div class="hero-sub">${t.desc}</div></div><div class="gps-config-card"><div class="card-title" style="margin-bottom:14px;">Configurazione</div>${fields}</div><button class="btn-primary" id="btnGoLive">🛰 Avvia tracking GPS</button><div style="margin-top:12px;font-size:12px;color:var(--text-mute);text-align:center;">Al primo avvio iOS chiederà il permesso posizione.</div>`;
-  document.getElementById('btnBackRun').onclick=()=>renderCorsa();
-  if(type==='intervals'){
-    document.querySelectorAll('.interval-type-tab').forEach(b=>{
-      b.addEventListener('click',()=>{intervalTypeSelected=b.dataset.itype;renderCorsaGpsConfig(type);});
-    });
-  }
-  if(type==='libera'){
-    document.querySelectorAll('.activity-btn').forEach(b=>{
-      b.addEventListener('click',()=>{activitySelected=b.dataset.act;renderCorsaGpsConfig(type);});
-    });
-  }
-  document.getElementById('btnGoLive').onclick=()=>{
-    let config={};
-    if(type==='easy')config={targetDuration:+document.getElementById('cfgDur').value||35,targetPaceMax:+document.getElementById('cfgPace').value||6.5};
-    else if(type==='intervals'){
-      const wv=+document.getElementById('cfgWork').value||(intervalTypeSelected==='distance'?400:60);
-      config={intervalType:intervalTypeSelected,reps:+document.getElementById('cfgReps').value||6,restSec:+document.getElementById('cfgRest').value||90};
-      if(intervalTypeSelected==='distance')config.repDistance=wv;else config.repDuration=wv;
-    } else if(type==='libera')config={activity:activitySelected};
-    else config={targetDuration:+document.getElementById('cfgDur').value||50,targetDistance:+document.getElementById('cfgDist').value||8};
-    gps.init(type,config);renderCorsaGpsLive();setTimeout(()=>gps.start(),100);
-  };
-}
-function renderCorsaGpsLive(){
-  const t=RUN_TYPES[gps.runType],c=document.getElementById('corsaContent');
-  let target='';
-  if(gps.config){
-    if(gps.runType==='easy')target=`Target: ${gps.config.targetDuration} min · pace max ${fmtPace(gps.config.targetPaceMax)}/km`;
-    else if(gps.runType==='intervals'){const wd=gps.config.intervalType==='distance'?gps.config.repDistance+'m':gps.config.repDuration+'s';target=`Target: ${gps.config.reps}×${wd} · rec ${gps.config.restSec}s`;}
-    else if(gps.runType==='libera'){const a=ACTIVITIES[gps.config.activity]||ACTIVITIES.corsa;target=`${a.icon} ${a.name} · libera`;}
-    else target=`Target: ${gps.config.targetDuration} min · ${gps.config.targetDistance} km`;
-  }
-  c.innerHTML=`<div class="hero" style="padding:16px 20px;"><div class="hero-label">${t.name}</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--text-dim);">${target}</div></div><div class="gps-status" id="gpsStatus"><span class="dot"></span>Pronto</div>${gps.runType==='intervals'?'<div id="intervalPanel" class="interval-panel"></div>':''}<div class="gps-stat-hero"><div class="gps-stat-hero-label">Distanza</div><div class="gps-stat-hero-value"><span id="gpsDistance">0.00</span></div><div class="gps-stat-hero-unit">km</div></div><div class="gps-stats"><div class="gps-stat"><div class="gps-stat-label">Tempo</div><div class="gps-stat-value" id="gpsTime">0:00</div></div><div class="gps-stat"><div class="gps-stat-label">Pace corr.</div><div class="gps-stat-value" id="gpsPace">—</div><div class="gps-stat-sub">min/km</div></div></div><div class="gps-stats"><div class="gps-stat" style="grid-column:1/-1;"><div class="gps-stat-label">Pace medio</div><div class="gps-stat-value" id="gpsAvgPace">—</div><div class="gps-stat-sub">cumulativo</div></div></div><div class="gps-map-wrap"><div id="gpsMap"></div></div><div id="gpsControls" class="gps-controls"></div><div class="gps-splits"><div class="card-title" style="margin-bottom:8px;">Splits</div><div id="gpsSplitsList"></div></div>`;
-  gps.initMap();gps.render();
-}
-function renderCorsaGpsSummary(){
-  const t=RUN_TYPES[gps.runType],c=document.getElementById('corsaContent');
-  const km=gps.distance/1000,dur=gps.elapsed/60,pace=gps.currentPace();
-  const speed=dur>0?(km/(dur/60)):0;
-  const isLibera=gps.runType==='libera';
-  const activity=isLibera?(ACTIVITIES[gps.config?.activity]||ACTIVITIES.corsa):null;
-  const heroTitle=isLibera?`${activity.icon} ${activity.name}`:t.name;
-  const heroLabel=isLibera?'Attività completata':'Corsa completata';
-  const heroSub=isLibera?`${fmtTime(gps.elapsed)} · ${km.toFixed(2)} km · ${fmtPace(pace)}/km · ${speed.toFixed(1)} km/h`:`${fmtTime(gps.elapsed)} · ${km.toFixed(2)} km · pace ${fmtPace(pace)}/km`;
-  const fb=isLibera?null:t.getFeedback({duration:dur,distance:km,rpe:5,intervals:gps.splits.filter(s=>s.type==='interval').length});
-  const feedbackHtml=fb?`<div id="sumFeedback" class="ex-reco ${fb.level}" style="margin-top:14px;"><div style="margin-bottom:8px;"><span class="feedback-pill ${fb.level}">${fb.pill}</span></div><div>${fb.text}</div></div>`:'';
-  c.innerHTML=`<div class="hero"><div class="hero-label">${heroLabel}</div><div class="hero-title">${heroTitle}</div><div class="hero-sub">${heroSub}</div></div><div class="gps-map-wrap"><div id="gpsMap"></div></div><div class="card"><div class="card-title">Come è andata?</div><div class="run-inputs"><div class="run-input-group"><label>RPE (1-10)</label><input class="run-input-big" type="number" inputmode="numeric" min="1" max="10" id="sumRpe" value="5"></div><div class="run-input-group"><label>Km percorsi</label><div class="run-input-big" style="opacity:0.6;">${km.toFixed(2)}</div></div></div><div class="ex-block" style="margin-top:14px;"><div class="ex-block-label">Note</div><textarea class="notes-input" id="sumNotes" placeholder="Sensazioni, condizioni..."></textarea></div>${feedbackHtml}<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;"><button class="btn-secondary" id="btnDiscardRun">Scarta</button><button class="btn-primary" id="btnSaveRun">Salva</button></div></div>`;
-  if(typeof L!=='undefined'&&gps.route.length>0){
-    try{
-      const map=L.map('gpsMap',{zoomControl:false,attributionControl:false});
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(map);
-      L.control.attribution({prefix:false}).addAttribution('© OSM').addTo(map);
-      const line=L.polyline(gps.route.map(p=>[p.lat,p.lng]),{color:'#1D3EDC',weight:4}).addTo(map);
-      map.fitBounds(line.getBounds(),{padding:[20,20]});
-      setTimeout(()=>map.invalidateSize(),200);
-    }catch(e){gps.renderFallbackRoute();}
-  } else gps.renderFallbackRoute();
-  if(fb){
-    document.getElementById('sumRpe').addEventListener('input',(e)=>{
-      const rpe=+e.target.value||5;
-      const f=t.getFeedback({duration:dur,distance:km,rpe,intervals:gps.splits.filter(s=>s.type==='interval').length});
-      if(!f)return;
-      document.getElementById('sumFeedback').className=`ex-reco ${f.level}`;
-      document.getElementById('sumFeedback').innerHTML=`<div style="margin-bottom:8px;"><span class="feedback-pill ${f.level}">${f.pill}</span></div><div>${f.text}</div>`;
-    });
-  }
-  document.getElementById('btnDiscardRun').onclick=()=>{if(confirm('Scartare?')){gps.reset();renderCorsa();}};
-  document.getElementById('btnSaveRun').onclick=()=>{gps.saveRun(+document.getElementById('sumRpe').value||5,document.getElementById('sumNotes').value);renderCorsa();};
 }
 let currentRun=null;
 function openRunLogger(type){
   const isLibera=type==='libera';
-  currentRun={type,date:new Date().toISOString(),mode:'manual',duration:null,distance:null,rpe:null,intervals:null,activity:isLibera?activitySelected:null,notes:''};
+  const today=new Date().toISOString().slice(0,10);
+  currentRun={type,date:new Date().toISOString(),mode:'manual',duration:null,distance:null,rpe:null,intervals:null,hr:null,activity:isLibera?activitySelected:null,notes:''};
   const t=RUN_TYPES[type],showInt=type==='intervals';
   const l=document.getElementById('runLogger');
   const targetLine=isLibera?'Nessun target · scegli attività':t.target;
   const activityBlock=isLibera?`<div class="ex-block" style="margin-top:14px;"><div class="ex-block-label">Attività</div><div class="activity-picker" id="mActPicker">${Object.entries(ACTIVITIES).map(([k,a])=>`<button class="activity-btn ${k===activitySelected?'active':''}" data-act="${k}"><span class="activity-btn-icon">${a.icon}</span>${a.name}</button>`).join('')}</div></div>`:'';
-  l.innerHTML=`<div class="card"><div class="card-h"><div><div class="card-title" style="margin:0;">${t.name}</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--accent);margin-top:4px;font-weight:600;">${targetLine}</div></div><button class="btn-secondary" id="btnCancelRun">Annulla</button></div>${activityBlock}<div class="run-inputs"><div class="run-input-group"><label>Durata (min)</label><input class="run-input-big" type="number" inputmode="decimal" step="0.1" id="runDur"></div><div class="run-input-group"><label>Distanza (km)</label><input class="run-input-big" type="number" inputmode="decimal" step="0.01" id="runDist"></div></div><div class="run-inputs"><div class="run-input-group"><label>RPE (1-10)</label><input class="run-input-big" type="number" inputmode="numeric" min="1" max="10" id="runRpe"></div>${showInt?`<div class="run-input-group"><label>N° ripetute</label><input class="run-input-big" type="number" inputmode="numeric" id="runInt"></div>`:'<div></div>'}</div><div class="ex-block" style="margin-top:14px;"><div class="ex-block-label">Note</div><textarea class="notes-input" id="runNotes"></textarea></div><div id="runFeedback"></div><div style="margin-top:16px;"><button class="btn-primary" id="btnSaveManualRun">Salva</button></div></div>`;
+  l.innerHTML=`<div class="card"><div class="card-h"><div><div class="card-title" style="margin:0;">${t.name}</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--accent);margin-top:4px;font-weight:600;">${targetLine}</div></div><button class="btn-secondary" id="btnCancelRun">Annulla</button></div>${activityBlock}<div class="ex-block" style="margin-top:14px;"><div class="ex-block-label">Data</div><input class="body-input-big" type="date" id="runDate" value="${today}" style="width:100%;"></div><div class="run-inputs" style="margin-top:14px;"><div class="run-input-group"><label>Durata (min)</label><input class="run-input-big" type="number" inputmode="decimal" step="0.1" id="runDur" placeholder="35"></div><div class="run-input-group"><label>Distanza (km)</label><input class="run-input-big" type="number" inputmode="decimal" step="0.01" id="runDist" placeholder="6.20"></div></div><div class="run-inputs"><div class="run-input-group"><label>RPE (1-10)</label><input class="run-input-big" type="number" inputmode="numeric" min="1" max="10" id="runRpe" placeholder="5"></div>${showInt?`<div class="run-input-group"><label>N° ripetute</label><input class="run-input-big" type="number" inputmode="numeric" id="runInt" placeholder="6"></div>`:`<div class="run-input-group"><label>Freq. cardiaca <span style="opacity:0.5;">(opz.)</span></label><input class="run-input-big" type="number" inputmode="numeric" id="runHr" placeholder="bpm"></div>`}</div><div id="runCalc" class="compare-box" style="margin-top:14px;display:none;"></div><div class="ex-block" style="margin-top:14px;"><div class="ex-block-label">Note</div><textarea class="notes-input" id="runNotes" placeholder="Meteo, sensazioni, condizioni..."></textarea></div><div id="runFeedback"></div><div style="margin-top:16px;"><button class="btn-primary" id="btnSaveManualRun">Salva</button></div></div>`;
   l.style.display='block';
   const upd=()=>{
-    const s={duration:parseFloat(document.getElementById('runDur').value)||null,distance:parseFloat(document.getElementById('runDist').value)||null,rpe:parseInt(document.getElementById('runRpe').value)||null,intervals:showInt?parseInt(document.getElementById('runInt').value)||null:null};
+    const dateVal=document.getElementById('runDate').value;
+    const s={
+      duration:parseFloat(document.getElementById('runDur').value)||null,
+      distance:parseFloat(document.getElementById('runDist').value)||null,
+      rpe:parseInt(document.getElementById('runRpe').value)||null,
+      intervals:showInt?parseInt(document.getElementById('runInt').value)||null:null,
+      hr:!showInt?parseInt(document.getElementById('runHr')?.value)||null:null
+    };
+    // Update date if changed (keep it as ISO with midnight so sorting works)
+    if(dateVal){currentRun.date=new Date(dateVal+'T12:00:00').toISOString();}
     currentRun={...currentRun,...s,notes:document.getElementById('runNotes').value};
+    // Live pace/speed calc
+    const calc=document.getElementById('runCalc');
+    if(s.duration&&s.distance&&s.duration>0&&s.distance>0){
+      const pace=s.duration/s.distance;
+      const speed=s.distance/(s.duration/60);
+      calc.style.display='block';
+      calc.innerHTML=`Pace medio: <strong>${fmtPace(pace)}/km</strong> · Velocità media: <strong>${speed.toFixed(1)} km/h</strong>`;
+    } else {
+      calc.style.display='none';
+    }
     if(isLibera){document.getElementById('runFeedback').innerHTML='';return;}
     const fb=t.getFeedback(currentRun);
     if(!fb){document.getElementById('runFeedback').innerHTML='';return;}
     document.getElementById('runFeedback').innerHTML=(s.duration||s.distance)?`<div class="ex-reco ${fb.level}" style="margin-top:14px;"><div style="margin-bottom:8px;"><span class="feedback-pill ${fb.level}">${fb.pill}</span></div><div>${fb.text}</div></div>`:'';
   };
-  ['runDur','runDist','runRpe','runInt','runNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',upd);});
+  ['runDate','runDur','runDist','runRpe','runInt','runHr','runNotes'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',upd);});
   if(isLibera){
     document.querySelectorAll('#mActPicker .activity-btn').forEach(b=>{
       b.addEventListener('click',()=>{
@@ -1996,7 +1605,7 @@ function openRunLogger(type){
   document.getElementById('btnCancelRun').onclick=()=>{currentRun=null;renderCorsa();};
   document.getElementById('btnSaveManualRun').onclick=()=>{
     if(!currentRun.duration&&!currentRun.distance&&!confirm('Nessun dato. Salvare?'))return;
-    state.runs.push({...currentRun});save();toast('Corsa salvata');currentRun=null;renderCorsa();
+    state.runs.push({...currentRun});save();toast(isLibera?'Attività salvata':'Corsa salvata');currentRun=null;renderCorsa();
   };
   window.scrollTo(0,0);
 }
@@ -2715,6 +2324,16 @@ if('serviceWorker' in navigator){
 }
 
 /* ===================== INIT ===================== */
+document.getElementById('homeHero').addEventListener('click',()=>{
+  const next=nextSuggestedDay();
+  if(!DAYS[next])return;
+  // Switch to palestra view + open workout
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view==='palestra'));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-palestra').classList.add('active');
+  window.scrollTo(0,0);
+  openWorkout(next);
+});
 loadSchede().finally(()=>{renderHome();GDrive.init();});
 </script>
 </body>

@@ -1091,7 +1091,7 @@ function computePaceZones(fiveKSec){
     reps:{min:Math.round(p*0.88),max:Math.round(p*0.94)}
   };
 }
-function weekOfDate(dateStr){const d=new Date(dateStr);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);d.setHours(0,0,0,0);return d.toISOString().slice(0,10);}
+function weekOfDate(dateStr){const d=new Date(dateStr);const day=d.getDay()||7;d.setDate(d.getDate()-day+1);d.setHours(12,0,0,0);return d.toISOString().slice(0,10);}
 function thisWeekStart(){return weekOfDate(new Date().toISOString());}
 function isDeloadWeek(){const t=thisWeekStart();return state.deloadWeeks.some(d=>d.startDate===t);}
 
@@ -1783,8 +1783,8 @@ function renderDeloadControls(){
   if(!mb||!ub)return;
   mb.style.display=marked?'none':'block';
   ub.style.display=marked?'block':'none';
-  mb.onclick=()=>{const wk=weekKey(new Date());state.deloadWeeks.push({startDate:wk});save();toast('Settimana marcata come scarico');renderDeloadControls();renderHome();};
-  ub.onclick=()=>{const wk=weekKey(new Date());state.deloadWeeks=state.deloadWeeks.filter(d=>d.startDate!==wk);save();toast('Scarico rimosso');renderDeloadControls();renderHome();};
+  mb.onclick=()=>{const wk=thisWeekStart();state.deloadWeeks.push({startDate:wk});save();toast('Settimana marcata come scarico');renderDeloadControls();renderHome();};
+  ub.onclick=()=>{const wk=thisWeekStart();state.deloadWeeks=state.deloadWeeks.filter(d=>d.startDate!==wk);save();toast('Scarico rimosso');renderDeloadControls();renderHome();};
 }
 function renderThemeToggle(){
   const wrap=document.getElementById('themeToggle');if(!wrap)return;
@@ -2322,6 +2322,248 @@ if('serviceWorker' in navigator){
     });
   });
 }
+
+/* ===================== DIETA ===================== */
+/* Blocco auto-installante: inietta CSS, tab di navigazione, view e logica.
+   Incollare per intero subito PRIMA della riga:
+   /* ===================== INIT ===================== *\/
+   Nessun'altra modifica a index.html è necessaria. */
+
+let DIETA=null;
+let dietaSelectedDay=null;
+let dietaSpesaOpen=false;
+
+const DIETA_ORDER=['lunedi','martedi','mercoledi','giovedi','venerdi','sabato','domenica'];
+const DIETA_SHORT={lunedi:'Lun',martedi:'Mar',mercoledi:'Mer',giovedi:'Gio',venerdi:'Ven',sabato:'Sab',domenica:'Dom'};
+
+async function loadDieta(){
+  try{
+    const resp=await fetch('./dieta.json',{cache:'no-cache'});
+    if(!resp.ok)return false;
+    const d=await resp.json();
+    if(d&&d.giorni&&typeof d.giorni==='object'){DIETA=d;return true;}
+  }catch(e){}
+  return false;
+}
+
+/* data reale (YYYY-MM-DD) del giorno della settimana corrente */
+function dietaDateFor(key){
+  const idx=DIETA_ORDER.indexOf(key);
+  if(idx<0)return todayStr();
+  const d=new Date();
+  const jsDay=d.getDay()||7;              // 1=lun ... 7=dom
+  d.setDate(d.getDate()-(jsDay-1)+idx);
+  d.setHours(12,0,0,0);
+  return d.toISOString().slice(0,10);
+}
+function dietaTodayKey(){
+  const jsDay=new Date().getDay()||7;
+  return DIETA_ORDER[jsDay-1];
+}
+function dietaLogFor(date){
+  if(!state.dietaLog)state.dietaLog=[];
+  let e=state.dietaLog.find(x=>x.date===date);
+  if(!e){e={date,meals:{}};state.dietaLog.push(e);}
+  if(!e.meals)e.meals={};
+  return e;
+}
+function dietaToggleMeal(date,meal){
+  const e=dietaLogFor(date);
+  e.meals[meal]=!e.meals[meal];
+  save();
+}
+
+function renderDieta(){
+  const v=document.getElementById('view-dieta');
+  if(!v)return;
+  if(!DIETA){
+    v.innerHTML=`<div class="card"><div class="card-title">Dieta</div><div style="color:var(--text-mute);font-size:14px;line-height:1.5;">File <code>dieta.json</code> non trovato. Caricalo nella root del progetto, allo stesso livello di <code>index.html</code>, poi riapri l'app.</div></div>`;
+    return;
+  }
+  if(!dietaSelectedDay||!DIETA.giorni[dietaSelectedDay]){
+    dietaSelectedDay=DIETA.giorni[dietaTodayKey()]?dietaTodayKey():DIETA_ORDER.find(k=>DIETA.giorni[k]);
+  }
+  const key=dietaSelectedDay;
+  const g=DIETA.giorni[key];
+  const date=dietaDateFor(key);
+  const log=(state.dietaLog||[]).find(x=>x.date===date)||{meals:{}};
+  const isToday=key===dietaTodayKey();
+  const t=DIETA.target||{};
+
+  const chips=DIETA_ORDER.filter(k=>DIETA.giorni[k]).map(k=>{
+    const d=dietaDateFor(k);
+    const l=(state.dietaLog||[]).find(x=>x.date===d);
+    const done=l&&DIETA.giorni[k].pasti.every(p=>l.meals&&l.meals[p.nome]);
+    return`<button class="dieta-day-chip ${k===key?'active':''} ${k===dietaTodayKey()?'today':''}" data-dietaday="${k}">${DIETA_SHORT[k]}${done?' ✓':''}</button>`;
+  }).join('');
+
+  const totalMeals=g.pasti.length;
+  const doneMeals=g.pasti.filter(p=>log.meals&&log.meals[p.nome]).length;
+
+  const mealsHTML=g.pasti.map(p=>{
+    const on=!!(log.meals&&log.meals[p.nome]);
+    const foods=p.alimenti.map(a=>{
+      const qty=a.quantita==null?'':(typeof a.quantita==='number'?`${a.quantita} ${a.unita||'g'}`:a.quantita);
+      const note=a.nota?`<div class="food-note">${a.nota}</div>`:'';
+      return`<div class="food-row"><div class="food-name">${a.nome}${note}</div><div class="food-qty">${qty}</div></div>`;
+    }).join('');
+    const m=p.macro||{};
+    return`<div class="meal ${on?'done':''}" data-meal="${p.nome}">
+      <div class="meal-head">
+        <button class="meal-check ${on?'on':''}" data-mealcheck="${p.nome}">✓</button>
+        <div class="meal-head-l"><div class="meal-name">${p.nome}<span class="meal-time mono">${p.ora||''}</span></div>
+        <div class="meal-macro mono">${Math.round(m.kcal||0)} kcal · ${Math.round(m.proteine||0)}P · ${Math.round(m.carboidrati||0)}C · ${Math.round(m.grassi||0)}F</div></div>
+        <div class="ex-head-caret">▾</div>
+      </div>
+      <div class="meal-body">${foods}</div>
+    </div>`;
+  }).join('');
+
+  const m=g.macro||{};
+  const bar=(val,target,color)=>{
+    const pct=target?Math.min(100,Math.round(val/target*100)):0;
+    return`<div class="macro-bar"><div class="macro-bar-fill" style="width:${pct}%;background:${color};"></div></div>`;
+  };
+
+  const spesaHTML=Object.entries(DIETA.listaSpesa||{}).map(([cat,voci])=>
+    `<div class="spesa-cat">${cat}</div>`+voci.map(x=>
+      `<div class="food-row"><div class="food-name">${x.nome}</div><div class="food-qty">${x.quantita} ${x.unita||'g'}</div></div>`
+    ).join('')
+  ).join('');
+
+  const noteHTML=(DIETA.note||[]).map(n=>`<div style="font-size:13px;color:var(--text-dim);line-height:1.5;padding:6px 0;border-bottom:1px solid var(--border);">${n}</div>`).join('');
+
+  v.innerHTML=`
+    <div class="hero" style="margin-bottom:14px;">
+      <div class="hero-label">${DIETA.fase?DIETA.fase.nome:'Dieta'} ${isToday?'· oggi':''}</div>
+      <div class="hero-title">${g.nome}</div>
+      <div class="hero-sub">${g.contesto||''}</div>
+    </div>
+
+    <div class="dieta-daybar">${chips}</div>
+
+    <div class="card">
+      <div class="card-h"><div class="card-title" style="margin:0;">Pasti completati</div>
+      <div class="mono" style="font-size:13px;font-weight:700;color:${doneMeals===totalMeals?'var(--go)':'var(--text-dim)'};">${doneMeals}/${totalMeals}</div></div>
+      ${bar(doneMeals,totalMeals,doneMeals===totalMeals?'var(--go)':'var(--accent)')}
+    </div>
+
+    ${mealsHTML}
+
+    <div class="card">
+      <div class="card-title">Totale giornata</div>
+      <div class="macro-grid">
+        <div class="macro-box"><div class="macro-val">${Math.round(m.kcal||0)}</div><div class="macro-lbl">kcal</div>${bar(m.kcal,t.kcal,'var(--accent)')}</div>
+        <div class="macro-box"><div class="macro-val">${Math.round(m.proteine||0)}</div><div class="macro-lbl">prot</div>${bar(m.proteine,t.proteine,'var(--go)')}</div>
+        <div class="macro-box"><div class="macro-val">${Math.round(m.carboidrati||0)}</div><div class="macro-lbl">carb</div>${bar(m.carboidrati,t.carboidrati,'var(--hold)')}</div>
+        <div class="macro-box"><div class="macro-val">${Math.round(m.grassi||0)}</div><div class="macro-lbl">gras</div>${bar(m.grassi,t.grassi,'var(--info)')}</div>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute);margin-top:12px;letter-spacing:0.04em;line-height:1.6;">
+        Target: ${t.kcal||'—'} kcal · ${t.proteine||'—'}P · ${t.carboidrati||'—'}C · ${t.grassi||'—'}F<br>
+        Media settimanale piano: ${Math.round((DIETA.mediaSettimanale||{}).kcal||0)} kcal
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><div class="card-title" style="margin:0;">Lista spesa settimanale</div>
+      <button class="btn-secondary" id="dietaSpesaToggle">${dietaSpesaOpen?'Nascondi':'Mostra'}</button></div>
+      <div id="dietaSpesaBox" style="display:${dietaSpesaOpen?'block':'none'};">${spesaHTML}</div>
+    </div>
+
+    <div class="card"><div class="card-title">Note</div>${noteHTML}</div>
+  `;
+
+  v.querySelectorAll('.dieta-day-chip').forEach(b=>{
+    b.addEventListener('click',()=>{dietaSelectedDay=b.dataset.dietaday;renderDieta();window.scrollTo(0,0);});
+  });
+  v.querySelectorAll('.meal-check').forEach(b=>{
+    b.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      dietaToggleMeal(date,b.dataset.mealcheck);
+      beep(880,0.08,0.2);
+      renderDieta();
+    });
+  });
+  v.querySelectorAll('.meal-head').forEach(h=>{
+    h.addEventListener('click',(e)=>{
+      if(e.target.closest('.meal-check'))return;
+      h.parentElement.classList.toggle('open');
+    });
+  });
+  const sp=document.getElementById('dietaSpesaToggle');
+  if(sp)sp.onclick=()=>{dietaSpesaOpen=!dietaSpesaOpen;renderDieta();};
+}
+
+/* --- auto-installazione: CSS, view, tab --- */
+(function installDieta(){
+  const css=`
+  .dieta-daybar{display:flex;gap:6px;overflow-x:auto;padding:2px 20px 12px;margin:0 -20px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .dieta-daybar::-webkit-scrollbar{display:none;}
+  .dieta-day-chip{flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 15px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mute);font-weight:600;}
+  .dieta-day-chip.today{border-color:var(--accent-hi);}
+  .dieta-day-chip.active{background:var(--accent);color:var(--accent-text);border-color:var(--accent);}
+  .meal{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;transition:border-color .15s;}
+  .meal.done{border-color:var(--go);}
+  .meal-head{padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+  .meal-check{width:32px;height:32px;border-radius:50%;border:2px solid var(--border-hi);background:var(--card-2);color:transparent;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;transition:all .15s;}
+  .meal-check.on{background:var(--go);border-color:var(--go);color:#FFFFFF;}
+  .meal-check:active{transform:scale(0.92);}
+  .meal-head-l{flex:1;min-width:0;}
+  .meal-name{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--text);line-height:1.2;}
+  .meal-time{font-size:11px;color:var(--text-mute);margin-left:7px;font-weight:600;}
+  .meal-macro{font-size:12px;color:var(--text-dim);margin-top:3px;letter-spacing:0.02em;}
+  .meal-body{border-top:1px solid var(--border);padding:10px 16px;display:none;}
+  .meal.open .meal-body{display:block;}
+  .meal .ex-head-caret{transition:transform .2s;}
+  .meal.open .ex-head-caret{transform:rotate(180deg);}
+  .food-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;align-items:baseline;}
+  .food-row:last-child{border:none;}
+  .food-name{color:var(--text-dim);flex:1;min-width:0;}
+  .food-qty{font-family:var(--font-mono);font-weight:600;color:var(--text);flex-shrink:0;font-size:13px;}
+  .food-note{font-size:11px;color:var(--text-mute);font-style:italic;margin-top:2px;}
+  .macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .macro-box{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;}
+  .macro-val{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text);line-height:1;}
+  .macro-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-mute);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;font-weight:600;}
+  .macro-bar{height:5px;background:var(--bg-2);border-radius:3px;overflow:hidden;margin-top:8px;}
+  .macro-bar-fill{height:100%;border-radius:3px;transition:width .3s;}
+  .spesa-cat{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin:16px 0 4px;}
+  .spesa-cat:first-child{margin-top:0;}
+  .nav{grid-template-columns:repeat(6,1fr) !important;}
+  .nav-btn{font-size:9px !important;padding:8px 1px !important;}
+  .nav-btn svg{width:20px !important;height:20px !important;}
+  `;
+  const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
+
+  if(!document.getElementById('view-dieta')){
+    const view=document.createElement('div');
+    view.className='view';view.id='view-dieta';
+    const stats=document.getElementById('view-stats');
+    if(stats)stats.parentNode.insertBefore(view,stats);
+    else document.body.appendChild(view);
+  }
+
+  const nav=document.querySelector('.nav');
+  if(nav&&!nav.querySelector('[data-view="dieta"]')){
+    const btn=document.createElement('button');
+    btn.className='nav-btn';btn.dataset.view='dieta';
+    btn.innerHTML='<svg viewBox="0 0 24 24"><path d="M6 3v9a3 3 0 0 0 6 0V3M9 12v9"/><path d="M17 3c-1.5 2-2 4-2 6s.5 3 2 3 2-1 2-3-.5-4-2-6zM17 12v9"/></svg>Dieta';
+    const bodyBtn=nav.querySelector('[data-view="body"]');
+    if(bodyBtn)nav.insertBefore(btn,bodyBtn);else nav.appendChild(btn);
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b===btn));
+      document.querySelectorAll('.view').forEach(vw=>vw.classList.remove('active'));
+      document.getElementById('view-dieta').classList.add('active');
+      window.scrollTo(0,0);
+      renderDieta();
+    });
+  }
+
+  if(!state.dietaLog)state.dietaLog=[];
+  loadDieta().then(ok=>{
+    if(ok&&document.getElementById('view-dieta').classList.contains('active'))renderDieta();
+  });
+})();
 
 /* ===================== INIT ===================== */
 document.getElementById('homeHero').addEventListener('click',()=>{

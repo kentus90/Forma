@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "generated": "2026-08-18T00:00:00.000Z",
   "days": {
     "petto_bic": {
@@ -10,24 +10,21 @@
         {"name": "Walking pad", "spec": "5 min ritmo blando", "tips": "Alza la temperatura corporea prima di caricare."},
         {"name": "Cat-cow", "spec": "10 ripetizioni lente", "tips": "Mobilità della colonna, movimento fluido senza forzare."},
         {"name": "Bird dog", "spec": "2x8 per lato", "tips": "Attiva il core: braccio e gamba opposti, bacino fermo."},
-        {"name": "Hip circles", "spec": "10 per lato", "tips": "Rotazioni ampie dell'anca, sciolgono il bacino."},
-        {"name": "Pass-through con elastico", "spec": "2x10", "tips": "Presa larga, braccia tese, porta l'elastico da davanti a dietro la testa."},
+        {"name": "Pass-through con elastico", "spec": "2x10", "tips": "Presa larga, braccia tese, dall'avanti a dietro la testa."},
         {"name": "Face pull con elastico", "spec": "2x15", "tips": "Attiva i rotatori esterni e prepara la spalla alle distensioni."}
       ],
       "exercises": [
-        {"name": "Panca piana bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 120, "tips": "Piedi ben piantati a terra, scapole retratte e bloccate. Discesa controllata fino a sfiorare il petto, spinta esplosiva."},
-        {"name": "Panca inclinata manubri", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Schienale a 30°. Controlla la fase eccentrica, non far rimbalzare i manubri sul petto."},
-        {"name": "Croci ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Gomito con leggera flessione fissa per tutto il movimento, arco ampio, strizza al centro."},
-        {"name": "Curl bilanciere", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Gomiti fermi lungo i fianchi, niente slancio con la schiena. Se devi ondeggiare, il peso è troppo."},
-        {"name": "Curl manubri alternato", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Supinazione del polso durante la salita, discesa lenta e controllata."},
-        {"name": "Curl a martello ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Corda o maniglia alla carrucola bassa, presa neutra, gomiti fermi. Tensione costante per tutta la serie."}
+        {"name": "Panca piana manubri", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 120, "tips": "Scelta di sicurezza: ti alleni da solo e senza fermi, i manubri si mollano di lato se non chiudi la ripetizione. Scapole retratte, piedi piantati."},
+        {"name": "Panca inclinata manubri", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Schienale a 30°. Controlla la discesa, non far rimbalzare i manubri sul petto."},
+        {"name": "Croci con manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Gomito con leggera flessione fissa, arco ampio. Non scendere sotto la linea delle spalle."},
+        {"name": "Curl bilanciere", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Gomiti fermi lungo i fianchi. Se devi ondeggiare con la schiena, il peso è troppo."},
+        {"name": "Curl a martello ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Corda alla carrucola bassa, presa neutra, gomiti fermi. Tensione costante per tutta la serie."}
       ],
       "stretching": [
-        {"name": "Child's pose", "spec": "45-60s", "tips": "Decomprime dolcemente la zona lombare, respira profondo."},
-        {"name": "Knee-to-chest", "spec": "30s per lato + 30s insieme", "tips": "Supino, porta il ginocchio al petto senza staccare la schiena da terra."},
+        {"name": "Child's pose", "spec": "45-60s", "tips": "Decomprime la zona lombare, respira profondo."},
         {"name": "Stretch pettorale a muro", "spec": "30s per lato", "tips": "Avambraccio contro lo stipite, ruota il busto verso l'esterno."},
         {"name": "Stretch bicipite", "spec": "20-30s per lato", "tips": "Braccio teso dietro contro un supporto, palmo verso l'alto."},
-        {"name": "Cat-cow lento", "spec": "8-10 ripetizioni", "tips": "Chiusura della seduta, movimento lento e respirato."}
+        {"name": "Cat-cow lento", "spec": "8-10 ripetizioni", "tips": "Chiusura della seduta."}
       ]
     },
     "schiena_tri": {
@@ -37,23 +34,21 @@
       "warmup": [
         {"name": "Walking pad", "spec": "5 min ritmo blando", "tips": "Alza la temperatura corporea prima di caricare."},
         {"name": "Cat-cow", "spec": "10 ripetizioni lente", "tips": "Mobilità della colonna, importante prima del rematore."},
-        {"name": "Bird dog", "spec": "2x8 per lato", "tips": "Attiva il core e la stabilità lombare prima di lavorare a busto flesso."},
-        {"name": "Hip circles", "spec": "10 per lato", "tips": "Rotazioni ampie dell'anca."},
-        {"name": "Retrazioni scapolari al pulley", "spec": "2x10 carico leggero", "tips": "Solo movimento delle scapole, braccia tese: sveglia i muscoli che tirano."},
-        {"name": "Band pull-apart con elastico", "spec": "2x15", "tips": "Braccia tese davanti, apri l'elastico portando le scapole insieme."}
+        {"name": "Bird dog", "spec": "2x8 per lato", "tips": "Stabilità lombare prima di lavorare a busto flesso."},
+        {"name": "Retrazioni scapolari al pulley", "spec": "2x10 carico leggero", "tips": "Solo scapole, braccia tese: sveglia i muscoli che tirano."},
+        {"name": "Band pull-apart con elastico", "spec": "2x15", "tips": "Braccia tese davanti, apri portando le scapole insieme."}
       ],
       "exercises": [
-        {"name": "Lat machine presa larga", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Tira con le scapole prima che con le braccia. Busto leggermente indietro ma fermo, non dondolare."},
-        {"name": "Rematore bilanciere", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Busto inclinato a circa 45°, schiena piatta e neutra per tutta la serie. Tira verso l'ombelico, non verso il petto."},
-        {"name": "Pullover ai cavi", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Braccia quasi tese, porta la barra verso le cosce con i dorsali. Busto fermo, niente slancio."},
+        {"name": "Lat machine presa larga", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Tira con le scapole prima che con le braccia. Busto leggermente indietro ma fermo."},
+        {"name": "Rematore bilanciere", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Busto a circa 45°, schiena piatta e neutra per tutta la serie. Tira verso l'ombelico."},
+        {"name": "Pullover ai cavi", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Braccia quasi tese, porta la barra verso le cosce con i dorsali. Busto fermo."},
+        {"name": "Distensioni presa neutra manubri", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Primo esercizio dei tricipiti al posto dei dip: si carica progressivamente e non stressa la spalla. Gomiti stretti al busto."},
         {"name": "French press manubri", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Sdraiato su panca, gomiti puntati al soffitto e fermi: non allargarli in discesa."},
-        {"name": "Pushdown ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Carrucola alta, gomiti fissi lungo i fianchi. Estensione completa senza bloccare di scatto."},
-        {"name": "Dip su panca", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Spalle basse e lontane dalle orecchie. Non scendere troppo in profondità se senti tensione alla spalla."}
+        {"name": "Pushdown ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Carrucola alta, gomiti fissi lungo i fianchi. Estensione completa senza bloccare di scatto."}
       ],
       "stretching": [
         {"name": "Child's pose", "spec": "45-60s", "tips": "Decomprime la lombare dopo il rematore."},
-        {"name": "Knee-to-chest", "spec": "30s per lato + 30s insieme", "tips": "Supino, ginocchio al petto senza staccare la schiena."},
-        {"name": "Stretch dorsali", "spec": "30-45s", "tips": "In ginocchio, braccia appoggiate sulla panca, spingi il petto verso il basso."},
+        {"name": "Stretch dorsali", "spec": "30-45s", "tips": "In ginocchio, braccia sulla panca, spingi il petto verso il basso."},
         {"name": "Stretch tricipite", "spec": "20-30s per lato", "tips": "Braccio piegato dietro la testa, spingi dolcemente il gomito."},
         {"name": "Cat-cow lento", "spec": "8-10 ripetizioni", "tips": "Chiusura della seduta."}
       ]
@@ -66,25 +61,22 @@
         {"name": "Walking pad", "spec": "5 min ritmo blando", "tips": "Alza la temperatura corporea prima dello squat."},
         {"name": "Cat-cow", "spec": "10 ripetizioni lente", "tips": "Mobilità della colonna."},
         {"name": "Bird dog", "spec": "2x8 per lato", "tips": "Attiva il core prima di caricare il bilanciere."},
-        {"name": "Hip circles", "spec": "10 per lato", "tips": "Sciogli il bacino prima di squat e stacco."},
         {"name": "Squat a corpo libero", "spec": "2x10", "tips": "Ripassa il pattern prima di mettere carico."},
         {"name": "Monster walk con elastico", "spec": "2x10 per lato", "tips": "Elastico sopra le ginocchia, passi laterali. Attiva i glutei."},
         {"name": "Alzate laterali con elastico leggero", "spec": "2x12", "tips": "Pre-attivazione dei deltoidi."}
       ],
       "exercises": [
-        {"name": "Panca inclinata bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 120, "tips": "Schienale 30-45°. Presa poco più larga delle spalle, gomiti a circa 45° dal busto, discesa fino a sfiorare la parte alta del petto."},
+        {"name": "Military press manubri seduto", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Seduto con schienale a 90°, manubri per comodità e per il soffitto basso. Non inarcare la schiena per spingere."},
         {"name": "Alzate laterali manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Leggera flessione del gomito fissa, sali fino all'altezza spalla e non oltre."},
         {"name": "Alzate posteriori manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Busto inclinato in avanti dall'anca con schiena neutra, apri con i gomiti."},
-        {"name": "Back squat bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 150, "tips": "Bilanciere sui trapezi nel rack. Scendi controllato almeno fino al parallelo, ginocchia in linea con i piedi, schiena neutra."},
-        {"name": "Stacco rumeno manubri", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Manubri lungo le gambe per tutta la discesa, ginocchia leggermente flesse e ferme. Il movimento parte dall'anca, non dalla schiena."},
-        {"name": "Hip thrust bilanciere", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 90, "tips": "Schiena appoggiata alla panca. Non iperestendere in cima: fermati quando busto e cosce sono allineati."},
-        {"name": "Leg extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Estensione completa, breve pausa in massima contrazione, ritorno controllato senza far cadere il carico."},
+        {"name": "Back squat bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 150, "tips": "Ti alleni da solo: prova il bail scarico prima di caricare (ti abbassi, spingi via con le spalle, passo avanti). Controlla lo spazio e il pavimento dietro. Se il rack ha i fermi, usali."},
+        {"name": "Stacco rumeno manubri", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Manubri lungo le gambe per tutta la discesa, ginocchia leggermente flesse e ferme. Il movimento parte dall'anca."},
+        {"name": "Leg extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Estensione completa, breve pausa in contrazione, ritorno controllato senza far cadere il carico."},
         {"name": "Leg curl", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Stessa stazione del leg extension, puoi farli in superset. Movimento lento soprattutto in ritorno."},
         {"name": "Calf raise in piedi", "sets": 4, "repsMin": 15, "repsMax": 20, "rest": 45, "tips": "Escursione completa, pausa di un secondo in massima contrazione."}
       ],
       "stretching": [
         {"name": "Child's pose", "spec": "45-60s", "tips": "Decomprime la lombare dopo squat e stacco."},
-        {"name": "Knee-to-chest", "spec": "30s per lato + 30s insieme", "tips": "Supino, ginocchio al petto."},
         {"name": "Piriforme / gluteo stretch", "spec": "30-45s per lato", "tips": "Un piriforme rigido spesso tira sulla lombare."},
         {"name": "Stretch quadricipite in piedi", "spec": "30s per lato", "tips": "Tallone ai glutei, bacino leggermente in avanti."},
         {"name": "Stretch femorali", "spec": "30-45s per lato", "tips": "Gamba tesa, tira dolcemente la punta del piede verso di te."},
@@ -93,40 +85,35 @@
     }
   },
   "alternatives": {
-    "Panca piana bilanciere": [
-      {"name": "Panca piana manubri", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 120, "tips": "Più range di movimento, meno carico assoluto. Controlla la discesa."},
-      {"name": "Panca inclinata bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 120, "tips": "Sposta il lavoro sulla parte alta del petto e sul deltoide anteriore."},
-      {"name": "Croci ai cavi", "sets": 4, "repsMin": 12, "repsMax": 15, "rest": 90, "tips": "Ripiego se la spalla non è al meglio: zero carico assiale, tensione costante."}
+    "Panca piana manubri": [
+      {"name": "Panca inclinata manubri", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 120, "tips": "Sposta il lavoro sulla parte alta del petto."},
+      {"name": "Panca piana bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 120, "tips": "Solo se hai i fermi di sicurezza montati: da solo senza fermi è la cosa più rischiosa in casa."},
+      {"name": "Push-up", "sets": 4, "repsMin": 12, "repsMax": 20, "rest": 90, "tips": "Corpo in linea, scapole libere. Zaino zavorrato se diventa facile."}
     ],
     "Panca inclinata manubri": [
-      {"name": "Panca inclinata bilanciere", "sets": 3, "repsMin": 6, "repsMax": 8, "rest": 90, "tips": "Più carico, meno range."},
-      {"name": "Panca piana manubri", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Sposta l'enfasi sulla parte centrale del petto."},
-      {"name": "Croci su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Isolamento, gomito con flessione fissa."}
+      {"name": "Panca piana manubri", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Enfasi sulla parte centrale del petto."},
+      {"name": "Croci su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Isolamento, gomito con flessione fissa."},
+      {"name": "Chest press ai cavi", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Tensione costante, comodo se la spalla è affaticata."}
     ],
-    "Croci ai cavi": [
-      {"name": "Croci con manubri su panca", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Arco ampio, non scendere sotto la linea delle spalle."},
+    "Croci con manubri": [
+      {"name": "Croci su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Angolo diverso, stesso movimento."},
       {"name": "Chest press ai cavi", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Spinta orizzontale ai cavi, tensione costante."},
-      {"name": "Push-up", "sets": 3, "repsMin": 12, "repsMax": 20, "rest": 60, "tips": "Corpo in linea, scapole libere di muoversi in alto."}
+      {"name": "Push-up presa larga", "sets": 3, "repsMin": 12, "repsMax": 20, "rest": 60, "tips": "Mani più larghe delle spalle, discesa controllata."}
     ],
     "Curl bilanciere": [
       {"name": "Curl bilanciere EZ", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Più comodo per i polsi se la presa dritta dà fastidio."},
       {"name": "Curl ai cavi (carrucola bassa)", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Tensione costante per tutta la salita."},
       {"name": "Curl manubri simultaneo", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Corregge eventuali squilibri fra le braccia."}
     ],
-    "Curl manubri alternato": [
-      {"name": "Curl manubri su panca inclinata", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Braccia dietro il busto: più allungamento sul capo lungo."},
-      {"name": "Curl concentrato", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Gomito appoggiato all'interno coscia, massimo isolamento."},
-      {"name": "Curl ai cavi (carrucola bassa)", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Tensione costante, ottimo a fine seduta."}
-    ],
     "Curl a martello ai cavi": [
       {"name": "Curl a martello manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Presa neutra, gomiti fermi lungo i fianchi."},
       {"name": "Curl inverso bilanciere", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Presa prona, lavora avambraccio e brachiale."},
-      {"name": "Curl con corda ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Apri leggermente la corda in cima per strizzare."}
+      {"name": "Curl manubri su panca inclinata", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Braccia dietro il busto: più allungamento sul capo lungo."}
     ],
     "Lat machine presa larga": [
       {"name": "Lat machine presa inversa", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Presa supina, più coinvolgimento dei bicipiti."},
-      {"name": "Trazioni alla sbarra", "sets": 4, "repsMin": 5, "repsMax": 10, "rest": 120, "tips": "Se hai una sbarra: il gesto più completo, scala con l'elastico se serve."},
-      {"name": "Pulldown presa neutra", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Più comodo per le spalle, ottimo se la presa larga dà fastidio."}
+      {"name": "Pulldown presa neutra", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Più comodo per le spalle."},
+      {"name": "Trazioni alla sbarra", "sets": 4, "repsMin": 5, "repsMax": 10, "rest": 120, "tips": "Se hai una sbarra: il gesto più completo per la schiena."}
     ],
     "Rematore bilanciere": [
       {"name": "Rematore manubri (un braccio)", "sets": 4, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Ginocchio e mano sulla panca, tira verso l'anca."},
@@ -138,53 +125,48 @@
       {"name": "Pullover con manubrio", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Sdraiato sulla panca, braccia quasi tese, movimento ampio."},
       {"name": "Rematore al pulley basso (seduto)", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Ripiego valido se la spalla non gradisce il pullover."}
     ],
+    "Distensioni presa neutra manubri": [
+      {"name": "Panca stretta bilanciere", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Presa alla larghezza delle spalle, gomiti stretti al busto."},
+      {"name": "Dip su panca", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Spalle basse e lontane dalle orecchie, non scendere troppo."},
+      {"name": "Push-up presa stretta", "sets": 3, "repsMin": 10, "repsMax": 15, "rest": 60, "tips": "Mani sotto le spalle, gomiti che sfiorano il busto."}
+    ],
     "French press manubri": [
       {"name": "French press bilanciere EZ", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 60, "tips": "Gomiti fermi, scendi dietro la fronte."},
       {"name": "Estensioni sopra la testa ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Di spalle alla carrucola bassa, ottimo allungamento del capo lungo."},
-      {"name": "Panca stretta bilanciere", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Presa alla larghezza delle spalle, gomiti stretti al busto."}
+      {"name": "Kickback manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Busto inclinato, braccio fermo, estendi solo l'avambraccio."}
     ],
     "Pushdown ai cavi": [
       {"name": "Pushdown con corda", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Apri la corda a fine movimento per strizzare il tricipite."},
       {"name": "Pushdown presa inversa", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Presa supina a una mano, enfasi sul capo mediale."},
-      {"name": "Kickback manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Busto inclinato, braccio fermo, estendi solo l'avambraccio."}
+      {"name": "Kickback manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Alternativa senza cavi."}
     ],
-    "Dip su panca": [
-      {"name": "Panca stretta bilanciere", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Presa alla larghezza delle spalle, gomiti stretti."},
-      {"name": "Estensioni sopra la testa ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Più gentile con la spalla rispetto ai dip."},
-      {"name": "Push-up presa stretta", "sets": 3, "repsMin": 10, "repsMax": 15, "rest": 60, "tips": "Mani sotto le spalle, gomiti che sfiorano il busto."}
-    ],
-    "Panca inclinata bilanciere": [
-      {"name": "Panca inclinata manubri", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 120, "tips": "Più range di movimento, meno carico assoluto."},
-      {"name": "Arnold press manubri (seduto)", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Alternativa se hai spazio sopra la testa da seduto. Rotazione fluida durante la salita."},
-      {"name": "Spinte manubri su panca alta (60°)", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Quasi verticale ma senza sbattere il soffitto: molto deltoide anteriore."}
+    "Military press manubri seduto": [
+      {"name": "Arnold press manubri", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Rotazione fluida durante la salita, più range sul deltoide anteriore."},
+      {"name": "Panca inclinata bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 120, "tips": "Schienale 30-45°: resta bassa, lavora molto il deltoide anteriore."},
+      {"name": "Spinte manubri su panca alta (60°)", "sets": 4, "repsMin": 8, "repsMax": 10, "rest": 90, "tips": "Quasi verticale ma senza problemi di soffitto."}
     ],
     "Alzate laterali manubri": [
       {"name": "Alzate laterali ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Un braccio alla volta alla carrucola bassa, tensione costante."},
       {"name": "Alzate laterali su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Sdraiato di lato, isola bene il deltoide laterale."},
-      {"name": "Upright row manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Non salire sopra l'altezza delle spalle, fermati se senti pizzicare."}
+      {"name": "Upright row manubri", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Non salire sopra l'altezza delle spalle, fermati se pizzica."}
     ],
     "Alzate posteriori manubri": [
       {"name": "Face pull ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Carrucola alta, tira verso la fronte aprendo i gomiti."},
       {"name": "Reverse fly ai cavi", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Cavi incrociati, apertura ampia e controllata."},
-      {"name": "Alzate posteriori su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Petto appoggiato sullo schienale: zero slancio possibile."}
+      {"name": "Alzate posteriori su panca inclinata", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Petto appoggiato allo schienale: zero slancio possibile."}
     ],
     "Back squat bilanciere": [
-      {"name": "Front squat bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 150, "tips": "Bilanciere davanti sulle clavicole, busto più eretto, più quadricipite."},
+      {"name": "Front squat bilanciere", "sets": 4, "repsMin": 6, "repsMax": 8, "rest": 150, "tips": "Bilanciere davanti: in emergenza lo butti in avanti, più sicuro da solo."},
       {"name": "Goblet squat manubrio", "sets": 4, "repsMin": 10, "repsMax": 12, "rest": 120, "tips": "Manubrio al petto, ottimo per scaricare quando sei stanco."},
       {"name": "Affondi camminati manubri", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 120, "tips": "10-12 per gamba, ginocchio anteriore in linea con la caviglia."}
     ],
     "Stacco rumeno manubri": [
       {"name": "Stacco rumeno bilanciere", "sets": 3, "repsMin": 8, "repsMax": 10, "rest": 120, "tips": "Più carico gestibile, bilanciere vicino alle gambe per tutta la discesa."},
       {"name": "Good morning bilanciere", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Carico leggero, movimento d'anca puro, schiena neutra."},
-      {"name": "Hip thrust bilanciere", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 90, "tips": "Se preferisci lavorare i glutei senza flettere il busto."}
-    ],
-    "Hip thrust bilanciere": [
-      {"name": "Glute bridge a terra", "sets": 3, "repsMin": 15, "repsMax": 20, "rest": 60, "tips": "Versione base senza panca, ottima anche a carico naturale."},
-      {"name": "Hip thrust monopodalico", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Una gamba alla volta, corregge gli squilibri."},
-      {"name": "Stacco rumeno manubri", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Sposta il lavoro sui femorali."}
+      {"name": "Hip thrust bilanciere", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 90, "tips": "Sposta il lavoro sui glutei. Scomodo da montare da solo."}
     ],
     "Leg extension": [
-      {"name": "Goblet squat manubrio", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Alternativa multiarticolare se la macchina è occupata."},
+      {"name": "Goblet squat manubrio", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Alternativa multiarticolare."},
       {"name": "Bulgarian split squat", "sets": 3, "repsMin": 10, "repsMax": 12, "rest": 90, "tips": "Piede posteriore sulla panca, 10-12 per gamba."},
       {"name": "Step-up su panca", "sets": 3, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Sali spingendo con la gamba sopra, scendi controllato."}
     ],
@@ -197,6 +179,20 @@
       {"name": "Calf raise con bilanciere", "sets": 4, "repsMin": 12, "repsMax": 15, "rest": 60, "tips": "Bilanciere sui trapezi nel rack, escursione completa."},
       {"name": "Calf raise monopodalico", "sets": 4, "repsMin": 12, "repsMax": 15, "rest": 45, "tips": "Una gamba alla volta, manubrio nella mano corrispondente."},
       {"name": "Calf raise da seduto", "sets": 4, "repsMin": 15, "repsMax": 20, "rest": 45, "tips": "Manubri sulle ginocchia, colpisce di più il soleo."}
+    ]
+  },
+  "corsa": {
+    "_nota": "Questa sezione non viene letta da loadSchede(), che usa solo 'days' e 'alternatives'. È qui come riferimento e pronta da collegare quando aggiungiamo il codice.",
+    "settimana": [
+      {"giorno": "Martedì", "tipo": "Easy (Z2)", "quando": "Pausa pranzo", "durata": "30-40 min", "rpe": "4-5", "note": "Ritmo conversazionale: devi riuscire a parlare. Se ansimi, rallenta."},
+      {"giorno": "Giovedì", "tipo": "Qualità", "quando": "Pausa pranzo", "durata": "6-8x400m rec. 90s, oppure 20 min tempo run", "rpe": "7-8 sui ripetuti, 6 sul tempo run", "note": "Recupero incompleto sui 400m: tieni il ritmo costante ripetuta per ripetuta invece di partire forte."},
+      {"giorno": "Sabato", "tipo": "Lunga lenta (LSD)", "quando": "A scelta", "durata": "45-60 min", "rpe": "3-4", "note": "Facoltativa. Saltala se recuperi male dalla palestra del venerdì: in deficit calorico è la prima seduta da sacrificare."}
+    ],
+    "principi": [
+      "Le corse stanno nei giorni senza palestra, così non accumuli due sedute nello stesso giorno.",
+      "Martedì e giovedì corri in pausa pranzo, quindi il pranzo è post-allenamento: nel piano alimentare quei due giorni hanno più carboidrati.",
+      "Il pre-workout è previsto solo per queste sessioni di pranzo, mai la sera, per proteggere il sonno.",
+      "I ritmi sono su scala RPE: per i passi precisi in min/km serve un tempo recente sui 5 km."
     ]
   }
 }

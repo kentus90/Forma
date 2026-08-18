@@ -1,0 +1,1537 @@
+{
+  "version": 1,
+  "generated": "2026-08-18T00:00:00.000Z",
+  "fase": {
+    "nome": "Fase 1 — Deficit",
+    "periodo": "Settembre-Novembre",
+    "durata": "10 settimane",
+    "pesoIniziale": 92,
+    "pesoAtteso": "84-85 kg"
+  },
+  "target": {
+    "kcal": 2042,
+    "proteine": 171,
+    "carboidrati": 202,
+    "grassi": 63,
+    "proteinePerKg": 1.86,
+    "mantenimentoStimato": 2800,
+    "deficitGiornaliero": 758,
+    "perditaSettimanale": 0.7
+  },
+  "mediaSettimanale": {
+    "kcal": 2042.0,
+    "proteine": 171.1,
+    "carboidrati": 202.5,
+    "grassi": 62.6
+  },
+  "giorni": {
+    "lunedi": {
+      "nome": "Lunedì",
+      "contesto": "Palestra pomeriggio (Petto/Bicipiti) · cena fredda",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Latte di soia non zuccherato",
+              "quantita": 250,
+              "unita": "ml"
+            },
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 20,
+              "unita": "g"
+            },
+            {
+              "nome": "Biscotti integrali (tipo Misura)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 344.7,
+            "proteine": 27.1,
+            "carboidrati": 43.4,
+            "grassi": 8.8
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Riso basmati (crudo)",
+              "quantita": 70,
+              "unita": "g"
+            },
+            {
+              "nome": "Tonno al naturale (sgocciolato)",
+              "quantita": 120,
+              "unita": "g"
+            },
+            {
+              "nome": "Ceci cotti",
+              "quantita": 120,
+              "unita": "g"
+            },
+            {
+              "nome": "Peperoni",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 686.3,
+            "proteine": 46.9,
+            "carboidrati": 88.2,
+            "grassi": 16.8
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 100,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 184.0,
+            "proteine": 21.1,
+            "carboidrati": 24.5,
+            "grassi": 1.3
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Mozzarella protein",
+              "quantita": 120,
+              "unita": "g"
+            },
+            {
+              "nome": "Salmone affumicato",
+              "quantita": 80,
+              "unita": "g"
+            },
+            {
+              "nome": "Insalata",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane di segale",
+              "quantita": 40,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 14,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 576.9,
+            "proteine": 55.7,
+            "carboidrati": 25.4,
+            "grassi": 28.6
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2041.3,
+        "proteine": 173.3,
+        "carboidrati": 200.1,
+        "grassi": 64.5
+      }
+    },
+    "martedi": {
+      "nome": "Martedì",
+      "contesto": "Corsa easy in pausa pranzo · cena cucinata",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Bresaola",
+              "quantita": 70,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane integrale",
+              "quantita": 55,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 100,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 10,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 388.5,
+            "proteine": 30.6,
+            "carboidrati": 48.1,
+            "grassi": 9.0
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 30,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 185.2,
+            "proteine": 24.9,
+            "carboidrati": 20.2,
+            "grassi": 1.4
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Pasta integrale (cruda)",
+              "quantita": 75,
+              "unita": "g"
+            },
+            {
+              "nome": "Petto di pollo (crudo)",
+              "quantita": 180,
+              "unita": "g"
+            },
+            {
+              "nome": "Zucchine",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 599.1,
+            "proteine": 53.5,
+            "carboidrati": 55.7,
+            "grassi": 17.2
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 18,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 284.2,
+            "proteine": 23.8,
+            "carboidrati": 20.0,
+            "grassi": 12.0
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Merluzzo (crudo o surgelato)",
+              "quantita": 220,
+              "unita": "g"
+            },
+            {
+              "nome": "Patate",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Melanzane",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 17,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 573.2,
+            "proteine": 46.6,
+            "carboidrati": 54.5,
+            "grassi": 19.2
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2030.1,
+        "proteine": 179.4,
+        "carboidrati": 198.5,
+        "grassi": 58.8
+      }
+    },
+    "mercoledi": {
+      "nome": "Mercoledì",
+      "contesto": "Palestra pomeriggio (Schiena/Tricipiti) · cena fredda",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Latte di soia non zuccherato",
+              "quantita": 250,
+              "unita": "ml"
+            },
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 20,
+              "unita": "g"
+            },
+            {
+              "nome": "Biscotti integrali (tipo Misura)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 344.7,
+            "proteine": 27.1,
+            "carboidrati": 43.4,
+            "grassi": 8.8
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Farro perlato (crudo)",
+              "quantita": 60,
+              "unita": "g"
+            },
+            {
+              "nome": "Lenticchie cotte",
+              "quantita": 150,
+              "unita": "g"
+            },
+            {
+              "nome": "Fesa di tacchino (affettato)",
+              "quantita": 130,
+              "unita": "g"
+            },
+            {
+              "nome": "Zucchine",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 654.2,
+            "proteine": 50.4,
+            "carboidrati": 79.5,
+            "grassi": 16.7
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 100,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 184.0,
+            "proteine": 21.1,
+            "carboidrati": 24.5,
+            "grassi": 1.3
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Uovo intero",
+              "quantita": 120,
+              "unita": "g"
+            },
+            {
+              "nome": "Albume",
+              "quantita": 150,
+              "unita": "g"
+            },
+            {
+              "nome": "Feta greca",
+              "quantita": 40,
+              "unita": "g"
+            },
+            {
+              "nome": "Insalata",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane di segale",
+              "quantita": 45,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 10,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 597.6,
+            "proteine": 44.5,
+            "carboidrati": 30.1,
+            "grassi": 32.1
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2030.0,
+        "proteine": 165.7,
+        "carboidrati": 196.1,
+        "grassi": 67.9
+      }
+    },
+    "giovedi": {
+      "nome": "Giovedì",
+      "contesto": "Corsa qualità in pausa pranzo · cena cucinata",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Fesa di tacchino (affettato)",
+              "quantita": 100,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane integrale",
+              "quantita": 55,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 100,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 10,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 389.8,
+            "proteine": 29.2,
+            "carboidrati": 48.8,
+            "grassi": 9.2
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 30,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 185.2,
+            "proteine": 24.9,
+            "carboidrati": 20.2,
+            "grassi": 1.4
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Riso basmati (crudo)",
+              "quantita": 70,
+              "unita": "g"
+            },
+            {
+              "nome": "Petto di pollo (crudo)",
+              "quantita": 190,
+              "unita": "g"
+            },
+            {
+              "nome": "Peperoni",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 612.1,
+            "proteine": 50.9,
+            "carboidrati": 66.6,
+            "grassi": 16.0
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 18,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 284.2,
+            "proteine": 23.8,
+            "carboidrati": 20.0,
+            "grassi": 12.0
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Seitan",
+              "quantita": 150,
+              "unita": "g"
+            },
+            {
+              "nome": "Patate",
+              "quantita": 230,
+              "unita": "g"
+            },
+            {
+              "nome": "Melanzane",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 16,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 562.5,
+            "proteine": 43.1,
+            "carboidrati": 60.1,
+            "grassi": 17.5
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2033.8,
+        "proteine": 171.9,
+        "carboidrati": 215.6,
+        "grassi": 56.1
+      }
+    },
+    "venerdi": {
+      "nome": "Venerdì",
+      "contesto": "Palestra pomeriggio (Spalle/Gambe) · cena fredda",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Latte di soia non zuccherato",
+              "quantita": 250,
+              "unita": "ml"
+            },
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 20,
+              "unita": "g"
+            },
+            {
+              "nome": "Biscotti integrali (tipo Misura)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 344.7,
+            "proteine": 27.1,
+            "carboidrati": 43.4,
+            "grassi": 8.8
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Cous cous (crudo)",
+              "quantita": 65,
+              "unita": "g"
+            },
+            {
+              "nome": "Ceci cotti",
+              "quantita": 150,
+              "unita": "g"
+            },
+            {
+              "nome": "Tonno al naturale (sgocciolato)",
+              "quantita": 120,
+              "unita": "g"
+            },
+            {
+              "nome": "Zucchine",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 703.7,
+            "proteine": 52.4,
+            "carboidrati": 83.3,
+            "grassi": 17.2
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 90,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 175.1,
+            "proteine": 21.0,
+            "carboidrati": 22.2,
+            "grassi": 1.3
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Salmone affumicato",
+              "quantita": 100,
+              "unita": "g"
+            },
+            {
+              "nome": "Mozzarella protein",
+              "quantita": 100,
+              "unita": "g"
+            },
+            {
+              "nome": "Insalata",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane di segale",
+              "quantita": 35,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 13,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 563.1,
+            "proteine": 55.5,
+            "carboidrati": 22.8,
+            "grassi": 28.2
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2036.0,
+        "proteine": 178.5,
+        "carboidrati": 190.2,
+        "grassi": 64.4
+      }
+    },
+    "sabato": {
+      "nome": "Sabato",
+      "contesto": "Corsa lunga opzionale · cena libera",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Prosciutto crudo sgrassato",
+              "quantita": 70,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane integrale",
+              "quantita": 50,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 320.7,
+            "proteine": 25.0,
+            "carboidrati": 39.2,
+            "grassi": 6.8
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 30,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 254.7,
+            "proteine": 27.4,
+            "carboidrati": 22.8,
+            "grassi": 7.4
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Patate",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Fesa di tacchino (fresca)",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Peperoni",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 526.1,
+            "proteine": 54.0,
+            "carboidrati": 46.0,
+            "grassi": 14.8
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 180.0,
+            "proteine": 20.0,
+            "carboidrati": 16.0,
+            "grassi": 3.0
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "PASTO LIBERO",
+              "quantita": "a piacere",
+              "nota": "indicativamente 700-900 kcal"
+            }
+          ],
+          "macro": {
+            "kcal": 800.0,
+            "proteine": 24.0,
+            "carboidrati": 96.0,
+            "grassi": 32.0
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2081.5,
+        "proteine": 150.4,
+        "carboidrati": 220.1,
+        "grassi": 64.1
+      }
+    },
+    "domenica": {
+      "nome": "Domenica",
+      "contesto": "Riposo + batch cooking · cena cucinata",
+      "pasti": [
+        {
+          "nome": "Colazione",
+          "ora": "7:00",
+          "alimenti": [
+            {
+              "nome": "Latte di soia non zuccherato",
+              "quantita": 250,
+              "unita": "ml"
+            },
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 20,
+              "unita": "g"
+            },
+            {
+              "nome": "Biscotti integrali (tipo Misura)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 80,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 344.7,
+            "proteine": 27.1,
+            "carboidrati": 43.4,
+            "grassi": 8.8
+          }
+        },
+        {
+          "nome": "Spuntino",
+          "ora": "11:00",
+          "alimenti": [
+            {
+              "nome": "Budino proteico",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Mandorle",
+              "quantita": 12,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
+          }
+        },
+        {
+          "nome": "Pranzo",
+          "ora": "13:00",
+          "alimenti": [
+            {
+              "nome": "Petto di pollo (crudo)",
+              "quantita": 180,
+              "unita": "g"
+            },
+            {
+              "nome": "Patate",
+              "quantita": 260,
+              "unita": "g"
+            },
+            {
+              "nome": "Zucchine",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 14,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 556.0,
+            "proteine": 49.0,
+            "carboidrati": 50.4,
+            "grassi": 17.6
+          }
+        },
+        {
+          "nome": "Merenda",
+          "ora": "17:00",
+          "alimenti": [
+            {
+              "nome": "Whey protein (polvere)",
+              "quantita": 25,
+              "unita": "g"
+            },
+            {
+              "nome": "Banana",
+              "quantita": 100,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 184.0,
+            "proteine": 21.1,
+            "carboidrati": 24.5,
+            "grassi": 1.3
+          }
+        },
+        {
+          "nome": "Cena",
+          "ora": "20:30",
+          "alimenti": [
+            {
+              "nome": "Fagioli cotti",
+              "quantita": 200,
+              "unita": "g"
+            },
+            {
+              "nome": "Tonno al naturale (sgocciolato)",
+              "quantita": 130,
+              "unita": "g"
+            },
+            {
+              "nome": "Feta greca",
+              "quantita": 40,
+              "unita": "g"
+            },
+            {
+              "nome": "Insalata",
+              "quantita": 250,
+              "unita": "g"
+            },
+            {
+              "nome": "Pane di segale",
+              "quantita": 45,
+              "unita": "g"
+            },
+            {
+              "nome": "Olio EVO",
+              "quantita": 13,
+              "unita": "g"
+            }
+          ],
+          "macro": {
+            "kcal": 707.4,
+            "proteine": 58.7,
+            "carboidrati": 60.2,
+            "grassi": 25.7
+          }
+        }
+      ],
+      "macro": {
+        "kcal": 2041.5,
+        "proteine": 178.5,
+        "carboidrati": 197.1,
+        "grassi": 62.3
+      }
+    }
+  },
+  "listaSpesa": {
+    "Carne e affettati": [
+      {
+        "nome": "Petto di pollo (crudo)",
+        "quantita": 550,
+        "unita": "g"
+      },
+      {
+        "nome": "Fesa di tacchino (fresca)",
+        "quantita": 200,
+        "unita": "g"
+      },
+      {
+        "nome": "Bresaola",
+        "quantita": 70,
+        "unita": "g"
+      },
+      {
+        "nome": "Fesa di tacchino (affettato)",
+        "quantita": 230,
+        "unita": "g"
+      },
+      {
+        "nome": "Prosciutto crudo sgrassato",
+        "quantita": 70,
+        "unita": "g"
+      }
+    ],
+    "Pesce": [
+      {
+        "nome": "Merluzzo (crudo o surgelato)",
+        "quantita": 220,
+        "unita": "g"
+      },
+      {
+        "nome": "Tonno al naturale (sgocciolato)",
+        "quantita": 370,
+        "unita": "g"
+      },
+      {
+        "nome": "Salmone affumicato",
+        "quantita": 180,
+        "unita": "g"
+      }
+    ],
+    "Uova e latticini": [
+      {
+        "nome": "Uovo intero",
+        "quantita": 120,
+        "unita": "g"
+      },
+      {
+        "nome": "Albume",
+        "quantita": 150,
+        "unita": "g"
+      },
+      {
+        "nome": "Budino proteico",
+        "quantita": 1400,
+        "unita": "g"
+      },
+      {
+        "nome": "Mozzarella protein",
+        "quantita": 220,
+        "unita": "g"
+      },
+      {
+        "nome": "Feta greca",
+        "quantita": 80,
+        "unita": "g"
+      }
+    ],
+    "Legumi e soia": [
+      {
+        "nome": "Ceci cotti",
+        "quantita": 270,
+        "unita": "g"
+      },
+      {
+        "nome": "Lenticchie cotte",
+        "quantita": 150,
+        "unita": "g"
+      },
+      {
+        "nome": "Fagioli cotti",
+        "quantita": 200,
+        "unita": "g"
+      },
+      {
+        "nome": "Seitan",
+        "quantita": 150,
+        "unita": "g"
+      }
+    ],
+    "Cereali e pane": [
+      {
+        "nome": "Riso basmati (crudo)",
+        "quantita": 140,
+        "unita": "g"
+      },
+      {
+        "nome": "Pasta integrale (cruda)",
+        "quantita": 75,
+        "unita": "g"
+      },
+      {
+        "nome": "Farro perlato (crudo)",
+        "quantita": 60,
+        "unita": "g"
+      },
+      {
+        "nome": "Cous cous (crudo)",
+        "quantita": 65,
+        "unita": "g"
+      },
+      {
+        "nome": "Pane di segale",
+        "quantita": 165,
+        "unita": "g"
+      },
+      {
+        "nome": "Pane integrale",
+        "quantita": 160,
+        "unita": "g"
+      },
+      {
+        "nome": "Biscotti integrali (tipo Misura)",
+        "quantita": 100,
+        "unita": "g"
+      },
+      {
+        "nome": "Patate",
+        "quantita": 940,
+        "unita": "g"
+      }
+    ],
+    "Frutta e verdura": [
+      {
+        "nome": "Banana",
+        "quantita": 1230,
+        "unita": "g"
+      },
+      {
+        "nome": "Zucchine",
+        "quantita": 800,
+        "unita": "g"
+      },
+      {
+        "nome": "Melanzane",
+        "quantita": 450,
+        "unita": "g"
+      },
+      {
+        "nome": "Peperoni",
+        "quantita": 600,
+        "unita": "g"
+      },
+      {
+        "nome": "Insalata",
+        "quantita": 1000,
+        "unita": "g"
+      }
+    ],
+    "Dispensa": [
+      {
+        "nome": "Latte di soia non zuccherato",
+        "quantita": 1000,
+        "unita": "ml"
+      },
+      {
+        "nome": "Olio EVO",
+        "quantita": 169,
+        "unita": "g"
+      },
+      {
+        "nome": "Mandorle",
+        "quantita": 116,
+        "unita": "g"
+      },
+      {
+        "nome": "Whey protein (polvere)",
+        "quantita": 270,
+        "unita": "g"
+      }
+    ]
+  },
+  "database": {
+    "Latte di soia non zuccherato": {
+      "kcal": 36,
+      "proteine": 3.3,
+      "carboidrati": 2.5,
+      "grassi": 1.8
+    },
+    "Biscotti integrali (tipo Misura)": {
+      "kcal": 430,
+      "proteine": 8.0,
+      "carboidrati": 70.0,
+      "grassi": 13.0
+    },
+    "Whey protein (polvere)": {
+      "kcal": 380,
+      "proteine": 80.0,
+      "carboidrati": 6.0,
+      "grassi": 4.0
+    },
+    "Budino proteico": {
+      "kcal": 90,
+      "proteine": 10.0,
+      "carboidrati": 8.0,
+      "grassi": 1.5
+    },
+    "Mandorle": {
+      "kcal": 579,
+      "proteine": 21.0,
+      "carboidrati": 22.0,
+      "grassi": 50.0
+    },
+    "Olio EVO": {
+      "kcal": 884,
+      "proteine": 0.0,
+      "carboidrati": 0.0,
+      "grassi": 100.0
+    },
+    "Banana": {
+      "kcal": 89,
+      "proteine": 1.1,
+      "carboidrati": 23.0,
+      "grassi": 0.3
+    },
+    "Pane di segale": {
+      "kcal": 259,
+      "proteine": 8.5,
+      "carboidrati": 48.0,
+      "grassi": 3.3
+    },
+    "Pane integrale": {
+      "kcal": 247,
+      "proteine": 9.0,
+      "carboidrati": 41.0,
+      "grassi": 3.4
+    },
+    "Pane comune": {
+      "kcal": 265,
+      "proteine": 9.0,
+      "carboidrati": 49.0,
+      "grassi": 3.2
+    },
+    "Riso basmati (crudo)": {
+      "kcal": 350,
+      "proteine": 7.5,
+      "carboidrati": 78.0,
+      "grassi": 0.8
+    },
+    "Pasta integrale (cruda)": {
+      "kcal": 348,
+      "proteine": 13.0,
+      "carboidrati": 66.0,
+      "grassi": 2.5
+    },
+    "Farro perlato (crudo)": {
+      "kcal": 335,
+      "proteine": 12.0,
+      "carboidrati": 70.0,
+      "grassi": 1.5
+    },
+    "Cous cous (crudo)": {
+      "kcal": 376,
+      "proteine": 12.8,
+      "carboidrati": 77.0,
+      "grassi": 0.6
+    },
+    "Patate": {
+      "kcal": 77,
+      "proteine": 2.0,
+      "carboidrati": 17.0,
+      "grassi": 0.1
+    },
+    "Bresaola": {
+      "kcal": 151,
+      "proteine": 32.0,
+      "carboidrati": 0.5,
+      "grassi": 2.6
+    },
+    "Fesa di tacchino (affettato)": {
+      "kcal": 107,
+      "proteine": 21.0,
+      "carboidrati": 1.0,
+      "grassi": 2.0
+    },
+    "Prosciutto crudo sgrassato": {
+      "kcal": 180,
+      "proteine": 28.0,
+      "carboidrati": 0.5,
+      "grassi": 7.0
+    },
+    "Petto di pollo (crudo)": {
+      "kcal": 110,
+      "proteine": 23.0,
+      "carboidrati": 0.0,
+      "grassi": 1.5
+    },
+    "Fesa di tacchino (fresca)": {
+      "kcal": 107,
+      "proteine": 24.0,
+      "carboidrati": 0.0,
+      "grassi": 1.0
+    },
+    "Merluzzo (crudo o surgelato)": {
+      "kcal": 82,
+      "proteine": 18.0,
+      "carboidrati": 0.0,
+      "grassi": 0.7
+    },
+    "Tonno al naturale (sgocciolato)": {
+      "kcal": 116,
+      "proteine": 26.0,
+      "carboidrati": 0.0,
+      "grassi": 1.0
+    },
+    "Salmone affumicato": {
+      "kcal": 180,
+      "proteine": 25.0,
+      "carboidrati": 0.0,
+      "grassi": 8.5
+    },
+    "Uovo intero": {
+      "kcal": 143,
+      "proteine": 12.6,
+      "carboidrati": 0.7,
+      "grassi": 9.5
+    },
+    "Albume": {
+      "kcal": 52,
+      "proteine": 11.0,
+      "carboidrati": 0.7,
+      "grassi": 0.2
+    },
+    "Mozzarella protein": {
+      "kcal": 140,
+      "proteine": 24.0,
+      "carboidrati": 1.0,
+      "grassi": 5.0
+    },
+    "Feta greca": {
+      "kcal": 264,
+      "proteine": 14.0,
+      "carboidrati": 4.0,
+      "grassi": 21.0
+    },
+    "Ceci cotti": {
+      "kcal": 120,
+      "proteine": 7.0,
+      "carboidrati": 18.0,
+      "grassi": 2.0
+    },
+    "Lenticchie cotte": {
+      "kcal": 116,
+      "proteine": 9.0,
+      "carboidrati": 20.0,
+      "grassi": 0.4
+    },
+    "Fagioli cotti": {
+      "kcal": 91,
+      "proteine": 6.0,
+      "carboidrati": 16.0,
+      "grassi": 0.5
+    },
+    "Tofu": {
+      "kcal": 76,
+      "proteine": 8.0,
+      "carboidrati": 1.9,
+      "grassi": 4.8
+    },
+    "Seitan": {
+      "kcal": 121,
+      "proteine": 24.0,
+      "carboidrati": 4.0,
+      "grassi": 0.5
+    },
+    "Zucchine": {
+      "kcal": 17,
+      "proteine": 1.2,
+      "carboidrati": 3.1,
+      "grassi": 0.3
+    },
+    "Melanzane": {
+      "kcal": 25,
+      "proteine": 1.0,
+      "carboidrati": 6.0,
+      "grassi": 0.2
+    },
+    "Peperoni": {
+      "kcal": 26,
+      "proteine": 1.0,
+      "carboidrati": 6.0,
+      "grassi": 0.3
+    },
+    "Insalata": {
+      "kcal": 15,
+      "proteine": 1.4,
+      "carboidrati": 2.0,
+      "grassi": 0.2
+    },
+    "Cetriolini agrodolci": {
+      "kcal": 30,
+      "proteine": 0.5,
+      "carboidrati": 6.0,
+      "grassi": 0.1
+    }
+  },
+  "note": [
+    "Il pranzo è sempre in schiscetta: preparato la sera prima o in batch la domenica.",
+    "Cene fredde lunedì, mercoledì e venerdì (giorni di palestra, rientro tardi); cucinate martedì, giovedì e domenica.",
+    "Sabato sera è il pasto libero, già conteggiato nella media settimanale.",
+    "Budino proteico e whey si scambiano fra spuntino e merenda: 200 g di budino equivalgono a circa 25 g di whey come proteine, ma con circa 70 kcal in più.",
+    "Pane: segale per le cene fredde (più saziante), integrale a colazione. Il pane comune è nel database ma non assegnato a nessun pasto.",
+    "I cetriolini agrodolci sono un insaporitore, non una porzione di verdura.",
+    "Piano costruito da Claude, non da un professionista che ha visitato Fabio. Il passaggio da circa 1.550 a circa 2.040 kcal va confermato con Dott. De Ruvo."
+  ]
+}

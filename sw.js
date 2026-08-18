@@ -1,6 +1,6 @@
-// Forma Service Worker - v7
-// Strategy: network-first for app HTML + schede.json (get fresh code), cache-first for static CDN assets
-const CACHE_NAME = 'forma-v7';
+// Forma Service Worker - v8
+// Strategy: network-first for app HTML + schede.json + dieta.json (get fresh code/data), cache-first for static CDN assets
+const CACHE_NAME = 'forma-v8';
 const APP_SHELL = [
   './',
   './index.html'
@@ -44,11 +44,12 @@ self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
-  // NETWORK-FIRST for the app HTML and schede.json (so updates are picked up immediately)
+  // NETWORK-FIRST for the app HTML, schede.json and dieta.json (so updates are picked up immediately)
   const isAppShell = url.origin === location.origin && 
     (url.pathname === '/' || url.pathname === '/index.html' || 
      url.pathname.endsWith('/index.html') || url.pathname === '' ||
-     url.pathname.endsWith('/schede.json') || url.pathname === '/schede.json');
+     url.pathname.endsWith('/schede.json') || url.pathname === '/schede.json' ||
+     url.pathname.endsWith('/dieta.json') || url.pathname === '/dieta.json');
   
   if (isAppShell) {
     event.respondWith(

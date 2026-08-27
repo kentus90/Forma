@@ -2373,6 +2373,100 @@ function dietaToggleMeal(date,meal){
   save();
 }
 
+/* --- Sostituzioni alimenti: scaling automatico sui grammi in base alla macro "ancora" --- */
+let dietaAltCtx=null;
+function dietaRound1(n){return Math.round(n*10)/10;}
+function dietaComputeMacro(nome, grams){
+  const db=DIETA.database[nome];
+  if(!db)return{kcal:0,proteine:0,carboidrati:0,grassi:0};
+  const k=grams/100;
+  return{kcal:dietaRound1(db.kcal*k),proteine:dietaRound1(db.proteine*k),carboidrati:dietaRound1(db.carboidrati*k),grassi:dietaRound1(db.grassi*k)};
+}
+function dietaScaleGrams(origNome, origGrams, altNome, catInfo){
+  if(!catInfo.ancora)return origGrams; // es. verdura: stessa grammatura per tutte
+  const db=DIETA.database;
+  const origPer100=db[origNome]&&db[origNome][catInfo.ancora];
+  const altPer100=db[altNome]&&db[altNome][catInfo.ancora];
+  if(!origPer100||!altPer100)return origGrams;
+  const origTotal=origPer100*origGrams/100;
+  let g=origTotal*100/altPer100;
+  g=Math.round(g/5)*5; // arrotonda a 5g, praticità in cucina
+  return Math.max(5,g);
+}
+function dietaEffectiveItem(dayKey, mealNome, a){
+  const subs=state.dietaSubs[dayKey]&&state.dietaSubs[dayKey][mealNome];
+  const sub=subs&&subs[a.nome];
+  const catName=DIETA.alimentoCategoria&&DIETA.alimentoCategoria[a.nome];
+  const catInfo=catName&&DIETA.categorieSostituzione[catName];
+  const sostituibile=!!(catInfo&&catInfo.alimenti.length>1);
+  if(sub){
+    return{
+      nome:sub.food, quantita:sub.grams, unita:'g', nota:null,
+      macro:dietaComputeMacro(sub.food,sub.grams),
+      sostituibile, sostituito:true
+    };
+  }
+  return{
+    nome:a.nome, quantita:a.quantita, unita:a.unita, nota:a.nota||null,
+    macro:a.macro||{kcal:0,proteine:0,carboidrati:0,grassi:0},
+    sostituibile, sostituito:false
+  };
+}
+function dietaOpenAlt(dayKey, mealNome, a){
+  const catName=DIETA.alimentoCategoria&&DIETA.alimentoCategoria[a.nome];
+  if(!catName)return;
+  const catInfo=DIETA.categorieSostituzione[catName];
+  dietaAltCtx={dayKey,mealNome,origNome:a.nome,origGrams:a.quantita};
+  const subs=state.dietaSubs[dayKey]&&state.dietaSubs[dayKey][mealNome];
+  const currentSub=subs&&subs[a.nome];
+  const items=catInfo.alimenti.map(nome=>{
+    const isOrig=nome===a.nome;
+    const grams=isOrig?a.quantita:dietaScaleGrams(a.nome,a.quantita,nome,catInfo);
+    const macro=dietaComputeMacro(nome,grams);
+    const isCurrent=currentSub?(currentSub.food===nome):isOrig;
+    return{nome,grams,macro,isOrig,isCurrent};
+  });
+  const sheetTitle=document.getElementById('dietaAltSheetTitle');
+  if(sheetTitle)sheetTitle.textContent=`Alternative: ${a.nome}`;
+  const list=document.getElementById('dietaAltSheetList');
+  if(!list)return;
+  list.innerHTML=items.map((it,i)=>{
+    const origBadge=it.isOrig?'<span class="alt-item-badge original">Originale</span>':'';
+    const curBadge=it.isCurrent?'<span class="alt-item-badge inuse">In uso</span>':'';
+    return`<div class="alt-item ${it.isCurrent?'current':''}" data-idx="${i}"><div class="alt-item-name">${it.nome}${origBadge}${curBadge}</div><div class="alt-item-spec">${it.grams} g</div><div class="alt-item-tips">${Math.round(it.macro.kcal)} kcal · ${it.macro.proteine}g proteine · ${it.macro.carboidrati}g carb · ${it.macro.grassi}g grassi</div></div>`;
+  }).join('');
+  list.querySelectorAll('.alt-item').forEach(el=>{
+    el.addEventListener('click',()=>dietaSelectAlt(items[+el.dataset.idx]));
+  });
+  const overlay=document.getElementById('dietaAltSheetOverlay');
+  const sheet=document.getElementById('dietaAltSheet');
+  if(overlay)overlay.classList.add('show');
+  if(sheet)setTimeout(()=>sheet.classList.add('show'),10);
+}
+function dietaSelectAlt(item){
+  if(!dietaAltCtx)return;
+  const{dayKey,mealNome,origNome}=dietaAltCtx;
+  if(!state.dietaSubs[dayKey])state.dietaSubs[dayKey]={};
+  if(!state.dietaSubs[dayKey][mealNome])state.dietaSubs[dayKey][mealNome]={};
+  if(item.isOrig){
+    delete state.dietaSubs[dayKey][mealNome][origNome];
+    toast('Ripristinato originale');
+  }else{
+    state.dietaSubs[dayKey][mealNome][origNome]={food:item.nome,grams:item.grams};
+    toast(`Sostituito: ${item.nome}`);
+  }
+  save();
+  dietaCloseAlt();
+  renderDieta();
+}
+function dietaCloseAlt(){
+  const sheet=document.getElementById('dietaAltSheet');
+  const overlay=document.getElementById('dietaAltSheetOverlay');
+  if(sheet)sheet.classList.remove('show');
+  setTimeout(()=>{if(overlay)overlay.classList.remove('show');},250);
+  dietaAltCtx=null;
+}
+
 function renderDieta(){
   const v=document.getElementById('view-dieta');
   if(!v)return;
@@ -2400,29 +2494,42 @@ function renderDieta(){
   const totalMeals=g.pasti.length;
   const doneMeals=g.pasti.filter(p=>log.meals&&log.meals[p.nome]).length;
 
-  const mealsHTML=g.pasti.map(p=>{
+  const dayTotal={kcal:0,proteine:0,carboidrati:0,grassi:0};
+  const mealsHTML=g.pasti.map((p,pIdx)=>{
     const on=!!(log.meals&&log.meals[p.nome]);
-    const foods=p.alimenti.map(a=>{
-      const qty=a.quantita==null?'':(typeof a.quantita==='number'?`${a.quantita} ${a.unita||'g'}`:a.quantita);
-      const note=a.nota?`<div class="food-note">${a.nota}</div>`:'';
-      return`<div class="food-row"><div class="food-name">${a.nome}${note}</div><div class="food-qty">${qty}</div></div>`;
+    const pm={kcal:0,proteine:0,carboidrati:0,grassi:0};
+    const foods=p.alimenti.map((a,aIdx)=>{
+      const eff=dietaEffectiveItem(key,p.nome,a);
+      for(const kk in pm)pm[kk]+=eff.macro[kk]||0;
+      const qty=eff.quantita==null?'':(typeof eff.quantita==='number'?`${eff.quantita} ${eff.unita||'g'}`:eff.quantita);
+      const note=eff.nota?`<div class="food-note">${eff.nota}</div>`:'';
+      const subBadge=eff.sostituito?'<span class="food-sub-badge">sostituito</span>':'';
+      if(eff.sostituibile){
+        return`<div class="food-row tappable" data-pidx="${pIdx}" data-aidx="${aIdx}"><div class="food-name">${eff.nome}${subBadge}${note}</div><div class="food-qty">${qty} <span class="food-alt-icon">⇄</span></div></div>`;
+      }
+      return`<div class="food-row"><div class="food-name">${eff.nome}${note}</div><div class="food-qty">${qty}</div></div>`;
     }).join('');
-    const m=p.macro||{};
+    for(const kk in dayTotal)dayTotal[kk]+=pm[kk];
     return`<div class="meal ${on?'done':''}" data-meal="${p.nome}">
       <div class="meal-head">
         <button class="meal-check ${on?'on':''}" data-mealcheck="${p.nome}">✓</button>
         <div class="meal-head-l"><div class="meal-name">${p.nome}<span class="meal-time mono">${p.ora||''}</span></div>
-        <div class="meal-macro mono">${Math.round(m.kcal||0)} kcal · ${Math.round(m.proteine||0)}P · ${Math.round(m.carboidrati||0)}C · ${Math.round(m.grassi||0)}F</div></div>
+        <div class="meal-macro mono">${Math.round(pm.kcal)} kcal · ${Math.round(pm.proteine)}P · ${Math.round(pm.carboidrati)}C · ${Math.round(pm.grassi)}F</div></div>
         <div class="ex-head-caret">▾</div>
       </div>
       <div class="meal-body">${foods}</div>
     </div>`;
   }).join('');
 
-  const m=g.macro||{};
+  const m=dayTotal;
   const bar=(val,target,color)=>{
     const pct=target?Math.min(100,Math.round(val/target*100)):0;
     return`<div class="macro-bar"><div class="macro-bar-fill" style="width:${pct}%;background:${color};"></div></div>`;
+  };
+  const macroBox=(val,target,label,color)=>{
+    const v=Math.round(val||0);
+    const over=target!=null&&v>target;
+    return`<div class="macro-box"><div class="macro-val ${over?'over':''}">${v}</div><div class="macro-lbl">${label}</div><div class="macro-target">(${target!=null?target:'—'})</div>${bar(val,target,color)}</div>`;
   };
 
   const spesaHTML=Object.entries(DIETA.listaSpesa||{}).map(([cat,voci])=>
@@ -2453,13 +2560,12 @@ function renderDieta(){
     <div class="card">
       <div class="card-title">Totale giornata</div>
       <div class="macro-grid">
-        <div class="macro-box"><div class="macro-val">${Math.round(m.kcal||0)}</div><div class="macro-lbl">kcal</div>${bar(m.kcal,t.kcal,'var(--accent)')}</div>
-        <div class="macro-box"><div class="macro-val">${Math.round(m.proteine||0)}</div><div class="macro-lbl">prot</div>${bar(m.proteine,t.proteine,'var(--go)')}</div>
-        <div class="macro-box"><div class="macro-val">${Math.round(m.carboidrati||0)}</div><div class="macro-lbl">carb</div>${bar(m.carboidrati,t.carboidrati,'var(--hold)')}</div>
-        <div class="macro-box"><div class="macro-val">${Math.round(m.grassi||0)}</div><div class="macro-lbl">gras</div>${bar(m.grassi,t.grassi,'var(--info)')}</div>
+        ${macroBox(m.kcal,t.kcal,'kcal','var(--accent)')}
+        ${macroBox(m.proteine,t.proteine,'prot','var(--go)')}
+        ${macroBox(m.carboidrati,t.carboidrati,'carb','var(--hold)')}
+        ${macroBox(m.grassi,t.grassi,'gras','var(--info)')}
       </div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute);margin-top:12px;letter-spacing:0.04em;line-height:1.6;">
-        Target: ${t.kcal||'—'} kcal · ${t.proteine||'—'}P · ${t.carboidrati||'—'}C · ${t.grassi||'—'}F<br>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute);margin-top:12px;letter-spacing:0.04em;">
         Media settimanale piano: ${Math.round((DIETA.mediaSettimanale||{}).kcal||0)} kcal
       </div>
     </div>
@@ -2488,6 +2594,17 @@ function renderDieta(){
     h.addEventListener('click',(e)=>{
       if(e.target.closest('.meal-check'))return;
       h.parentElement.classList.toggle('open');
+    });
+  });
+  v.querySelectorAll('.food-row.tappable').forEach(el=>{
+    el.addEventListener('click',(e)=>{
+      e.stopPropagation();
+      const pIdx=+el.dataset.pidx, aIdx=+el.dataset.aidx;
+      const p=g.pasti[pIdx];
+      if(!p)return;
+      const a=p.alimenti[aIdx];
+      if(!a)return;
+      dietaOpenAlt(key,p.nome,a);
     });
   });
   const sp=document.getElementById('dietaSpesaToggle');
@@ -2521,9 +2638,15 @@ function renderDieta(){
   .food-name{color:var(--text-dim);flex:1;min-width:0;}
   .food-qty{font-family:var(--font-mono);font-weight:600;color:var(--text);flex-shrink:0;font-size:13px;}
   .food-note{font-size:11px;color:var(--text-mute);font-style:italic;margin-top:2px;}
+  .food-row.tappable{cursor:pointer;transition:background .1s;}
+  .food-row.tappable:active{background:var(--card-2);border-radius:8px;}
+  .food-alt-icon{color:var(--accent);font-weight:700;}
+  .food-sub-badge{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(217,119,6,0.12);color:var(--hold);margin-left:6px;vertical-align:middle;}
   .macro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
   .macro-box{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;}
   .macro-val{font-family:var(--font-mono);font-size:18px;font-weight:700;color:var(--text);line-height:1;}
+  .macro-val.over{color:var(--deload);}
+  .macro-target{font-family:var(--font-mono);font-size:10px;color:var(--text-mute);margin-top:2px;}
   .macro-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-mute);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px;font-weight:600;}
   .macro-bar{height:5px;background:var(--bg-2);border-radius:3px;overflow:hidden;margin-top:8px;}
   .macro-bar-fill{height:100%;border-radius:3px;transition:width .3s;}
@@ -2559,7 +2682,20 @@ function renderDieta(){
     });
   }
 
+  if(!document.getElementById('dietaAltSheetOverlay')){
+    const ov=document.createElement('div');
+    ov.className='alt-sheet-overlay';ov.id='dietaAltSheetOverlay';
+    document.body.appendChild(ov);
+    const sheet=document.createElement('div');
+    sheet.className='alt-sheet';sheet.id='dietaAltSheet';
+    sheet.innerHTML='<div class="alt-sheet-h"><div class="alt-sheet-title" id="dietaAltSheetTitle">Alternative</div><button class="alt-sheet-close" id="dietaAltSheetClose">Chiudi</button></div><div id="dietaAltSheetList"></div>';
+    document.body.appendChild(sheet);
+    document.getElementById('dietaAltSheetClose').addEventListener('click',()=>dietaCloseAlt());
+    ov.addEventListener('click',()=>dietaCloseAlt());
+  }
+
   if(!state.dietaLog)state.dietaLog=[];
+  if(!state.dietaSubs)state.dietaSubs={};
   loadDieta().then(ok=>{
     if(ok&&document.getElementById('view-dieta').classList.contains('active'))renderDieta();
   });

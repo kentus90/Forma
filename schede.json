@@ -1,6 +1,6 @@
 {
-  "version": 3,
-  "generated": "2026-08-27T00:00:00.000Z",
+  "version": 4,
+  "generated": "2026-08-29T00:00:00.000Z",
   "days": {
     "petto_bic": {
       "key": "petto_bic",
@@ -240,12 +240,12 @@
       ],
       "exercises": [
         {
-          "name": "Panca inclinata bilanciere",
+          "name": "Military press manubri (seduto)",
           "sets": 4,
-          "repsMin": 6,
-          "repsMax": 8,
-          "rest": 120,
-          "tips": "Schienale 30-45°. Presa poco più larga delle spalle, gomiti a circa 45° dal busto, discesa controllata fino a sfiorare la parte alta del petto. Resta bassa come la piana ma lavora meglio il deltoide anteriore, senza sovrapporsi troppo alla panca piana del Giorno 1."
+          "repsMin": 8,
+          "repsMax": 10,
+          "rest": 90,
+          "tips": "Schienale a 90° (verticale). Seduto per stare comodo col soffitto basso della home gym e per un vero lavoro di spalla — la panca inclinata è petto/deltoide anteriore, non spalle."
         },
         {
           "name": "Alzate laterali manubri",
@@ -742,32 +742,6 @@
         "tips": "Manubri sulle ginocchia, colpisce di più il soleo."
       }
     ],
-    "Panca inclinata bilanciere": [
-      {
-        "name": "Panca inclinata manubri",
-        "sets": 4,
-        "repsMin": 8,
-        "repsMax": 10,
-        "rest": 120,
-        "tips": "Più range di movimento, meno carico assoluto."
-      },
-      {
-        "name": "Arnold press manubri (seduto)",
-        "sets": 4,
-        "repsMin": 8,
-        "repsMax": 10,
-        "rest": 90,
-        "tips": "Alternativa se hai spazio sopra la testa da seduto. Rotazione fluida durante la salita."
-      },
-      {
-        "name": "Spinte manubri su panca alta (60°)",
-        "sets": 4,
-        "repsMin": 8,
-        "repsMax": 10,
-        "rest": 90,
-        "tips": "Quasi verticale ma senza sbattere il soffitto: molto deltoide anteriore."
-      }
-    ],
     "Affondi camminati con manubri": [
       {
         "name": "Affondi statici alternati",
@@ -792,6 +766,32 @@
         "repsMax": 10,
         "rest": 90,
         "tips": "Piede posteriore sulla panca, 10 per gamba. Più intenso, richiede più equilibrio."
+      }
+    ],
+    "Military press manubri (seduto)": [
+      {
+        "name": "Arnold press manubri (seduto)",
+        "sets": 4,
+        "repsMin": 8,
+        "repsMax": 10,
+        "rest": 90,
+        "tips": "Parti con i palmi verso di te, ruota mentre spingi. Coinvolge tutti e tre i capi del deltoide."
+      },
+      {
+        "name": "Military press bilanciere seduto",
+        "sets": 4,
+        "repsMin": 8,
+        "repsMax": 10,
+        "rest": 90,
+        "tips": "Bilanciere invece di manubri, schiena comunque appoggiata. Verifica lo spazio sopra la testa prima di caricare."
+      },
+      {
+        "name": "Alzate laterali con pausa (3s in alto)",
+        "sets": 3,
+        "repsMin": 10,
+        "repsMax": 12,
+        "rest": 75,
+        "tips": "Se preferisci restare su isolamento puro invece di un'altra spinta."
       }
     ]
   },

@@ -2160,6 +2160,12 @@
       "carboidrati": 70.0,
       "grassi": 13.0
     },
+    "Farro soffiato al mirtillo": {
+      "kcal": 397,
+      "proteine": 8.4,
+      "carboidrati": 74.0,
+      "grassi": 6.0
+    },
     "Fette biscottate": {
       "kcal": 408,
       "proteine": 10.0,
@@ -2436,7 +2442,8 @@
         "Pane comune",
         "Patate",
         "Biscotti integrali (tipo Misura)",
-        "Fette biscottate"
+        "Fette biscottate",
+        "Farro soffiato al mirtillo"
       ]
     },
     "Verdura": {
@@ -2486,6 +2493,7 @@
     "Patate": "Cereali e pane",
     "Biscotti integrali (tipo Misura)": "Cereali e pane",
     "Fette biscottate": "Cereali e pane",
+    "Farro soffiato al mirtillo": "Cereali e pane",
     "Zucchine": "Verdura",
     "Melanzane": "Verdura",
     "Peperoni": "Verdura",
@@ -2497,7 +2505,7 @@
     "Tornato a 2.042 kcal dopo un tentativo a 1.800: dopo aver visto i numeri (deficit ~1.150 kcal/giorno, ~1-1,1 kg/settimana) hai scelto di restare sul target precedente. Con il calcio incluso nel calcolo del mantenimento (~2.950 kcal), il deficit qui è ~908 kcal/giorno, circa 0,83 kg/settimana — un ritmo più nella norma.",
     "Ogni giorno (tranne sabato) è tarato per centrare i target giornalieri, non solo la media settimanale: kcal entro l'1,6%, proteine entro l'1,7%, carboidrati entro l'1,3%, grassi entro il 6-7%. Sabato resta una stima perché include il pasto libero.",
     "Colazione modulare come pranzo e cena: proteina + carboidrato, con alternative vere. Nuove opzioni disponibili anche via sostituzione: albume, fette biscottate, burro di arachidi, marmellata zero.",
-    "Martedì e giovedì l'olio EVO sale a 20g in un pasto (pesce/seitan molto magri quel giorno): più della media, segnalato per trasparenza — scambiabile se preferisci meno olio.",
+    "Martedì e giovedì l'olio EVO sale la 20g in un pasto (pesce/seitan molto magri quel giorno): più della media, segnalato per trasparenza — scambiabile se preferisci meno olio.",
     "Budino proteico fissato a 200g ovunque: è la confezione reale, non si dosa a bilancino. Dove prima ne serviva di più per i macro, la differenza è stata spostata su pranzo o cena — non su altre porzioni di budino o su colazione.",
     "Il pranzo è sempre in schiscetta: preparato la sera prima o in batch la domenica.",
     "Cene fredde lunedì, mercoledì e venerdì (giorni di palestra, rientro tardi); cucinate martedì, giovedì e domenica.",

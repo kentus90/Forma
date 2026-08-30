@@ -14,15 +14,15 @@
     "carboidrati": 202,
     "grassi": 63,
     "proteinePerKg": 1.86,
-    "mantenimentoStimato": 2800,
-    "deficitGiornaliero": 758,
-    "perditaSettimanale": 0.7
+    "mantenimentoStimato": 2950,
+    "deficitGiornaliero": 908,
+    "perditaSettimanale": 0.83
   },
   "mediaSettimanale": {
-    "kcal": 2044.1,
-    "proteine": 171.1,
-    "carboidrati": 201.0,
-    "grassi": 63.2
+    "kcal": 2042.6,
+    "proteine": 171.3,
+    "carboidrati": 202.0,
+    "grassi": 62.6
   },
   "giorni": {
     "lunedi": {
@@ -263,13 +263,13 @@
             },
             {
               "nome": "Salmone affumicato",
-              "quantita": 110,
+              "quantita": 100,
               "unita": "g",
               "macro": {
-                "kcal": 198.0,
-                "proteine": 27.5,
+                "kcal": 180.0,
+                "proteine": 25.0,
                 "carboidrati": 0.0,
-                "grassi": 9.4
+                "grassi": 8.5
               },
               "sostituibile": true
             },
@@ -299,18 +299,18 @@
             }
           ],
           "macro": {
-            "kcal": 564.4,
-            "proteine": 52.5,
+            "kcal": 546.4,
+            "proteine": 50.0,
             "carboidrati": 32.1,
-            "grassi": 25.2
+            "grassi": 24.3
           }
         }
       ],
       "macro": {
-        "kcal": 2028.0,
-        "proteine": 172.9,
+        "kcal": 2010.0,
+        "proteine": 170.4,
         "carboidrati": 202.2,
-        "grassi": 61.3
+        "grassi": 60.5
       }
     },
     "martedi": {
@@ -431,13 +431,13 @@
             },
             {
               "nome": "Pasta integrale (cruda)",
-              "quantita": 85,
+              "quantita": 75,
               "unita": "g",
               "macro": {
-                "kcal": 295.8,
-                "proteine": 11.0,
-                "carboidrati": 56.1,
-                "grassi": 2.1
+                "kcal": 261.0,
+                "proteine": 9.8,
+                "carboidrati": 49.5,
+                "grassi": 1.9
               },
               "sostituibile": true
             },
@@ -467,10 +467,10 @@
             }
           ],
           "macro": {
-            "kcal": 616.4,
-            "proteine": 45.6,
-            "carboidrati": 62.3,
-            "grassi": 19.8
+            "kcal": 581.6,
+            "proteine": 44.3,
+            "carboidrati": 55.7,
+            "grassi": 19.6
           }
         },
         {
@@ -491,22 +491,22 @@
             },
             {
               "nome": "Budino proteico",
-              "quantita": 155,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 139.5,
-                "proteine": 15.5,
-                "carboidrati": 12.4,
-                "grassi": 2.3
+                "kcal": 180.0,
+                "proteine": 20.0,
+                "carboidrati": 16.0,
+                "grassi": 3.0
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 209.0,
-            "proteine": 18.0,
-            "carboidrati": 15.0,
-            "grassi": 8.3
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
           }
         },
         {
@@ -571,10 +571,10 @@
         }
       ],
       "macro": {
-        "kcal": 2036.6,
-        "proteine": 171.2,
-        "carboidrati": 201.8,
-        "grassi": 61.7
+        "kcal": 2042.3,
+        "proteine": 174.4,
+        "carboidrati": 198.8,
+        "grassi": 62.1
       }
     },
     "mercoledi": {
@@ -611,13 +611,13 @@
             },
             {
               "nome": "Fette biscottate",
-              "quantita": 25,
+              "quantita": 50,
               "unita": "g",
               "macro": {
-                "kcal": 102.0,
-                "proteine": 2.5,
-                "carboidrati": 19.2,
-                "grassi": 1.8
+                "kcal": 204.0,
+                "proteine": 5.0,
+                "carboidrati": 38.5,
+                "grassi": 3.5
               },
               "sostituibile": true
             },
@@ -635,10 +635,10 @@
             }
           ],
           "macro": {
-            "kcal": 322.0,
-            "proteine": 14.1,
-            "carboidrati": 45.9,
-            "grassi": 11.5
+            "kcal": 424.0,
+            "proteine": 16.6,
+            "carboidrati": 65.2,
+            "grassi": 13.2
           }
         },
         {
@@ -659,22 +659,22 @@
             },
             {
               "nome": "Budino proteico",
-              "quantita": 220,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 198.0,
-                "proteine": 22.0,
-                "carboidrati": 17.6,
-                "grassi": 3.3
+                "kcal": 180.0,
+                "proteine": 20.0,
+                "carboidrati": 16.0,
+                "grassi": 3.0
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 267.5,
-            "proteine": 24.5,
-            "carboidrati": 20.2,
-            "grassi": 9.3
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
           }
         },
         {
@@ -707,13 +707,13 @@
             },
             {
               "nome": "Lenticchie cotte",
-              "quantita": 170,
+              "quantita": 135,
               "unita": "g",
               "macro": {
-                "kcal": 197.2,
-                "proteine": 15.3,
-                "carboidrati": 34.0,
-                "grassi": 0.7
+                "kcal": 156.6,
+                "proteine": 12.2,
+                "carboidrati": 27.0,
+                "grassi": 0.5
               },
               "sostituibile": true
             },
@@ -743,10 +743,10 @@
             }
           ],
           "macro": {
-            "kcal": 653.6,
-            "proteine": 53.7,
-            "carboidrati": 80.1,
-            "grassi": 14.9
+            "kcal": 613.0,
+            "proteine": 50.5,
+            "carboidrati": 73.1,
+            "grassi": 14.8
           }
         },
         {
@@ -803,49 +803,49 @@
             },
             {
               "nome": "Uovo intero",
-              "quantita": 130,
+              "quantita": 90,
               "unita": "g",
               "macro": {
-                "kcal": 185.9,
-                "proteine": 16.4,
-                "carboidrati": 0.9,
-                "grassi": 12.3
+                "kcal": 128.7,
+                "proteine": 11.3,
+                "carboidrati": 0.6,
+                "grassi": 8.6
               },
               "sostituibile": true
             },
             {
               "nome": "Mozzarella protein",
-              "quantita": 95,
+              "quantita": 130,
               "unita": "g",
               "macro": {
-                "kcal": 133.0,
-                "proteine": 22.8,
-                "carboidrati": 0.9,
-                "grassi": 4.8
+                "kcal": 182.0,
+                "proteine": 31.2,
+                "carboidrati": 1.3,
+                "grassi": 6.5
               },
               "sostituibile": true
             },
             {
               "nome": "Feta greca",
-              "quantita": 20,
+              "quantita": 25,
               "unita": "g",
               "macro": {
-                "kcal": 52.8,
-                "proteine": 2.8,
-                "carboidrati": 0.8,
-                "grassi": 4.2
+                "kcal": 66.0,
+                "proteine": 3.5,
+                "carboidrati": 1.0,
+                "grassi": 5.2
               },
               "sostituibile": true
             },
             {
               "nome": "Pane di segale",
-              "quantita": 55,
+              "quantita": 40,
               "unita": "g",
               "macro": {
-                "kcal": 142.5,
-                "proteine": 4.7,
-                "carboidrati": 26.4,
-                "grassi": 1.8
+                "kcal": 103.6,
+                "proteine": 3.4,
+                "carboidrati": 19.2,
+                "grassi": 1.3
               },
               "sostituibile": true
             },
@@ -863,18 +863,18 @@
             }
           ],
           "macro": {
-            "kcal": 604.7,
-            "proteine": 50.2,
-            "carboidrati": 34.1,
-            "grassi": 29.6
+            "kcal": 570.8,
+            "proteine": 52.9,
+            "carboidrati": 27.1,
+            "grassi": 28.1
           }
         }
       ],
       "macro": {
-        "kcal": 2052.0,
-        "proteine": 171.4,
-        "carboidrati": 200.8,
-        "grassi": 67.0
+        "kcal": 2061.6,
+        "proteine": 171.5,
+        "carboidrati": 204.5,
+        "grassi": 66.8
       }
     },
     "giovedi": {
@@ -911,46 +911,46 @@
             },
             {
               "nome": "Fesa di tacchino (affettato)",
-              "quantita": 40,
+              "quantita": 80,
               "unita": "g",
               "macro": {
-                "kcal": 42.8,
-                "proteine": 8.4,
-                "carboidrati": 0.4,
-                "grassi": 0.8
+                "kcal": 85.6,
+                "proteine": 16.8,
+                "carboidrati": 0.8,
+                "grassi": 1.6
               },
               "sostituibile": true
             },
             {
               "nome": "Albume",
-              "quantita": 110,
+              "quantita": 70,
               "unita": "g",
               "macro": {
-                "kcal": 57.2,
-                "proteine": 12.1,
-                "carboidrati": 0.8,
-                "grassi": 0.2
+                "kcal": 36.4,
+                "proteine": 7.7,
+                "carboidrati": 0.5,
+                "grassi": 0.1
               },
               "sostituibile": true
             },
             {
               "nome": "Pane integrale",
-              "quantita": 55,
+              "quantita": 65,
               "unita": "g",
               "macro": {
-                "kcal": 135.9,
-                "proteine": 5.0,
-                "carboidrati": 22.6,
-                "grassi": 1.9
+                "kcal": 160.6,
+                "proteine": 5.9,
+                "carboidrati": 26.7,
+                "grassi": 2.2
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 365.0,
-            "proteine": 28.4,
-            "carboidrati": 44.3,
-            "grassi": 8.1
+            "kcal": 411.7,
+            "proteine": 33.3,
+            "carboidrati": 48.5,
+            "grassi": 9.2
           }
         },
         {
@@ -971,22 +971,22 @@
             },
             {
               "nome": "Whey protein (polvere)",
-              "quantita": 20,
+              "quantita": 35,
               "unita": "g",
               "macro": {
-                "kcal": 76.0,
-                "proteine": 16.0,
-                "carboidrati": 1.2,
-                "grassi": 0.8
+                "kcal": 133.0,
+                "proteine": 28.0,
+                "carboidrati": 2.1,
+                "grassi": 1.4
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 147.2,
-            "proteine": 16.9,
-            "carboidrati": 19.6,
-            "grassi": 1.0
+            "kcal": 204.2,
+            "proteine": 28.9,
+            "carboidrati": 20.5,
+            "grassi": 1.6
           }
         },
         {
@@ -1007,46 +1007,46 @@
             },
             {
               "nome": "Riso basmati (crudo)",
-              "quantita": 65,
+              "quantita": 80,
               "unita": "g",
               "macro": {
-                "kcal": 227.5,
-                "proteine": 4.9,
-                "carboidrati": 50.7,
-                "grassi": 0.5
+                "kcal": 280.0,
+                "proteine": 6.0,
+                "carboidrati": 62.4,
+                "grassi": 0.6
               },
               "sostituibile": true
             },
             {
               "nome": "Petto di pollo (crudo)",
-              "quantita": 210,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 231.0,
-                "proteine": 48.3,
+                "kcal": 220.0,
+                "proteine": 46.0,
                 "carboidrati": 0.0,
-                "grassi": 3.2
+                "grassi": 3.0
               },
               "sostituibile": true
             },
             {
               "nome": "Olio EVO",
-              "quantita": 20,
+              "quantita": 15,
               "unita": "g",
               "macro": {
-                "kcal": 176.8,
+                "kcal": 132.6,
                 "proteine": 0.0,
                 "carboidrati": 0.0,
-                "grassi": 20.0
+                "grassi": 15.0
               },
               "sostituibile": false
             }
           ],
           "macro": {
-            "kcal": 687.3,
-            "proteine": 55.2,
-            "carboidrati": 62.7,
-            "grassi": 24.3
+            "kcal": 684.6,
+            "proteine": 54.0,
+            "carboidrati": 74.4,
+            "grassi": 19.2
           }
         },
         {
@@ -1067,22 +1067,22 @@
             },
             {
               "nome": "Budino proteico",
-              "quantita": 210,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 189.0,
-                "proteine": 21.0,
-                "carboidrati": 16.8,
-                "grassi": 3.2
+                "kcal": 180.0,
+                "proteine": 20.0,
+                "carboidrati": 16.0,
+                "grassi": 3.0
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 258.5,
-            "proteine": 23.5,
-            "carboidrati": 19.4,
-            "grassi": 9.2
+            "kcal": 249.5,
+            "proteine": 22.5,
+            "carboidrati": 18.6,
+            "grassi": 9.0
           }
         },
         {
@@ -1103,25 +1103,25 @@
             },
             {
               "nome": "Seitan",
-              "quantita": 155,
+              "quantita": 110,
               "unita": "g",
               "macro": {
-                "kcal": 187.6,
-                "proteine": 37.2,
-                "carboidrati": 6.2,
-                "grassi": 0.8
+                "kcal": 133.1,
+                "proteine": 26.4,
+                "carboidrati": 4.4,
+                "grassi": 0.6
               },
               "sostituibile": true
             },
             {
               "nome": "Farro perlato (crudo)",
-              "quantita": 50,
+              "quantita": 35,
               "unita": "g",
               "macro": {
-                "kcal": 167.5,
-                "proteine": 6.0,
-                "carboidrati": 35.0,
-                "grassi": 0.8
+                "kcal": 117.2,
+                "proteine": 4.2,
+                "carboidrati": 24.5,
+                "grassi": 0.5
               },
               "sostituibile": true
             },
@@ -1139,18 +1139,18 @@
             }
           ],
           "macro": {
-            "kcal": 594.4,
-            "proteine": 45.7,
-            "carboidrati": 56.2,
-            "grassi": 22.0
+            "kcal": 489.7,
+            "proteine": 33.1,
+            "carboidrati": 43.9,
+            "grassi": 21.6
           }
         }
       ],
       "macro": {
-        "kcal": 2052.3,
-        "proteine": 169.7,
-        "carboidrati": 202.3,
-        "grassi": 64.6
+        "kcal": 2039.6,
+        "proteine": 171.8,
+        "carboidrati": 206.0,
+        "grassi": 60.6
       }
     },
     "venerdi": {
@@ -1187,25 +1187,25 @@
             },
             {
               "nome": "Whey protein (polvere)",
-              "quantita": 20,
+              "quantita": 15,
               "unita": "g",
               "macro": {
-                "kcal": 76.0,
-                "proteine": 16.0,
-                "carboidrati": 1.2,
-                "grassi": 0.8
+                "kcal": 57.0,
+                "proteine": 12.0,
+                "carboidrati": 0.9,
+                "grassi": 0.6
               },
               "sostituibile": true
             },
             {
               "nome": "Fette biscottate",
-              "quantita": 30,
+              "quantita": 20,
               "unita": "g",
               "macro": {
-                "kcal": 122.4,
-                "proteine": 3.0,
-                "carboidrati": 23.1,
-                "grassi": 2.1
+                "kcal": 81.6,
+                "proteine": 2.0,
+                "carboidrati": 15.4,
+                "grassi": 1.4
               },
               "sostituibile": true
             },
@@ -1223,10 +1223,10 @@
             }
           ],
           "macro": {
-            "kcal": 369.6,
-            "proteine": 28.2,
-            "carboidrati": 51.4,
-            "grassi": 7.7
+            "kcal": 309.8,
+            "proteine": 23.2,
+            "carboidrati": 43.4,
+            "grassi": 6.8
           }
         },
         {
@@ -1283,12 +1283,12 @@
             },
             {
               "nome": "Cous cous (crudo)",
-              "quantita": 70,
+              "quantita": 75,
               "unita": "g",
               "macro": {
-                "kcal": 263.2,
-                "proteine": 9.0,
-                "carboidrati": 53.9,
+                "kcal": 282.0,
+                "proteine": 9.6,
+                "carboidrati": 57.8,
                 "grassi": 0.4
               },
               "sostituibile": true
@@ -1307,13 +1307,13 @@
             },
             {
               "nome": "Tonno al naturale (sgocciolato)",
-              "quantita": 125,
+              "quantita": 130,
               "unita": "g",
               "macro": {
-                "kcal": 145.0,
-                "proteine": 32.5,
+                "kcal": 150.8,
+                "proteine": 33.8,
                 "carboidrati": 0.0,
-                "grassi": 1.2
+                "grassi": 1.3
               },
               "sostituibile": true
             },
@@ -1331,10 +1331,10 @@
             }
           ],
           "macro": {
-            "kcal": 746.0,
-            "proteine": 54.4,
-            "carboidrati": 87.1,
-            "grassi": 19.3
+            "kcal": 770.6,
+            "proteine": 56.3,
+            "carboidrati": 91.0,
+            "grassi": 19.4
           }
         },
         {
@@ -1403,25 +1403,25 @@
             },
             {
               "nome": "Mozzarella protein",
-              "quantita": 80,
+              "quantita": 100,
               "unita": "g",
               "macro": {
-                "kcal": 112.0,
-                "proteine": 19.2,
-                "carboidrati": 0.8,
-                "grassi": 4.0
+                "kcal": 140.0,
+                "proteine": 24.0,
+                "carboidrati": 1.0,
+                "grassi": 5.0
               },
               "sostituibile": true
             },
             {
               "nome": "Pane di segale",
-              "quantita": 45,
+              "quantita": 55,
               "unita": "g",
               "macro": {
-                "kcal": 116.5,
-                "proteine": 3.8,
-                "carboidrati": 21.6,
-                "grassi": 1.5
+                "kcal": 142.5,
+                "proteine": 4.7,
+                "carboidrati": 26.4,
+                "grassi": 1.8
               },
               "sostituibile": true
             },
@@ -1439,18 +1439,18 @@
             }
           ],
           "macro": {
-            "kcal": 534.5,
-            "proteine": 51.5,
-            "carboidrati": 27.4,
-            "grassi": 24.5
+            "kcal": 588.4,
+            "proteine": 57.2,
+            "carboidrati": 32.4,
+            "grassi": 25.8
           }
         }
       ],
       "macro": {
-        "kcal": 2027.7,
-        "proteine": 169.5,
-        "carboidrati": 203.8,
-        "grassi": 61.3
+        "kcal": 2046.4,
+        "proteine": 172.1,
+        "carboidrati": 204.6,
+        "grassi": 61.8
       }
     },
     "sabato": {
@@ -1559,12 +1559,12 @@
             },
             {
               "nome": "Patate",
-              "quantita": 180,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 138.6,
-                "proteine": 3.6,
-                "carboidrati": 30.6,
+                "kcal": 154.0,
+                "proteine": 4.0,
+                "carboidrati": 34.0,
                 "grassi": 0.2
               },
               "sostituibile": true
@@ -1595,9 +1595,9 @@
             }
           ],
           "macro": {
-            "kcal": 525.1,
-            "proteine": 60.8,
-            "carboidrati": 42.6,
+            "kcal": 540.5,
+            "proteine": 61.2,
+            "carboidrati": 46.0,
             "grassi": 13.1
           }
         },
@@ -1607,22 +1607,22 @@
           "alimenti": [
             {
               "nome": "Budino proteico",
-              "quantita": 220,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 198.0,
-                "proteine": 22.0,
-                "carboidrati": 17.6,
-                "grassi": 3.3
+                "kcal": 180.0,
+                "proteine": 20.0,
+                "carboidrati": 16.0,
+                "grassi": 3.0
               },
               "sostituibile": true
             }
           ],
           "macro": {
-            "kcal": 198.0,
-            "proteine": 22.0,
-            "carboidrati": 17.6,
-            "grassi": 3.3
+            "kcal": 180.0,
+            "proteine": 20.0,
+            "carboidrati": 16.0,
+            "grassi": 3.0
           }
         },
         {
@@ -1651,10 +1651,10 @@
         }
       ],
       "macro": {
-        "kcal": 2063.2,
-        "proteine": 169.3,
-        "carboidrati": 194.2,
-        "grassi": 64.2
+        "kcal": 2060.6,
+        "proteine": 167.8,
+        "carboidrati": 196.0,
+        "grassi": 63.9
       }
     },
     "domenica": {
@@ -1727,13 +1727,13 @@
           "alimenti": [
             {
               "nome": "Budino proteico",
-              "quantita": 220,
+              "quantita": 200,
               "unita": "g",
               "macro": {
-                "kcal": 198.0,
-                "proteine": 22.0,
-                "carboidrati": 17.6,
-                "grassi": 3.3
+                "kcal": 180.0,
+                "proteine": 20.0,
+                "carboidrati": 16.0,
+                "grassi": 3.0
               },
               "sostituibile": true
             },
@@ -1751,10 +1751,10 @@
             }
           ],
           "macro": {
-            "kcal": 255.9,
-            "proteine": 24.1,
-            "carboidrati": 19.8,
-            "grassi": 8.3
+            "kcal": 237.9,
+            "proteine": 22.1,
+            "carboidrati": 18.2,
+            "grassi": 8.0
           }
         },
         {
@@ -1775,25 +1775,25 @@
             },
             {
               "nome": "Patate",
-              "quantita": 250,
+              "quantita": 260,
               "unita": "g",
               "macro": {
-                "kcal": 192.5,
-                "proteine": 5.0,
-                "carboidrati": 42.5,
-                "grassi": 0.2
+                "kcal": 200.2,
+                "proteine": 5.2,
+                "carboidrati": 44.2,
+                "grassi": 0.3
               },
               "sostituibile": true
             },
             {
               "nome": "Petto di pollo (crudo)",
-              "quantita": 210,
+              "quantita": 220,
               "unita": "g",
               "macro": {
-                "kcal": 231.0,
-                "proteine": 48.3,
+                "kcal": 242.0,
+                "proteine": 50.6,
                 "carboidrati": 0.0,
-                "grassi": 3.2
+                "grassi": 3.3
               },
               "sostituibile": true
             },
@@ -1811,10 +1811,10 @@
             }
           ],
           "macro": {
-            "kcal": 581.3,
-            "proteine": 55.7,
-            "carboidrati": 48.7,
-            "grassi": 18.0
+            "kcal": 600.0,
+            "proteine": 58.2,
+            "carboidrati": 50.4,
+            "grassi": 18.2
           }
         },
         {
@@ -1871,25 +1871,25 @@
             },
             {
               "nome": "Fagioli cotti",
-              "quantita": 180,
+              "quantita": 165,
               "unita": "g",
               "macro": {
-                "kcal": 163.8,
-                "proteine": 10.8,
-                "carboidrati": 28.8,
-                "grassi": 0.9
+                "kcal": 150.2,
+                "proteine": 9.9,
+                "carboidrati": 26.4,
+                "grassi": 0.8
               },
               "sostituibile": true
             },
             {
               "nome": "Tonno al naturale (sgocciolato)",
-              "quantita": 90,
+              "quantita": 80,
               "unita": "g",
               "macro": {
-                "kcal": 104.4,
-                "proteine": 23.4,
+                "kcal": 92.8,
+                "proteine": 20.8,
                 "carboidrati": 0.0,
-                "grassi": 0.9
+                "grassi": 0.8
               },
               "sostituibile": true
             },
@@ -1907,13 +1907,13 @@
             },
             {
               "nome": "Pane di segale",
-              "quantita": 50,
+              "quantita": 55,
               "unita": "g",
               "macro": {
-                "kcal": 129.5,
-                "proteine": 4.2,
-                "carboidrati": 24.0,
-                "grassi": 1.6
+                "kcal": 142.5,
+                "proteine": 4.7,
+                "carboidrati": 26.4,
+                "grassi": 1.8
               },
               "sostituibile": true
             },
@@ -1931,18 +1931,18 @@
             }
           ],
           "macro": {
-            "kcal": 655.6,
-            "proteine": 49.0,
+            "kcal": 643.3,
+            "proteine": 45.9,
             "carboidrati": 59.8,
-            "grassi": 24.5
+            "grassi": 24.4
           }
         }
       ],
       "macro": {
-        "kcal": 2049.2,
-        "proteine": 174.0,
-        "carboidrati": 201.8,
-        "grassi": 62.5
+        "kcal": 2037.6,
+        "proteine": 171.4,
+        "carboidrati": 201.9,
+        "grassi": 62.4
       }
     }
   },
@@ -1965,7 +1965,7 @@
       },
       {
         "nome": "Fesa di tacchino (affettato)",
-        "quantita": 180,
+        "quantita": 220,
         "unita": "g"
       },
       {
@@ -1982,39 +1982,39 @@
       },
       {
         "nome": "Tonno al naturale (sgocciolato)",
-        "quantita": 355,
+        "quantita": 350,
         "unita": "g"
       },
       {
         "nome": "Salmone affumicato",
-        "quantita": 210,
+        "quantita": 200,
         "unita": "g"
       }
     ],
     "Uova e latticini": [
       {
         "nome": "Uovo intero",
-        "quantita": 130,
+        "quantita": 90,
         "unita": "g"
       },
       {
         "nome": "Albume",
-        "quantita": 110,
+        "quantita": 70,
         "unita": "g"
       },
       {
         "nome": "Budino proteico",
-        "quantita": 1425,
+        "quantita": 1400,
         "unita": "g"
       },
       {
         "nome": "Mozzarella protein",
-        "quantita": 245,
+        "quantita": 300,
         "unita": "g"
       },
       {
         "nome": "Feta greca",
-        "quantita": 70,
+        "quantita": 75,
         "unita": "g"
       }
     ],
@@ -2026,39 +2026,39 @@
       },
       {
         "nome": "Lenticchie cotte",
-        "quantita": 170,
+        "quantita": 135,
         "unita": "g"
       },
       {
         "nome": "Fagioli cotti",
-        "quantita": 180,
+        "quantita": 165,
         "unita": "g"
       },
       {
         "nome": "Seitan",
-        "quantita": 155,
+        "quantita": 110,
         "unita": "g"
       }
     ],
     "Cereali e pane": [
       {
         "nome": "Riso basmati (crudo)",
-        "quantita": 115,
+        "quantita": 130,
         "unita": "g"
       },
       {
         "nome": "Pasta integrale (cruda)",
-        "quantita": 85,
+        "quantita": 75,
         "unita": "g"
       },
       {
         "nome": "Farro perlato (crudo)",
-        "quantita": 105,
+        "quantita": 90,
         "unita": "g"
       },
       {
         "nome": "Cous cous (crudo)",
-        "quantita": 70,
+        "quantita": 75,
         "unita": "g"
       },
       {
@@ -2068,7 +2068,7 @@
       },
       {
         "nome": "Pane integrale",
-        "quantita": 155,
+        "quantita": 165,
         "unita": "g"
       },
       {
@@ -2078,12 +2078,12 @@
       },
       {
         "nome": "Fette biscottate",
-        "quantita": 55,
+        "quantita": 70,
         "unita": "g"
       },
       {
         "nome": "Patate",
-        "quantita": 690,
+        "quantita": 720,
         "unita": "g"
       }
     ],
@@ -2122,7 +2122,7 @@
       },
       {
         "nome": "Olio EVO",
-        "quantita": 169,
+        "quantita": 164,
         "unita": "g"
       },
       {
@@ -2132,7 +2132,7 @@
       },
       {
         "nome": "Whey protein (polvere)",
-        "quantita": 240,
+        "quantita": 250,
         "unita": "g"
       },
       {
@@ -2494,9 +2494,11 @@
     "Marmellata zero": "Spalmabile"
   },
   "note": [
-    "Ogni giorno (tranne sabato) è tarato per centrare i target giornalieri, non solo la media settimanale: kcal entro l'1%, proteine entro il 2%, carboidrati entro l'1%, grassi entro il 5-6%. Sabato resta una stima perché include il pasto libero.",
-    "Colazione ora modulare come pranzo e cena: proteina + carboidrato, con alternative vere. Nuove opzioni disponibili anche via sostituzione: albume, fette biscottate, burro di arachidi, marmellata zero.",
-    "Martedì e giovedì l'olio EVO sale a 20g in un pasto (pesce/pollo/seitan molto magri quel giorno): più della media, segnalato per trasparenza — scambiabile se preferisci meno olio.",
+    "Tornato a 2.042 kcal dopo un tentativo a 1.800: dopo aver visto i numeri (deficit ~1.150 kcal/giorno, ~1-1,1 kg/settimana) hai scelto di restare sul target precedente. Con il calcio incluso nel calcolo del mantenimento (~2.950 kcal), il deficit qui è ~908 kcal/giorno, circa 0,83 kg/settimana — un ritmo più nella norma.",
+    "Ogni giorno (tranne sabato) è tarato per centrare i target giornalieri, non solo la media settimanale: kcal entro l'1,6%, proteine entro l'1,7%, carboidrati entro l'1,3%, grassi entro il 6-7%. Sabato resta una stima perché include il pasto libero.",
+    "Colazione modulare come pranzo e cena: proteina + carboidrato, con alternative vere. Nuove opzioni disponibili anche via sostituzione: albume, fette biscottate, burro di arachidi, marmellata zero.",
+    "Martedì e giovedì l'olio EVO sale a 20g in un pasto (pesce/seitan molto magri quel giorno): più della media, segnalato per trasparenza — scambiabile se preferisci meno olio.",
+    "Budino proteico fissato a 200g ovunque: è la confezione reale, non si dosa a bilancino. Dove prima ne serviva di più per i macro, la differenza è stata spostata su pranzo o cena — non su altre porzioni di budino o su colazione.",
     "Il pranzo è sempre in schiscetta: preparato la sera prima o in batch la domenica.",
     "Cene fredde lunedì, mercoledì e venerdì (giorni di palestra, rientro tardi); cucinate martedì, giovedì e domenica.",
     "Sabato sera è il pasto libero, già conteggiato nella media settimanale.",
